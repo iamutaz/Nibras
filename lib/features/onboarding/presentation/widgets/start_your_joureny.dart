@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/colors/app_colors.dart';
-import '../../../core/theme/fonts/text_styles.dart';
+import '../../../../core/theme/colors/app_colors.dart';
+import '../../../../core/theme/fonts/text_styles.dart';
 
 Widget Start_your_joureny_widget() {
   return SizedBox(

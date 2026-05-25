@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/fonts/text_styles.dart';
+import '../../../../core/theme/fonts/text_styles.dart';
 
 class SubtitleScreen extends StatelessWidget {
   const SubtitleScreen({super.key});

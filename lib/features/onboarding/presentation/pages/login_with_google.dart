@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
-import 'package:nibras/features/onboarding/widgets/continue_to_widget.dart';
-import 'package:nibras/features/onboarding/widgets/start_your_joureny.dart';
-import 'package:nibras/features/onboarding/widgets/subtitle_screen.dart';
+import 'package:nibras/features/onboarding/presentation/widgets/continue_to_widget.dart';
+import 'package:nibras/features/onboarding/presentation/widgets/start_your_joureny.dart';
+import 'package:nibras/features/onboarding/presentation/widgets/subtitle_screen.dart';
 
-import '../../core/widgets/app_text_button.dart';
+import '../../../../core/widgets/app_text_button.dart';
 
 class LoginWithGoogle extends StatelessWidget {
   const LoginWithGoogle({super.key});
