@@ -28,7 +28,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void nextPage() {
     if (currentIndex == items.length - 1) {
-      Navigator.pushReplacementNamed(context, RoutesName.loginwithgoogle);
+      Navigator.pushReplacementNamed(context, RoutesName.continuewithgoogle);
       return;
     }
 

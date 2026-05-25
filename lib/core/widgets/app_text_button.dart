@@ -69,7 +69,7 @@ class AppTextButton extends StatelessWidget {
           
           children: [
             if (icon != null) SvgPicture.asset(icon!, width: 22.w, height: 22.h),
-            SizedBox(width: 10,),
+            SizedBox(width: icon != null ? 10.w : 0.w,),
             Text(textButton, style: textStyle),
           ],
         ),

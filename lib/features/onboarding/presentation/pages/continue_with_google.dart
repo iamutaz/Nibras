@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/onboarding/presentation/widgets/continue_to_widget.dart';
 import 'package:nibras/features/onboarding/presentation/widgets/start_your_joureny.dart';
@@ -8,8 +10,8 @@ import 'package:nibras/features/onboarding/presentation/widgets/subtitle_screen.
 
 import '../../../../core/widgets/app_text_button.dart';
 
-class LoginWithGoogle extends StatelessWidget {
-  const LoginWithGoogle({super.key});
+class ContinueWithGoogle extends StatelessWidget {
+  const ContinueWithGoogle({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class LoginWithGoogle extends StatelessWidget {
 
             ),
             SizedBox(height: 16.h,),
-            AppTextButton(onpressed: (){},
+            AppTextButton(onpressed: () => context.pushNamed(RoutesName.signup),
               textButton: "Continue with Email",
               icon: "assets/svg/mail.svg",
               textStyle: TextStyles.font16lighterblacksemiBold,
@@ -45,7 +47,10 @@ class LoginWithGoogle extends StatelessWidget {
               borderWidth: 2,),
             ContinueToWidget(),
             SizedBox(height: 24.h,),
-            Center(child: Text("Login to your account",style: TextStyles.font16lighterblacksemiBold,))
+            Center(child: InkWell(
+              onTap: () => context.pushNamed(RoutesName.login),
+              child: Text("Login to your account",style: TextStyles.font16lighterblacksemiBold,)
+            ))
           ],
         ),
       ),
