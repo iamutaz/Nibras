@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/colors/app_colors.dart';
-import '../../../core/theme/fonts/text_styles.dart';
+import '../../../../core/theme/colors/app_colors.dart';
+import '../../../../core/theme/fonts/text_styles.dart';
 
 Widget ContinueToWidget() {
   return             Padding(padding: EdgeInsetsGeometry.symmetric(vertical: 24.0.h),
