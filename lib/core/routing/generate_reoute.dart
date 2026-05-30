@@ -8,6 +8,7 @@ import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
 import 'package:nibras/features/signup/signup.dart';
 
 class GenerateRoute {
@@ -16,7 +17,12 @@ class GenerateRoute {
       case RoutesName.onboarding:
         return MaterialPageRoute(builder: (context) => OnboardingPage());
       case RoutesName.signup:
-        return MaterialPageRoute(builder: (context) => Signup());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<SignupCubit>(),
+            child: Signup(),
+          ),
+        );
       case RoutesName.login:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
