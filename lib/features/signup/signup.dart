@@ -11,7 +11,7 @@ import 'package:nibras/features/signup/widgets/create_account_stack.dart'
     show CreateAccountStack;
 
 class Signup extends StatefulWidget {
- const Signup({super.key});
+  const Signup({super.key});
 
   @override
   State<Signup> createState() => _SignupState();
@@ -40,11 +40,15 @@ class _SignupState extends State<Signup> {
                     child: Column(
                       children: [
                         FormBody(
+                          controller: TextEditingController(),
+                          validator: (value) {},
                           title: "Full Name",
                           hint: "Aizen Souske",
                           prefixpath: "assets/svg/profile_vector.svg",
                         ),
                         FormBody(
+                          controller: TextEditingController(),
+                          validator: (value) {},
                           title: "Email Address",
                           hint: "admin@alufuq.com",
                           prefixpath: "assets/svg/email.svg",
@@ -105,6 +109,8 @@ class _SignupState extends State<Signup> {
                         ),
 
                         FormBody(
+                          controller: TextEditingController(),
+                          validator: (value) {},
                           title: "Password",
                           hint: "••••••••••••••••••••••••••••••••",
                           prefixpath: "assets/svg/lock.svg",
@@ -152,6 +158,10 @@ class FormBody extends StatelessWidget {
   String hint;
   String prefixpath;
   bool? isobscure;
+  Function(String?) validator;
+
+  TextEditingController? controller;
+
   Widget? suffix;
   FormBody({
     super.key,
@@ -160,6 +170,8 @@ class FormBody extends StatelessWidget {
     this.suffix,
     required this.hint,
     required this.prefixpath,
+    this.controller,
+    required this.validator,
   });
 
   @override
@@ -172,9 +184,10 @@ class FormBody extends StatelessWidget {
           Text(title ?? "", style: TextStyles.font12darkgreymiduem),
           SizedBox(height: 8.h),
           AppTextFormField(
+            textEditingController: controller,
             obscureText: isobscure,
             hintText: hint,
-            validator: (value) {},
+            validator: validator,
             suffixIcon: suffix,
             prefixIcon: Padding(
               padding: EdgeInsets.symmetric(

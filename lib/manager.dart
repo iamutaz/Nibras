@@ -16,7 +16,7 @@ class Manager extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: RoutesName.onboarding,
+          initialRoute: RoutesName.login,
           onGenerateRoute: generateRoute.generateRoute,
         );
       },
