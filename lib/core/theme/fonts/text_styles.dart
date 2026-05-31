@@ -78,4 +78,40 @@ class TextStyles {
     decoration: TextDecoration.underline,
     decorationColor: AppColors.mainYellow,
   );
+  static TextStyle font16homeBlackBold = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.homeBlack,
+    fontFamily: "Montserrat",
+  );
+  static TextStyle font14mainBlueSemiBold = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.mainBlue,
+    fontFamily: "Montserrat",
+  );
+  static TextStyle font12mainBlueSemiBold = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.mainBlue,
+    fontFamily: "Montserrat",
+  );
+  static TextStyle font14catrgoireBlackMedium = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.categoriesBlack,
+    fontFamily: "Montserrat",
+  );
+  static TextStyle font14authblackBold = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.authblack,
+    fontFamily: "Montserrat",
+  );
+  static TextStyle font10lightgreyMedium = TextStyle(
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.lightgrey,
+    fontFamily: "Montserrat",
+  );
 }
