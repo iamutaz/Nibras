@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+import 'package:nibras/core/widgets/course_card.dart';
+import 'package:nibras/features/Home/widgets/categories_list.dart';
+import 'package:nibras/features/Home/widgets/categories_see_all.dart';
+import 'package:nibras/features/Home/widgets/profile_row.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -10,40 +15,101 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
-              Row(
-                children: [
-                  CircleAvatar(radius: 48.r),
-                  
-                  Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 14.0.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Welcome, $username ",
-                          style: TextStyles.font16homeBlackBold,
-                        ),
-                        InkWell(
-                          child: Text(
-                            "Edit occupation and interests",
-                            style: TextStyles.font14mainBlueSemiBold,
-                          ),
-                        ),
-                      ],
+              ProfileRow(username: username),
+              Divider(color: AppColors.avatarColor, thickness: 1),
+              SizedBox(height: 30.h),
+              CategoriesSeeAll(),
+              SizedBox(height: 16.5.h),
+              DoubledCategoryList(),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Trending Cources",
+                      style: TextStyles.font16homeblackbold,
                     ),
-                  ),
-                  InkWell(
-                    child: SvgPicture.asset("assets/svg/cart.svg"),
-                  )
-                ],
+                    Text("See all", style: TextStyles.font12mainbluesemiBold),
+                  ],
+                ),
               ),
-              Divider(
-                color: Colors.grey,
-                thickness: 0.5,
+              SizedBox(height: 16.h),
+              SizedBox(
+                height: 312.h,
+                child: ListView.builder(
+                  shrinkWrap: true,
+
+                  itemCount: 5,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: ((context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: CourseCard(
+                        width: 290.h,
+                        height: 312.w,
+                        courseTitle:
+                            "Designing User Interfaces and Experiences (UI/UX)",
+                        courseSource: "IBM",
+                        rate: "4.5",
+                        logo: "assets/svg/frame.svg",
+                        skills:
+                            "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
+                        numberOfReviews: "(314)",
+                        discountedPrice: "9.99",
+                        realPrice: "14.99",
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w,vertical: 16.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Top Cources in \"  \"",
+                      style: TextStyles.font16homeblackbold,
+                    ),
+                    Text("See all", style: TextStyles.font12mainbluesemiBold),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 312.h,
+                child: ListView.builder(
+                  shrinkWrap: true,
+
+                  itemCount: 5,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: ((context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: CourseCard(
+                        width: 290.h,
+                        height: 312.w,
+                        courseTitle:
+                            "Designing User Interfaces and Experiences (UI/UX)",
+                        courseSource: "IBM",
+                        rate: "4.5",
+                        logo: "assets/svg/frame.svg",
+                        skills:
+                            "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
+                        numberOfReviews: "(314)",
+                        discountedPrice: "9.99",
+                        realPrice: "14.99",
+                      ),
+                    );
+                  }),
+                ),
               ),
             ],
           ),
