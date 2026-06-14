@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
+import 'package:nibras/core/theme/fonts/text_styles.dart';
 
 class ChoiceTile extends StatelessWidget {
   const ChoiceTile({
@@ -13,7 +14,6 @@ class ChoiceTile extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -25,18 +25,13 @@ class ChoiceTile extends StatelessWidget {
         child: Container(
           width: double.infinity,
           height: 52,
-          
           alignment: Alignment.center,
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight:
-                  isSelected ? FontWeight.w600 : FontWeight.w500,
-               color: isSelected
-    ? AppColors.authblack
-    : const Color(0xff504D5D),
+            style: TextStyles.font16authblacksemibold.copyWith(
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              color: isSelected ? AppColors.authblack : const Color(0xff504D5D),
             ),
           ),
         ),

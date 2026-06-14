@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nibras/core/DI/injection.dart';
 import 'package:nibras/core/routing/generate_reoute.dart';
 import 'package:nibras/manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupinjection();
+
   runApp(const MyApp());
 }
 

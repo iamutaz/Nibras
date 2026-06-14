@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:nibras/core/theme/colors/app_colors.dart';
+import 'package:nibras/core/theme/fonts/text_styles.dart';
 
 class InterestingHeader extends StatelessWidget {
   const InterestingHeader({super.key});
@@ -27,11 +28,10 @@ class InterestingHeader extends StatelessWidget {
               ),
               Text(
                 'Learning for your\ncareer?',
-                style: TextStyle(
+                style: TextStyles.font28blackbold.copyWith(
                   fontSize: 36.sp,
                   height: 1.1,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.mainBlack,
                 ),
               ),
             ],
@@ -39,11 +39,10 @@ class InterestingHeader extends StatelessWidget {
           SizedBox(height: 18.h),
           Text(
             'Answer two quick questions for personalized \nrecommendations that match your goals.',
-            style: TextStyle(
-              fontSize: 14,
-              height: 1.25,
-              color: const Color(0xff666874),
+            style: TextStyles.font14greysemiBold.copyWith(
               fontWeight: FontWeight.w400,
+              height: 1.25,
+              color: AppColors.lightgrey,
             ),
           ),
         ],

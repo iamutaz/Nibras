@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
+import 'package:nibras/core/theme/fonts/text_styles.dart';
 
 class QuestionBox extends StatelessWidget {
   const QuestionBox({
@@ -8,7 +9,6 @@ class QuestionBox extends StatelessWidget {
   });
 
   final String question;
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class QuestionBox extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 70),
-                height:72 ,
+                height: 72,
                 width: 240,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -36,26 +36,25 @@ class QuestionBox extends StatelessWidget {
                 ),
                 child: Text(
                   question,
-                  style: const TextStyle(
+                  textAlign: TextAlign.center,
+                  style: TextStyles.font16homeBlackBold.copyWith(
                     fontSize: 16,
                     height: 1.2,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff0A0A0A),
                   ),
                 ),
               ),
-Positioned(
-  left: -25,
-  top: 80,
-  child: Transform.rotate(
-    angle: 3.14,
-    child: Icon(
-      Icons.play_arrow_rounded,
-      size: 50,
-       color: AppColors.mainYellow,
-    ),
-  ),
-),
+              Positioned(
+                left: -25,
+                top: 80,
+                child: Transform.rotate(
+                  angle: 3.14,
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    size: 50,
+                    color: AppColors.mainYellow,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

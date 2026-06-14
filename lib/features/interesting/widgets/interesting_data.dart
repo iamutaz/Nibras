@@ -8,11 +8,4 @@ class InterestingData {
     'Become a manager in my field',
     'Advance as a manager',
   ];
-
-  static const professions = [
-    'UX Design',
-    'Financial',
-    'Data Scientist',
-    'Cloud Engineer',
-  ];
 }
