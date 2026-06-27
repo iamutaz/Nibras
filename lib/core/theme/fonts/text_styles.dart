@@ -93,6 +93,12 @@ class TextStyles {
     color: AppColors.homeBlack,
     fontFamily: "Montserrat",
   );
+    static TextStyle font16whitebold = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+    fontFamily: "Montserrat",
+  );
     static TextStyle font14mainbluesemiBold = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w600,
@@ -123,6 +129,12 @@ class TextStyles {
     color: AppColors.lightgrey,
     fontFamily: "Montserrat",
   );
+    static TextStyle font10lightgreyregular = TextStyle(
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.lightgrey,
+    fontFamily: "Montserrat",
+  );
     static TextStyle font10lightgreyBold = TextStyle(
     fontSize: 10.sp,
     fontWeight: FontWeight.bold,
@@ -132,6 +144,12 @@ class TextStyles {
     static TextStyle font12hintcolorregular = TextStyle(
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
+    color: AppColors.hintcolor,
+    fontFamily: "Montserrat",
+  );
+      static TextStyle font12hintcolormid = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w500,
     color: AppColors.hintcolor,
     fontFamily: "Montserrat",
   );
@@ -149,7 +167,18 @@ class TextStyles {
     color: AppColors.mainBlue,
     fontFamily: "Montserrat",
   );
-  
+  static TextStyle font14redbold = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.bold,
+    color: AppColors.red,
+    fontFamily: "Montserrat",
+  );
+  static TextStyle font14blacksettings=TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.bold,
+    color: AppColors.settingblack,
+    fontFamily: "Montserrat",
+  );
 
 
 }

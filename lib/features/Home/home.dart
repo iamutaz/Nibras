@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/course_card.dart';
@@ -8,9 +7,16 @@ import 'package:nibras/features/Home/widgets/categories_list.dart';
 import 'package:nibras/features/Home/widgets/categories_see_all.dart';
 import 'package:nibras/features/Home/widgets/profile_row.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   String username = "Danchu";
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,38 +49,18 @@ class Home extends StatelessWidget {
               SizedBox(height: 16.h),
               SizedBox(
                 height: 312.h,
-                child: ListView.builder(
-                  shrinkWrap: true,
-
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: CourseCard(
-                        width: 290.h,
-                        height: 312.w,
-                        courseTitle:
-                            "Designing User Interfaces and Experiences (UI/UX)",
-                        courseSource: "IBM",
-                        rate: "4.5",
-                        logo: "assets/svg/frame.svg",
-                        skills:
-                            "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
-                        numberOfReviews: "(314)",
-                        discountedPrice: "9.99",
-                        realPrice: "14.99",
-                      ),
-                    );
-                  }),
-                ),
+                child: buildListViewBuilder(),
               ),
               SizedBox(height: 16.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0.w,vertical: 16.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0.w,
+                  vertical: 16.h,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    //TODO: Change the "Top Cources in \"  \""
                     Text(
                       "Top Cources in \"  \"",
                       style: TextStyles.font16homeblackbold,
@@ -83,38 +69,37 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 312.h,
-                child: ListView.builder(
-                  shrinkWrap: true,
-
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: CourseCard(
-                        width: 290.h,
-                        height: 312.w,
-                        courseTitle:
-                            "Designing User Interfaces and Experiences (UI/UX)",
-                        courseSource: "IBM",
-                        rate: "4.5",
-                        logo: "assets/svg/frame.svg",
-                        skills:
-                            "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
-                        numberOfReviews: "(314)",
-                        discountedPrice: "9.99",
-                        realPrice: "14.99",
-                      ),
-                    );
-                  }),
-                ),
-              ),
+              SizedBox(height: 312.h, child: buildListViewBuilder()),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  ListView buildListViewBuilder() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: 5,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: ((context, index) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CourseCard(
+            width: 290.h,
+            height: 312.w,
+            courseTitle: "Designing User Interfaces and Experiences (UI/UX)",
+            courseSource: "IBM",
+            rate: "4.5",
+            logo: "assets/svg/frame.svg",
+            skills:
+                "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
+            numberOfReviews: "(314)",
+            discountedPrice: "9.99",
+            realPrice: "14.99",
+          ),
+        );
+      }),
     );
   }
 }

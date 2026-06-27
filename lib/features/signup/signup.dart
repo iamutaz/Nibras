@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nibras/core/helpers/app_regex.dart';
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/app_text_button.dart';
 import 'package:nibras/core/widgets/app_text_form_feild.dart';
+import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
+import 'package:nibras/features/signup/data/model/signup_request_body.dart';
 import 'package:nibras/features/signup/widgets/create_account_stack.dart'
     show CreateAccountStack;
+import 'package:nibras/features/signup/widgets/signup_bloc_listner.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -19,98 +24,76 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool isobscuretext = true;
+  bool isobscurepassconfitext = true;
+  TextEditingController passcontroller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    passcontroller = context.read<SignupCubit>().passwordController;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CreateAccountStack(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 32.h),
-              child: Column(
-                children: [
-                  Text(
-                    "Join Nibras and start your joyful learning journey",
-                    style: TextStyles.font16authblacksemibold,
-                  ),
-                  Form(
-                    child: Column(
+        child: Form(
+          key: context.read<SignupCubit>().formkey,
+          child: Column(
+            children: [
+              CreateAccountStack(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 32.h),
+                child: Column(
+                  children: [
+                    Text(
+                      "Join Nibras and start your joyful learning journey",
+                      style: TextStyles.font16authblacksemibold,
+                    ),
+                    Column(
                       children: [
                         FormBody(
-                          controller: TextEditingController(),
-                          validator: (value) {},
+                          controller: context
+                              .read<SignupCubit>()
+                              .nameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "this feild can't be empty";
+                            }
+                          },
                           title: "Full Name",
                           hint: "Aizen Souske",
                           prefixpath: "assets/svg/profile_vector.svg",
                         ),
                         FormBody(
-                          controller: TextEditingController(),
-                          validator: (value) {},
+                          controller: context
+                              .read<SignupCubit>()
+                              .emailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "this feild can't be empty";
+                            }
+                            if (!AppRegex.isEmailValid(value)) {
+                              return "invalid email format";
+                            }
+                          },
                           title: "Email Address",
                           hint: "admin@alufuq.com",
                           prefixpath: "assets/svg/email.svg",
                         ),
-                        Align(
-                          alignment: AlignmentGeometry.bottomLeft,
-                          child: Text(
-                            "Phone Number",
-                            style: TextStyles.font12darkgreymiduem,
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 92.w,
-                              height: 50.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: AppColors.borderColor,
-                                  width: 1.w,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/syira_flag.png",
-                                    width: 26.w,
-                                    height: 18.h,
-                                  ),
-                                  SvgPicture.asset('assets/svg/arrow_down.svg'),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 20.w),
-                            Expanded(
-                              child: AppTextFormField(
-                                hintText: "09*****",
-                                validator: (value) {},
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 14.0.h,
-                                    horizontal: 14.0.w,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/svg/phone.svg",
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
                         FormBody(
-                          controller: TextEditingController(),
-                          validator: (value) {},
+                          controller: context
+                              .read<SignupCubit>()
+                              .passwordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "this feild can't be empty";
+                            }
+                            if (!AppRegex.hasMinLength(value)) {
+                              return "must be 8 length at least";
+                            }
+                          },
                           title: "Password",
                           hint: "••••••••••••••••••••••••••••••••",
                           prefixpath: "assets/svg/lock.svg",
@@ -132,21 +115,80 @@ class _SignupState extends State<Signup> {
                             ),
                           ),
                         ),
+                        FormBody(
+                          controller: context
+                              .read<SignupCubit>()
+                              .confirmPasswordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "this feild can't be empty";
+                            } else if (value != passcontroller.text) {
+                              return "no matching with the password";
+                            }
+                          },
+                          title: "Confirm Password",
+                          hint: "••••••••••••••••••••••••••••••••",
+                          prefixpath: "assets/svg/lock.svg",
+                          isobscure: isobscurepassconfitext,
+                          suffix: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isobscurepassconfitext =
+                                      !isobscurepassconfitext;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.visibility_outlined,
+                                color: isobscurepassconfitext
+                                    ? AppColors.authblack
+                                    : Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ),
                         SizedBox(height: 32.h),
                         AppTextButton(
                           onpressed: () {
-                            context.pushNamed(RoutesName.interesting);
+                            if (!context
+                                .read<SignupCubit>()
+                                .formkey
+                                .currentState!
+                                .validate()) {
+                              return;
+                            }
+                            context.read<SignupCubit>().emitSignupState(
+                              SignupRequestBody(
+                                name: context
+                                    .read<SignupCubit>()
+                                    .nameController
+                                    .text,
+                                email: context
+                                    .read<SignupCubit>()
+                                    .emailController
+                                    .text,
+                                password: context
+                                    .read<SignupCubit>()
+                                    .passwordController
+                                    .text,
+                                passwordconfirmation:
+                                    context.read<SignupCubit>().confirmPasswordController.text,
+                              ),
+                              
+                            );
                           },
                           textButton: "Sign Up",
                           textStyle: TextStyles.font16authblacksemibold,
                         ),
+                        SignupBlocListner()
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

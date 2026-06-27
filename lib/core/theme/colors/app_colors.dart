@@ -18,4 +18,7 @@ class AppColors {
   static const Color mainBlue= Color(0xFF7C3AED);
   static const Color avatarColor=Color(0xFFF1F1F1);
   static const Color cardColor=Color(0xFFF9FAFB);
+  static const Color red=Color(0xFFEF4444);
+  static const Color dividercolor=Color(0xFFE5E7EB);
+  static const Color settingblack=Color(0xFF334155);
 }

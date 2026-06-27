@@ -6,6 +6,9 @@ class RoutesName {
   static const String signup='/signup';
   static const String interesting = '/interesting';
   static const String home = '/home';
-  
+  static const String search = '/search';
+  static const String leaderboard = '/leaderboard';
+  static const String setting = '/setting';
+  static const String navigatorhome = '/navigatorhome';
 }
 
