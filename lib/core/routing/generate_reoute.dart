@@ -11,7 +11,13 @@ import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:nibras/features/search/search_page.dart';
-import 'package:nibras/features/setting/setting_page.dart';
+import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
+import 'package:nibras/features/setting/pages/account_details.dart';
+import 'package:nibras/features/setting/pages/contact_us.dart';
+import 'package:nibras/features/setting/pages/help_center.dart';
+import 'package:nibras/features/setting/pages/policy_page.dart';
+import 'package:nibras/features/setting/pages/security_and_password.dart';
+import 'package:nibras/features/setting/pages/setting_page.dart';
 import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
 import 'package:nibras/features/signup/signup.dart';
 
@@ -46,8 +52,24 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => SearchPage());
       case RoutesName.leaderboard:
         return MaterialPageRoute(builder: (context) => LeaderboardPage());
+      case RoutesName.helpcenter:
+        return MaterialPageRoute(builder: (context) => HelpCenter());
+      case RoutesName.policy:
+        return MaterialPageRoute(builder: (context) => PolicyPage());
+      case RoutesName.contactus:
+        return MaterialPageRoute(builder: (context) => ContactUs());
       case RoutesName.setting:
-        return MaterialPageRoute(builder: (context) => SettingPage());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<LogoutCubit>(),
+            child: SettingPage(),
+          ),
+        );
+      case RoutesName.accountdetails:
+        return MaterialPageRoute(builder: (context) => AccountDetails());
+      case RoutesName.securityandpassword:
+        return MaterialPageRoute(builder: (context) => SecurityAndPassword());
+
       default:
         return MaterialPageRoute(
           builder: (BuildContext context) {

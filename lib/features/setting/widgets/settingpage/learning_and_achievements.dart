@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nibras/features/setting/widgets/setting_tile_body.dart';
+import 'package:nibras/features/setting/widgets/settingpage/setting_tile_body.dart';
 
 class LearningAndAchivementes extends StatelessWidget {
   const LearningAndAchivementes({

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nibras/core/DI/injection.dart';
 import 'package:nibras/features/Home/home.dart';
 import 'package:nibras/features/Home/widgets/home_bot_nav_bar.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
 import 'package:nibras/features/search/search_page.dart';
-import 'package:nibras/features/setting/setting_page.dart';
-
+import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
+import 'package:nibras/features/setting/pages/setting_page.dart';
 
 class NavigatorHome extends StatefulWidget {
   const NavigatorHome({super.key});
@@ -20,7 +22,7 @@ class _NavigatorHomeState extends State<NavigatorHome> {
     Home(),
     SearchPage(),
     LeaderboardPage(),
-    SettingPage(),
+    BlocProvider(create: (context) => getIt<LogoutCubit>(), child: SettingPage()),
   ];
 
   @override

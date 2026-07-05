@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:nibras/core/networking/api_constants.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart' show LoginResponseBody;
+import 'package:nibras/features/setting/data/models/logout/logout_response_body.dart';
 import 'package:nibras/features/signup/data/model/signup_request_body.dart';
 import 'package:nibras/features/signup/data/model/signup_response_body.dart';
 import 'package:retrofit/error_logger.dart';
@@ -21,5 +22,8 @@ abstract class WebServices {
 
   @POST(ApiConstants.signup)
   Future<SignupResponseBody> signup(@Body() SignupRequestBody signuprequestbody);
+
+  @POST(ApiConstants.logout)
+  Future<LogoutResponseBody> logout();
   
 }

@@ -21,4 +21,5 @@ class AppColors {
   static const Color red=Color(0xFFEF4444);
   static const Color dividercolor=Color(0xFFE5E7EB);
   static const Color settingblack=Color(0xFF334155);
+  static const Color titleblack=Color(0xFF292D32);
 }

@@ -64,6 +64,12 @@ class TextStyles {
     color: AppColors.darkgrey,
     fontFamily: "Montserrat",
   );
+    static TextStyle font14darkgreyregular = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.darkgrey,
+    fontFamily: "Montserrat",
+  );
   static TextStyle font14hintcolorregular = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
@@ -123,6 +129,18 @@ class TextStyles {
     color: AppColors.authblack,
     fontFamily: "Montserrat",
   );
+     static TextStyle font14authblackregular = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.authblack,
+    fontFamily: "Montserrat",
+  );
+       static TextStyle font14authblackmid = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.authblack,
+    fontFamily: "Montserrat",
+  );
   static TextStyle font10lightgreymedium = TextStyle(
     fontSize: 10.sp,
     fontWeight: FontWeight.w500,
@@ -179,7 +197,12 @@ class TextStyles {
     color: AppColors.settingblack,
     fontFamily: "Montserrat",
   );
-
+    static TextStyle font16titleblackbold=TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.bold,
+    color: AppColors.titleblack,
+    fontFamily: "Montserrat",
+  );
 
 }
 

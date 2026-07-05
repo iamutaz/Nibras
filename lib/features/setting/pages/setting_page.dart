@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nibras/core/helpers/shared_pref_helper.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/app_text_button.dart';
-import 'package:nibras/features/setting/widgets/account_settings.dart';
-import 'package:nibras/features/setting/widgets/info_card.dart';
-import 'package:nibras/features/setting/widgets/learning_and_achievements.dart';
-import 'package:nibras/features/setting/widgets/setting_tile_body.dart';
-import 'package:nibras/features/setting/widgets/support_and_help.dart';
+import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
+import 'package:nibras/features/setting/widgets/settingpage/account_settings.dart';
+import 'package:nibras/features/setting/widgets/settingpage/info_card.dart';
+import 'package:nibras/features/setting/widgets/settingpage/learning_and_achievements.dart';
+import 'package:nibras/features/setting/widgets/settingpage/logout_bloc_lisitner.dart';
+import 'package:nibras/features/setting/widgets/settingpage/support_and_help.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -23,7 +26,8 @@ class SettingPage extends StatelessWidget {
               SizedBox(height: 50.h),
               CircleAvatar(
                 radius: 35.r,
-                backgroundImage: AssetImage('assets/images/profile.jpg'),
+                backgroundColor: AppColors.avatarColor,
+
                 child: SvgPicture.asset(
                   "assets/svg/profile_vector.svg",
                   height: 30.h,
@@ -91,9 +95,16 @@ class SettingPage extends StatelessWidget {
               ),
               SupportAndHelp(),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal:  16.0.w,vertical: 30.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0.w,
+                  vertical: 30.h,
+                ),
                 child: AppTextButton(
-                  onpressed: () {},
+                  onpressed: () {
+                    context.read<LogoutCubit>().emitLogoutState();
+                    SharedPrefHelper.clearAllData();
+                    SharedPrefHelper.clearAllSecuredData();
+                  },
                   textButton: "Log Out",
                   textStyle: TextStyles.font16whitebold,
                   icon: ("assets/svg/logout.svg"),
@@ -101,6 +112,7 @@ class SettingPage extends StatelessWidget {
                   buttoncolor: Colors.red,
                 ),
               ),
+              LogoutBlocListener()
             ],
           ),
         ),
