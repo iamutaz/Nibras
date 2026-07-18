@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/course_card.dart';
+import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
+import 'package:nibras/features/Home/data/cubit/home_state.dart';
+import 'package:nibras/features/Home/data/model/body_course.dart';
 import 'package:nibras/features/Home/widgets/categories_list.dart';
 import 'package:nibras/features/Home/widgets/categories_see_all.dart';
 import 'package:nibras/features/Home/widgets/profile_row.dart';
@@ -17,6 +23,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String username = "Danchu";
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().emitAllCoursesState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +60,48 @@ class _HomeState extends State<Home> {
               SizedBox(height: 16.h),
               SizedBox(
                 height: 312.h,
-                child: buildListViewBuilder(),
+                child: BlocBuilder<HomeCubit, HomeState>(
+                  builder: (BuildContext context, state) {
+                    return state.when(
+                      initial: () => const SizedBox.shrink(),
+                      homeloading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      homesuccess: (data) {
+                        List<BodyCourse> allcourses = data.data;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: allcourses.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: ((context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: InkWell(
+                                onTap: () =>
+                                    context.pushNamed(RoutesName.details,aurgment:allcourses[index].id ),
+                                child: CourseCard(
+                                  width: 290.h,
+                                  height: 312.w,
+                                  courseTitle:
+                                  allcourses[index].title,
+                                  courseSource: "IBM",
+                                  rate: allcourses[index].rate,
+                                  logo: "assets/svg/frame.svg",
+                                  // skills:
+                                  //     allcourses[index].skills.toString(),
+                                  numberOfReviews: allcourses[index].reviews,
+                                  discountedPrice: 9,
+                                  realPrice: allcourses[index].price,
+                                ),
+                              ),
+                            );
+                          }),
+                        );
+                      },
+                      homefailure: (exception) =>
+                          Center(child: Text(exception.toString())),
+                    );
+                  },
+                ),
               ),
               SizedBox(height: 16.h),
               Padding(
@@ -69,7 +121,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              SizedBox(height: 312.h, child: buildListViewBuilder()),
+              SizedBox(height: 312.h, child: SizedBox.shrink()),
             ],
           ),
         ),
@@ -77,29 +129,32 @@ class _HomeState extends State<Home> {
     );
   }
 
-  ListView buildListViewBuilder() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: 5,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: ((context, index) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: CourseCard(
-            width: 290.h,
-            height: 312.w,
-            courseTitle: "Designing User Interfaces and Experiences (UI/UX)",
-            courseSource: "IBM",
-            rate: "4.5",
-            logo: "assets/svg/frame.svg",
-            skills:
-                "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
-            numberOfReviews: "(314)",
-            discountedPrice: "9.99",
-            realPrice: "14.99",
-          ),
-        );
-      }),
-    );
-  }
+  // ListView buildListViewBuilder() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     itemCount: 5,
+  //     scrollDirection: Axis.horizontal,
+  //     itemBuilder: ((context, index) {
+  //       return Padding(
+  //         padding: EdgeInsets.symmetric(horizontal: 16.w),
+  //         child: InkWell(
+  //           onTap: () => context.pushNamed(RoutesName.details),
+  //           child: CourseCard(
+  //             width: 290.h,
+  //             height: 312.w,
+  //             courseTitle: "Designing User Interfaces and Experiences (UI/UX)",
+  //             courseSource: "IBM",
+  //             rate: 4.5,
+  //             logo: "assets/svg/frame.svg",
+  //             skills:
+  //                 "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
+  //             numberOfReviews: 315,
+  //             discountedPrice: "9.99",
+  //             realPrice: "14.99",
+  //           ),
+  //         ),
+  //       );
+  //     }),
+  //   );
+  // }
 }

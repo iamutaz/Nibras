@@ -14,7 +14,8 @@ class RoutesName {
   static const String securityandpassword = '/securityandpassword';
   static const String helpcenter = '/helpcenter';
   static const String policy = '/policy';
-    static const String contactus = '/contactus';
-
-
+  static const String contactus = '/contactus';
+  static const String details = '/details';
+  static const String submitemail = '/submitemail';
+  static const String insertcode = '/insertcode';
 }

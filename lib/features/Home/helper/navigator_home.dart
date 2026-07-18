@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/DI/injection.dart';
+import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
 import 'package:nibras/features/Home/home.dart';
 import 'package:nibras/features/Home/widgets/home_bot_nav_bar.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
@@ -19,10 +20,13 @@ class _NavigatorHomeState extends State<NavigatorHome> {
   int currentIndex = 0;
 
   final List<Widget> pages = [
-    Home(),
+    BlocProvider(create: (context) => getIt<HomeCubit>(), child: Home()),
     SearchPage(),
     LeaderboardPage(),
-    BlocProvider(create: (context) => getIt<LogoutCubit>(), child: SettingPage()),
+    BlocProvider(
+      create: (context) => getIt<LogoutCubit>(),
+      child: SettingPage(),
+    ),
   ];
 
   @override

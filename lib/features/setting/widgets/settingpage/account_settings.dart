@@ -27,7 +27,7 @@ class AccountSettings extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => context.pushNamed(RoutesName.securityandpassword),
+            onTap: () => context.pushNamed(RoutesName.submitemail),
             child: SettingTileBody(
               title: "Security and Password",
               imagepath: "assets/svg/security.svg",

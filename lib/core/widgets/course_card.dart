@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +11,7 @@ class CourseCard extends StatelessWidget {
     required this.width,
     required this.courseTitle,
     required this.courseSource,
-    required this.rate,
+     this.rate,
     required this.height,
     required this.numberOfReviews,
     this.discountedPrice,
@@ -22,10 +24,10 @@ class CourseCard extends StatelessWidget {
   final String courseTitle;
   final String courseSource;
   final double height;
-  String rate;
-  String? realPrice;
-  String numberOfReviews;
-  String? discountedPrice;
+  int? rate;
+  int? realPrice;
+  int numberOfReviews;
+  int? discountedPrice;
   String? skills;
   String? logo;
 
@@ -99,7 +101,7 @@ class CourseCard extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                             child: Text(
-                              rate,
+                              '$rate',
                               style: TextStyles.font12orangesemibold,
                             ),
                           ),
