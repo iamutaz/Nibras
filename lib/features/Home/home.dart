@@ -8,6 +8,8 @@ import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/course_card.dart';
 import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
 import 'package:nibras/features/Home/data/cubit/home_state.dart';
+import 'package:nibras/features/Home/data/cubit/recommended_cubit.dart';
+import 'package:nibras/features/Home/data/cubit/recommended_state.dart';
 import 'package:nibras/features/Home/data/model/body_course.dart';
 import 'package:nibras/features/Home/widgets/categories_list.dart';
 import 'package:nibras/features/Home/widgets/categories_see_all.dart';
@@ -27,6 +29,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     context.read<HomeCubit>().emitAllCoursesState();
+    context.read<RecommendedCubit>().emitRecommendedCoursesState();
   }
 
   @override
@@ -76,14 +79,16 @@ class _HomeState extends State<Home> {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
                               child: InkWell(
-                                onTap: () =>
-                                    context.pushNamed(RoutesName.details,aurgment:allcourses[index].id ),
+                                onTap: () => context.pushNamed(
+                                  RoutesName.details,
+                                  aurgment: allcourses[index].id,
+                                ),
                                 child: CourseCard(
                                   width: 290.h,
                                   height: 312.w,
-                                  courseTitle:
-                                  allcourses[index].title,
-                                  courseSource: "IBM",
+                                  courseTitle: allcourses[index].title,
+                                  courseSource:
+                                      allcourses[index].instructor.name,
                                   rate: allcourses[index].rate,
                                   logo: "assets/svg/frame.svg",
                                   // skills:
@@ -112,49 +117,63 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //TODO: Change the "Top Cources in \"  \""
                     Text(
-                      "Top Cources in \"  \"",
+                      "Top Cources Build in Your Intrestes",
                       style: TextStyles.font16homeblackbold,
                     ),
                     Text("See all", style: TextStyles.font12mainbluesemiBold),
                   ],
                 ),
               ),
-              SizedBox(height: 312.h, child: SizedBox.shrink()),
+              SizedBox(
+                height: 312.h,
+                child: BlocBuilder<RecommendedCubit, RecommendedState>(
+                  builder: (BuildContext context, state) {
+                    return state.when(
+                      initial: () => const SizedBox.shrink(),
+                      recommendedloading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      recommendedsuccess: (data) {
+                        List<BodyCourse> allcourses = data.data;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: allcourses.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: ((context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: InkWell(
+                                onTap: () => context.pushNamed(
+                                  RoutesName.details,
+                                  aurgment: allcourses[index].id,
+                                ),
+                                child: CourseCard(
+                                  width: 290.h,
+                                  height: 312.w,
+                                  courseTitle: allcourses[index].title,
+                                  courseSource:
+                                      allcourses[index].instructor.name,
+                                  rate: allcourses[index].rate,
+                                  logo: "assets/svg/frame.svg",
+                                  numberOfReviews: allcourses[index].reviews,
+                                  discountedPrice: 9,
+                                  realPrice: allcourses[index].price,
+                                ),
+                              ),
+                            );
+                          }),
+                        );
+                      },
+                      recommendedfailure: (error) => Center(child: Text(error)),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20.h),
             ],
           ),
         ),
       ),
     );
   }
-
-  // ListView buildListViewBuilder() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     itemCount: 5,
-  //     scrollDirection: Axis.horizontal,
-  //     itemBuilder: ((context, index) {
-  //       return Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 16.w),
-  //         child: InkWell(
-  //           onTap: () => context.pushNamed(RoutesName.details),
-  //           child: CourseCard(
-  //             width: 290.h,
-  //             height: 312.w,
-  //             courseTitle: "Designing User Interfaces and Experiences (UI/UX)",
-  //             courseSource: "IBM",
-  //             rate: 4.5,
-  //             logo: "assets/svg/frame.svg",
-  //             skills:
-  //                 "User Centered Design, User Experience Design, Responsive Web Design, User Interface (UI) Design, Web Design and ",
-  //             numberOfReviews: 315,
-  //             discountedPrice: "9.99",
-  //             realPrice: "14.99",
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   );
-  // }
 }

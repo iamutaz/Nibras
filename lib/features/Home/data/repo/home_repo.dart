@@ -15,4 +15,12 @@ class HomeRepo {
       return ApiResult.failure(ErrorHandler.handle(error));
     }
   }
+  Future<ApiResult<HomeResponseBody>> getRecommendedCourses() async {
+    try {
+      var response = await _webServices.getRecommendedCourses();
+      return ApiResult.success(response);
+    } catch (error) {
+      return ApiResult.failure(ErrorHandler.handle(error));
+    }
+  }
 }

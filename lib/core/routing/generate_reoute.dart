@@ -5,8 +5,10 @@ import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
 import 'package:nibras/features/Home/helper/navigator_home.dart';
 import 'package:nibras/features/Home/home.dart';
+import 'package:nibras/features/enrollments/courses_page.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/details.dart';
+import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
 import 'package:nibras/features/interesting/interesting.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
@@ -75,6 +77,13 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
+      case RoutesName.showcourses:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<EnrollmentsCubit>(),
+            child: CoursesPage(),
+          ),
+        );
       case RoutesName.contactus:
         return MaterialPageRoute(builder: (context) => ContactUs());
       case RoutesName.setting:

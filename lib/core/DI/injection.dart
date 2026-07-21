@@ -3,9 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:nibras/core/networking/dio_factory.dart';
 import 'package:nibras/core/networking/web_services.dart';
 import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
+import 'package:nibras/features/Home/data/cubit/recommended_cubit.dart';
 import 'package:nibras/features/Home/data/repo/home_repo.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/data/repo/course_by_id_repo.dart';
+import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
+import 'package:nibras/features/enrollments/data/repo/enrollmets_repo.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/data/repo/login_repo.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
@@ -47,7 +50,11 @@ void setupinjection() async {
   getIt.registerLazySingleton<CourseByIdRepo>(() => CourseByIdRepo(getIt()));
   getIt.registerFactory<CourseByIdCubit>(() => CourseByIdCubit(getIt()));
 
-
   getIt.registerLazySingleton<ReviewRepo>(() => ReviewRepo(getIt()));
   getIt.registerFactory<ReviewCubit>(() => ReviewCubit(getIt()));
+
+  getIt.registerFactory<RecommendedCubit>(() => RecommendedCubit(getIt()));
+
+  getIt.registerLazySingleton<EnrollmetsRepo>(() => EnrollmetsRepo(getIt()));
+  getIt.registerFactory<EnrollmentsCubit>(() => EnrollmentsCubit(getIt()));
 }

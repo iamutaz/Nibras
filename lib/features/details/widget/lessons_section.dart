@@ -24,8 +24,7 @@ class LessonsSection extends StatelessWidget {
           SizedBox(height: 16.h),
 
           ListView.builder(
-            shrinkWrap:
-                true, 
+            shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: sections.length,
             itemBuilder: (context, index) {
@@ -56,7 +55,7 @@ class LessonsSection extends StatelessWidget {
                   child: ExpansionTile(
                     title: Text(
                       section.title, // مثل "Introduction"
-                      style: TextStyles.font14authblackregular
+                      style: TextStyles.font14authblackregular,
                     ),
                     subtitle: Padding(
                       padding: EdgeInsets.only(top: 4.h),
@@ -75,10 +74,11 @@ class LessonsSection extends StatelessWidget {
                           color: Colors.blueAccent,
                         ),
                         title: Text(
-                          lesson.title, 
-                            style: TextStyles.font14authblackregular.copyWith(overflow: TextOverflow.ellipsis)
+                          lesson.title,
+                          style: TextStyles.font14authblackregular.copyWith(
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        // إذا كان الدرس مجاني نعرض Preview، وإلا نعرض أيقونة قفل
                         trailing: lesson.isFreePreview
                             ? Text(
                                 "Preview",

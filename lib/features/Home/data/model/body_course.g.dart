@@ -7,6 +7,7 @@ part of 'body_course.dart';
 // **************************************************************************
 
 BodyCourse _$BodyCourseFromJson(Map<String, dynamic> json) => BodyCourse(
+  instructor: Instructor.fromJson(json['instructor'] as Map<String, dynamic>),
   id: (json['id'] as num).toInt(),
   title: json['title'] as String,
   description: json['description'] as String,
@@ -35,4 +36,5 @@ Map<String, dynamic> _$BodyCourseToJson(BodyCourse instance) =>
       'reviews_count': instance.reviews,
       'total_enrollments': instance.totalEnrollments,
       'total_lessons': instance.totalLessons,
+      'instructor': instance.instructor,
     };

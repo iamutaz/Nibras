@@ -9,4 +9,6 @@ class HomeState<T> with _$HomeState {
   const factory HomeState.homesuccess(T data) = HomeSuccess;
   const factory HomeState.homefailure({required String error}) =
       HomeFailure;
+
+      
 }

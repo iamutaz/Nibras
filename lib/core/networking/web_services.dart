@@ -3,6 +3,7 @@ import 'package:nibras/core/networking/api_constants.dart';
 import 'package:nibras/features/Home/data/model/home_response_body.dart';
 import 'package:nibras/features/details/data/models/course_details_request_body.dart';
 import 'package:nibras/features/details/data/models/course_details_response_body.dart';
+import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
 import 'package:nibras/features/reviews/model/rating_response_body.dart';
@@ -51,11 +52,22 @@ abstract class WebServices {
     @Body() ForgetPasswordRequestBody forgetpassrequestbody,
   );
   @GET(ApiConstants.getcoursebyid)
-  Future<CourseDetailsResponseBody> getCoursebyid(@Body() CourseDetailsRequestBody courseDetailsRequestBody);
+  Future<CourseDetailsResponseBody> getCoursebyid(
+    @Body() CourseDetailsRequestBody courseDetailsRequestBody,
+  );
 
   @GET(ApiConstants.getreviewsbycoursebyid)
-  Future<ReviewResponseBody> getreviewsbycoursebyid(@Body() ReviewRequestBody reviewrequestbody);
+  Future<ReviewResponseBody> getreviewsbycoursebyid(
+    @Body() ReviewRequestBody reviewrequestbody,
+  );
 
   @GET(ApiConstants.getratingdetailed)
-  Future<RatingResponseBody> getratingdetailed(@Body() ReviewRequestBody reviewrequestbody);
+  Future<RatingResponseBody> getratingdetailed(
+    @Body() ReviewRequestBody reviewrequestbody,
+  );
+  @GET(ApiConstants.getrecommendedcourses)
+  Future<HomeResponseBody> getRecommendedCourses();
+
+  @GET(ApiConstants.getmyenrollments)
+  Future<EnrollmentsResponseModel> getMyEnrollments();
 }

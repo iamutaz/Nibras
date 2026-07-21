@@ -9,6 +9,8 @@ class HomeCubit extends Cubit<HomeState> {
   HomeRepo _homeRepo;
   List<BodyCourse> allcourses = [];
 
+  List<BodyCourse> getrecommendedcourses = [];
+
   HomeCubit(this._homeRepo) : super(HomeState.initial());
 
   void emitAllCoursesState() async {
@@ -23,7 +25,7 @@ class HomeCubit extends Cubit<HomeState> {
       },
       failure: (exception) {
         print("fail in cubit");
-        print("Error details: ${exception.toString()}"); 
+        print("Error details: ${exception.toString()}");
 
         emit(
           HomeState.homefailure(error: exception.apiErrorModel.message ?? ''),
@@ -31,4 +33,5 @@ class HomeCubit extends Cubit<HomeState> {
       },
     );
   }
+
 }

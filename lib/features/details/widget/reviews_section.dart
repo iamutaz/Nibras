@@ -48,6 +48,8 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             return Text(state.error, style: TextStyles.font14greyregular);
           }
 
+          
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

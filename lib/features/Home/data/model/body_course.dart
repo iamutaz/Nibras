@@ -1,5 +1,5 @@
-
 import 'package:json_annotation/json_annotation.dart';
+import 'package:nibras/features/details/data/models/course_details_response_body.dart';
 
 part 'body_course.g.dart';
 
@@ -22,8 +22,10 @@ class BodyCourse {
   int? totalEnrollments;
   @JsonKey(name: 'total_lessons')
   int? totalLessons;
+  Instructor instructor;
 
   BodyCourse({
+    required this.instructor,
     required this.id,
     required this.title,
     required this.description,
