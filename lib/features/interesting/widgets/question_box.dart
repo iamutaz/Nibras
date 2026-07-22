@@ -37,7 +37,7 @@ class QuestionBox extends StatelessWidget {
                 child: Text(
                   question,
                   textAlign: TextAlign.center,
-                  style: TextStyles.font16homeBlackBold.copyWith(
+                  style: TextStyles.font16homeblackbold.copyWith(
                     fontSize: 16,
                     height: 1.2,
                   ),

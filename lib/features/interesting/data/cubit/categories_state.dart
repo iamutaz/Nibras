@@ -13,7 +13,6 @@ class CategoriesSuccess extends CategoriesState {
 }
 
 class CategoriesFailure extends CategoriesState {
+   final String error;
   CategoriesFailure(this.error);
-
-  final String error;
 }

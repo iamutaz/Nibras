@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/features/interesting/widgets/interesting_data.dart';
 import 'data/cubit/categories_cubit.dart';
@@ -67,7 +69,7 @@ class _InterestingState extends State<Interesting> {
   }
 
   void _skip() {
-   
+   context.pushNamed(RoutesName.home);
   }
 
   void _toggleProfession(String profession) {

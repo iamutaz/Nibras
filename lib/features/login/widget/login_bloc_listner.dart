@@ -26,7 +26,7 @@ class LoginBlocListner extends StatelessWidget {
           loginsuccess: (data) async {
             context.pop();
 
-            context.pushNamed(RoutesName.home);
+            context.pushNamed(RoutesName.navigatorhome);
           },
           loginfailure: (error) {
             setupErrorState(context, error);
