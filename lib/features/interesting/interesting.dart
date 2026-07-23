@@ -1,13 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/features/interesting/widgets/interesting_data.dart';
 import 'data/cubit/categories_cubit.dart';
 import 'data/cubit/categories_state.dart';
 import 'data/repo/categories_repo.dart';
+import 'data/repo/interests_repo.dart';
 import 'widgets/bottom_actions.dart';
 import 'widgets/choice_chip.dart';
 import 'widgets/choice_tile.dart';
@@ -24,11 +25,13 @@ class Interesting extends StatefulWidget {
 class _InterestingState extends State<Interesting> {
   final PageController _pageController = PageController();
   final TextEditingController _searchController = TextEditingController();
+  final InterestsRepo _interestsRepo = InterestsRepo();
 
   int _currentPage = 0;
   String _searchText = '';
   final List<String> _selectedProfessions = [];
   String? _selectedGoal;
+  bool _isSubmitting = false;
 
   bool get _isFirstPage => _currentPage == 0;
 
@@ -55,7 +58,7 @@ class _InterestingState extends State<Interesting> {
     super.dispose();
   }
 
-  void _goNext() {
+  void _goNext(BuildContext blocContext) {
     if (!_canContinue) return;
 
     if (_isFirstPage) {
@@ -64,12 +67,46 @@ class _InterestingState extends State<Interesting> {
         curve: Curves.easeInOut,
       );
     } else {
-     
+      _submitInterests(blocContext);
     }
   }
 
+  Future<void> _submitInterests(BuildContext blocContext) async {
+    // استخدمنا blocContext هنا للوصول الصحيح للـ Cubit
+    final categoriesState = blocContext.read<CategoriesCubit>().state;
+
+    if (categoriesState is! CategoriesSuccess) return;
+
+    final selectedIds = categoriesState.categories
+        .where((category) => _selectedProfessions.contains(category.name))
+        .map((category) => category.id)
+        .toList();
+
+    setState(() => _isSubmitting = true);
+
+    final response = await _interestsRepo.submitInterests(selectedIds);
+
+    if (!mounted) return;
+    setState(() => _isSubmitting = false);
+
+    response.when(
+      success: (_) {
+        context.pushNamed(RoutesName.home);
+      },
+      failure: (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              error.apiErrorModel.message ?? 'Failed to save interests',
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _skip() {
-   context.pushNamed(RoutesName.home);
+    context.pushNamed(RoutesName.home);
   }
 
   void _toggleProfession(String profession) {
@@ -86,74 +123,81 @@ class _InterestingState extends State<Interesting> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CategoriesCubit(CategoriesRepo())..getCategories(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Expanded(
-                  child: PageView(
-                    controller: _pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: (index) {
-                      setState(() => _currentPage = index);
-                    },
-                    children: [
-                      _GoalPage(
-                        selectedGoal: _selectedGoal,
-                        onGoalSelected: (value) {
-                          setState(() => _selectedGoal = value);
+      child: Builder(
+        builder: (blocContext) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: PageView(
+                        controller: _pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (index) {
+                          setState(() => _currentPage = index);
                         },
+                        children: [
+                          _GoalPage(
+                            selectedGoal: _selectedGoal,
+                            onGoalSelected: (value) {
+                              setState(() => _selectedGoal = value);
+                            },
+                          ),
+                          BlocBuilder<CategoriesCubit, CategoriesState>(
+                            builder: (context, state) {
+                              if (state is CategoriesLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              if (state is CategoriesFailure) {
+                                return Center(
+                                  child: Text(state.error),
+                                );
+                              }
+
+                              if (state is CategoriesSuccess) {
+                                final professions = state.categories
+                                    .map((category) => category.name)
+                                    .toList();
+
+                                return _ProfessionPage(
+                                  searchController: _searchController,
+                                  professions:
+                                      _filteredProfessions(professions),
+                                  selectedProfessions: _selectedProfessions,
+                                  onSearchChanged: (value) {
+                                    setState(() => _searchText = value);
+                                  },
+                                  onProfessionSelected: _toggleProfession,
+                                );
+                              }
+
+                              return const SizedBox();
+                            },
+                          ),
+                        ],
                       ),
-                      BlocBuilder<CategoriesCubit, CategoriesState>(
-                        builder: (context, state) {
-                          if (state is CategoriesLoading) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-
-                          if (state is CategoriesFailure) {
-                            return Center(
-                              child: Text(state.error),
-                            );
-                          }
-
-                          if (state is CategoriesSuccess) {
-                            final professions = state.categories
-                                .map((category) => category.name)
-                                .toList();
-
-                            return _ProfessionPage(
-                              searchController: _searchController,
-                              professions: _filteredProfessions(professions),
-                              selectedProfessions: _selectedProfessions,
-                              onSearchChanged: (value) {
-                                setState(() => _searchText = value);
-                              },
-                              onProfessionSelected: _toggleProfession,
-                            );
-                          }
-
-                          return const SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
+                    ),
+                    BottomActions(
+                      buttonText: _isFirstPage
+                          ? 'Next'
+                          : (_isSubmitting ? 'Saving...' : 'Save'),
+                      isEnabled: _canContinue && !_isSubmitting,
+                      onSkip: _skip,
+                      onPressed: () => _goNext(blocContext),
+                    ),
+                    const SizedBox(height: 18),
+                  ],
                 ),
-                BottomActions(
-                  buttonText: _isFirstPage ? 'Next' : 'Save',
-                  isEnabled: _canContinue,
-                  onSkip: _skip,
-                  onPressed: _goNext,
-                ),
-                const SizedBox(height: 18),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -271,4 +315,3 @@ class _ProfessionPage extends StatelessWidget {
     );
   }
 }
-

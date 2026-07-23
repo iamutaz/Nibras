@@ -8,4 +8,6 @@ class ApiConstants {
   static const String signup = "auth/register";
   static const String categories = "categories/";
   static const String courses = "courses";
+  static const String onboardingInterests = "onboarding/interests";
+  
 }
