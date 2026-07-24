@@ -9,6 +9,8 @@ import 'package:nibras/features/enrollments/courses_page.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/details.dart';
 import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
+import 'package:nibras/features/Results/resulte_page.dart';
+import 'package:nibras/features/filter/filter.dart';
 import 'package:nibras/features/interesting/interesting.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
@@ -131,6 +133,15 @@ class GenerateRoute {
             child: InsertCode(email: email),
           ),
         );
+        case RoutesName.results:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (context) => ResultsPage(
+            categoryId: args['categoryId'] as int,
+            categoryName: args['categoryName'] as String,
+          ),
+        );
+        case RoutesName.filter:
+        return MaterialPageRoute(builder: (context) => FilterPage());
 
       default:
         return MaterialPageRoute(

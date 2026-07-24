@@ -20,4 +20,6 @@ class RoutesName {
   static const String insertcode = '/insertcode';
   static const String showcourses='/courses';
   static const String progressionincourse='progressionincourse';
+  static const String results = '/results';
+  static const String filter = '/filter';
 }

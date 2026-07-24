@@ -4,6 +4,7 @@ class ApiConstants {
   static const String baseurl = "http://10.0.3.2:8000/api/";
   // static const String baseurl = "http://10.0.2.2:8000/api/";
 
+
   static const String login = "auth/login";
   static const String signup = "auth/register";
   static const String categories = "categories/";
@@ -18,4 +19,7 @@ class ApiConstants {
   static const String getrecommendedcourses='courses/recommended';
   static const String getmyenrollments='enrollments/my';
   static const String enrollcourse='enrollments';
+  static const String courses = "courses";
+  static const String onboardingInterests = "onboarding/interests";
+  
 }
