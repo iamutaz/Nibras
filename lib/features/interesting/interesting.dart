@@ -72,7 +72,7 @@ class _InterestingState extends State<Interesting> {
   }
 
   Future<void> _submitInterests(BuildContext blocContext) async {
-    // استخدمنا blocContext هنا للوصول الصحيح للـ Cubit
+   
     final categoriesState = blocContext.read<CategoriesCubit>().state;
 
     if (categoriesState is! CategoriesSuccess) return;
@@ -91,7 +91,7 @@ class _InterestingState extends State<Interesting> {
 
     response.when(
       success: (_) {
-        context.pushNamed(RoutesName.home);
+        context.pushNamed(RoutesName.navigatorhome);
       },
       failure: (error) {
         ScaffoldMessenger.of(context).showSnackBar(
