@@ -106,7 +106,7 @@ class _InterestingState extends State<Interesting> {
   }
 
   void _skip() {
-    context.pushNamed(RoutesName.home);
+    context.pushNamed(RoutesName.navigatorhome);
   }
 
   void _toggleProfession(String profession) {

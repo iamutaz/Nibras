@@ -5,11 +5,11 @@ import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
 import 'package:nibras/features/Home/helper/navigator_home.dart';
 import 'package:nibras/features/Home/home.dart';
-import 'package:nibras/features/Results/resulte_page.dart';
 import 'package:nibras/features/enrollments/courses_page.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/details.dart';
 import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
+import 'package:nibras/features/Results/resulte_page.dart';
 import 'package:nibras/features/filter/filter.dart';
 import 'package:nibras/features/interesting/interesting.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
@@ -17,6 +17,7 @@ import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -79,6 +80,8 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
+              case RoutesName.progressionincourse:
+        return MaterialPageRoute(builder: (context) => ProgressionPage());
       case RoutesName.showcourses:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
@@ -89,16 +92,6 @@ class GenerateRoute {
       case RoutesName.contactus:
         return MaterialPageRoute(builder: (context) => ContactUs());
       case RoutesName.setting:
-        return MaterialPageRoute(builder: (context) => SettingPage());
-        case RoutesName.results:
-        final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (context) => ResultsPage(
-            categoryId: args['categoryId'] as int,
-            categoryName: args['categoryName'] as String,
-          ),
-        );
-        case RoutesName.filter:
-        return MaterialPageRoute(builder: (context) => FilterPage());
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => getIt<LogoutCubit>(),
@@ -140,6 +133,15 @@ class GenerateRoute {
             child: InsertCode(email: email),
           ),
         );
+        case RoutesName.results:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (context) => ResultsPage(
+            categoryId: args['categoryId'] as int,
+            categoryName: args['categoryName'] as String,
+          ),
+        );
+        case RoutesName.filter:
+        return MaterialPageRoute(builder: (context) => FilterPage());
 
       default:
         return MaterialPageRoute(

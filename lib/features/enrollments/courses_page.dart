@@ -49,22 +49,21 @@ class _CoursesPageState extends State<CoursesPage> {
               builder: (context, state) {
                 return state.when(
                   enrollmentsinitial: () {
-                  return  SizedBox.shrink();
+                    return SizedBox.shrink();
                   },
                   enrollmentsinitialloading: () {
-                   return CircularProgressIndicator();
+                    return CircularProgressIndicator();
                   },
                   enrollmentsinitialsuccess: (data) {
-                    List <EnrollmentModel> enrollments=data.data;
+                    List<EnrollmentModel> enrollments = data.data;
                     return EnrollmentCourseBody(enrollments: enrollments);
-                  }, enrollmentsinitialfailure: (String error) { 
+                  },
+                  enrollmentsinitialfailure: (String error) {
                     return Text(error);
-                   },
-                  
+                  },
                 );
               },
             ),
-            
           ],
         ),
       ),

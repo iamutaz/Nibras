@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nibras/core/DI/injection.dart';
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_state.dart';
+import 'package:nibras/features/details/data/cubit/enrollment_course_cubit.dart';
 import 'package:nibras/features/details/data/models/course_details_request_body.dart';
 import 'package:nibras/features/details/widget/buy_field.dart';
 import 'package:nibras/features/details/widget/details_title.dart';
@@ -37,7 +39,7 @@ class _DetailsState extends State<Details> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        scrolledUnderElevation: 0, 
+        scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.white,
         leading: InkWell(
@@ -82,14 +84,18 @@ class _DetailsState extends State<Details> {
                         course?.totalEnrollments?.toString() ?? '31427',
                     thumbnail: course?.thumbnail ?? 'assets/images/IBM.png',
                   ),
-                  BuyField(
-                    discountedprice: course != null
-                        ? course.price.toString()
-                        : '9.99',
-                    originalprice: course != null
-                        ? course.price.toString()
-                        : '14.99',
-                    isFree: course?.isFree ?? false,
+                  BlocProvider(
+                    create: (context) => getIt<EnrollmentCourseCubit>(),
+                    child: BuyField(
+                      courseId: course!.id,
+                      discountedprice: course != null
+                          ? course.price.toString()
+                          : '9.99',
+                      originalprice: course != null
+                          ? course.price.toString()
+                          : '14.99',
+                      isFree: course?.isFree ?? false,
+                    ),
                   ),
                   MetaArea(),
                   WhatYouWillLearn(learnings: course!.whatYouLearn),

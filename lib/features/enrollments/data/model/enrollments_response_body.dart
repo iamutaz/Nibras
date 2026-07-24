@@ -25,13 +25,13 @@ class EnrollmentModel {
   final int id;
   final String status;
 
-  @JsonKey(name: 'amount_paid')
-  final String amountPaid;
-
   @JsonKey(name: 'completion_percentage')
   final String completionPercentage;
 
-  final CourseModel course;
+  final EnrollmentCourseModel course;
+
+  @JsonKey(name: 'last_accessed_lesson')
+  final LastAccessedLessonModel? lastAccessedLesson;
 
   @JsonKey(name: 'enrolled_at')
   final String enrolledAt;
@@ -39,18 +39,14 @@ class EnrollmentModel {
   @JsonKey(name: 'last_accessed_at')
   final String? lastAccessedAt;
 
-  @JsonKey(name: 'completed_at')
-  final String? completedAt;
-
   EnrollmentModel({
     required this.id,
     required this.status,
-    required this.amountPaid,
     required this.completionPercentage,
     required this.course,
+    this.lastAccessedLesson,
     required this.enrolledAt,
     this.lastAccessedAt,
-    this.completedAt,
   });
 
   factory EnrollmentModel.fromJson(Map<String, dynamic> json) =>
@@ -60,34 +56,48 @@ class EnrollmentModel {
 }
 
 @JsonSerializable()
-class CourseModel {
+class EnrollmentCourseModel {
   final int id;
   final String title;
   final String? thumbnail;
-  final InstructorModel instructor;
+  final EnrollmentInstructorModel instructor;
 
-  CourseModel({
+  EnrollmentCourseModel({
     required this.id,
     required this.title,
     this.thumbnail,
     required this.instructor,
   });
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) =>
-      _$CourseModelFromJson(json);
+  factory EnrollmentCourseModel.fromJson(Map<String, dynamic> json) =>
+      _$EnrollmentCourseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CourseModelToJson(this);
+  Map<String, dynamic> toJson() => _$EnrollmentCourseModelToJson(this);
 }
 
 @JsonSerializable()
-class InstructorModel {
+class EnrollmentInstructorModel {
   final int id;
   final String name;
 
-  InstructorModel({required this.id, required this.name});
+  EnrollmentInstructorModel({
+    required this.id,
+    required this.name,
+  });
 
-  factory InstructorModel.fromJson(Map<String, dynamic> json) =>
-      _$InstructorModelFromJson(json);
+  factory EnrollmentInstructorModel.fromJson(Map<String, dynamic> json) =>
+      _$EnrollmentInstructorModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$InstructorModelToJson(this);
+  Map<String, dynamic> toJson() => _$EnrollmentInstructorModelToJson(this);
+}
+
+/// حالياً الـ API يرجع null دائماً، لكن هيك بتكون جاهز إذا صار يرجع بيانات لاحقاً.
+@JsonSerializable()
+class LastAccessedLessonModel {
+  LastAccessedLessonModel();
+
+  factory LastAccessedLessonModel.fromJson(Map<String, dynamic> json) =>
+      _$LastAccessedLessonModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LastAccessedLessonModelToJson(this);
 }

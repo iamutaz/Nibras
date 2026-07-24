@@ -10,8 +10,6 @@ class RoutesName {
   static const String leaderboard = '/leaderboard';
   static const String setting = '/setting';
   static const String navigatorhome = '/navigatorhome';
-  static const String results = '/results';
-  static const String filter = '/filter';
   static const String accountdetails = '/accountdetails';
   static const String securityandpassword = '/securityandpassword';
   static const String helpcenter = '/helpcenter';
@@ -21,4 +19,7 @@ class RoutesName {
   static const String submitemail = '/submitemail';
   static const String insertcode = '/insertcode';
   static const String showcourses='/courses';
+  static const String progressionincourse='progressionincourse';
+  static const String results = '/results';
+  static const String filter = '/filter';
 }

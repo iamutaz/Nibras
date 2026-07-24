@@ -7,9 +7,6 @@ class ApiConstants {
   static const String login = "auth/login";
   static const String signup = "auth/register";
   static const String categories = "categories/";
-  static const String courses = "courses";
-  static const String onboardingInterests = "onboarding/interests";
-  
   static const String logout = "auth/logout";
   static const String home = "courses";
   static const String forgetpass = 'auth/forget-password';
@@ -20,4 +17,8 @@ class ApiConstants {
   static const String getratingdetailed='courses/rating-stats';
   static const String getrecommendedcourses='courses/recommended';
   static const String getmyenrollments='enrollments/my';
+  static const String enrollcourse='enrollments';
+  static const String courses = "courses";
+  static const String onboardingInterests = "onboarding/interests";
+  
 }
