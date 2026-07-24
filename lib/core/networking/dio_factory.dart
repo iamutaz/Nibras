@@ -1,10 +1,7 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:nibras/core/helpers/shared_pref_helper.dart';
 import 'package:nibras/core/helpers/shared_pref_keys.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
 
 class DioFactory {
   /// private constructor as I don't want to allow creating an instance of this class
@@ -41,7 +38,7 @@ class DioFactory {
   }
 
   static void setTokenIntoHeaderAfterLogin(String token) {
-    dio?.options.headers = {'Authorization': 'Bearer $token'};
+    dio?.options.headers['Authorization'] = 'Bearer $token';
   }
 
   static void addDioInterceptor() {

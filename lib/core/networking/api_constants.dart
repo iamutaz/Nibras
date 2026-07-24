@@ -17,4 +17,5 @@ class ApiConstants {
   static const String getratingdetailed='courses/rating-stats';
   static const String getrecommendedcourses='courses/recommended';
   static const String getmyenrollments='enrollments/my';
+  static const String enrollcourse='enrollments';
 }

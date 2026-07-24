@@ -15,6 +15,7 @@ import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -77,6 +78,8 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
+              case RoutesName.progressionincourse:
+        return MaterialPageRoute(builder: (context) => ProgressionPage());
       case RoutesName.showcourses:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(

@@ -19,4 +19,5 @@ class RoutesName {
   static const String submitemail = '/submitemail';
   static const String insertcode = '/insertcode';
   static const String showcourses='/courses';
+  static const String progressionincourse='progressionincourse';
 }

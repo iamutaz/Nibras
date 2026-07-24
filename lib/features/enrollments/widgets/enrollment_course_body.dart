@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+import 'package:nibras/core/widgets/app_text_button.dart';
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
 
 class EnrollmentCourseBody extends StatelessWidget {
@@ -16,6 +19,10 @@ class EnrollmentCourseBody extends StatelessWidget {
       itemCount: enrollments.length,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+        final enrollment = enrollments[index];
+        final double percentage =
+            double.tryParse(enrollment.completionPercentage ?? '0.0') ?? 0.0;
+        final double progressFraction = percentage / 100.0;
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 24.h),
           child: SizedBox(
@@ -46,9 +53,52 @@ class EnrollmentCourseBody extends StatelessWidget {
                     border: Border.all(color: AppColors.borderColor),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Column(children: [
-                    //TODO : ذا ابتصير بانو كورس وقف لما لا --- لاتنسى تعدلها
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16.0.h,
+                      horizontal: 16.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Lesson ${enrollments[index].lastAccessedLesson}',
+                          style: TextStyles.font14authblackbold,
+                        ),
+
+                        SizedBox(height: 6.h),
+
+                        Text(
+                          '${percentage.toStringAsFixed(0)}% Completed',
+                          style: TextStyles.font12hintcolorregular,
+                        ),
+                        SizedBox(height: 8.h),
+
+                        // شريط التقدم (Progress Bar)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: LinearProgressIndicator(
+                            value: progressFraction,
+                            minHeight: 6.h,
+                            backgroundColor: Colors
+                                .grey
+                                .shade100, // لون الخلفية الرمادي الفاتح
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Color(0xFFDBFF3D), // اللون المطلوب
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 14.h),
+
+                        Expanded(
+                          child: AppTextButton(
+                            onpressed: ()=> context.pushNamed(RoutesName.progressionincourse),
+                            textButton: "Continue Learning",
+                            textStyle: TextStyles.font14authblackbold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

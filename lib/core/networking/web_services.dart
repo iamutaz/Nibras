@@ -3,7 +3,10 @@ import 'package:nibras/core/networking/api_constants.dart';
 import 'package:nibras/features/Home/data/model/home_response_body.dart';
 import 'package:nibras/features/details/data/models/course_details_request_body.dart';
 import 'package:nibras/features/details/data/models/course_details_response_body.dart';
+import 'package:nibras/features/details/data/models/enrollment_request_body.dart';
+import 'package:nibras/features/details/data/models/enrollment_response_body.dart';
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
+import 'package:nibras/features/enrollments/widgets/enrollment_course_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
 import 'package:nibras/features/reviews/model/rating_response_body.dart';
@@ -70,4 +73,9 @@ abstract class WebServices {
 
   @GET(ApiConstants.getmyenrollments)
   Future<EnrollmentsResponseModel> getMyEnrollments();
+
+  @POST(ApiConstants.enrollcourse)
+  Future<EnrollmentResponseBody> enrollCourse(
+    @Body() EnrollmentRequestBody request,
+  );
 }

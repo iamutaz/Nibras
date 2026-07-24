@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart' show TextStyles;
 import 'package:nibras/core/widgets/app_text_button.dart';
+import 'package:nibras/features/details/data/cubit/enrollment_course_cubit.dart';
+import 'package:nibras/features/details/data/models/enrollment_request_body.dart';
+import 'package:nibras/features/details/widget/enrollment_bloc_listner.dart';
 
 class BuyField extends StatelessWidget {
   final String discountedprice;
   final String? originalprice;
   final bool isFree;
+  final int courseId;
 
   const BuyField({
     super.key,
+    required this.courseId,
     required this.discountedprice,
     this.originalprice,
     this.isFree = false,
@@ -81,13 +87,18 @@ class BuyField extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 AppTextButton(
-                  onpressed: () {},
+                  onpressed: () {
+                    context.read<EnrollmentCourseCubit>().emitEnrollInCourse(
+                      EnrollmentRequestBody(courseId: courseId),
+                    );
+                  },
                   buttoncolor: Colors.white,
                   textButton: "Buy NOW!",
                   textStyle: TextStyles.font16mainbluebold,
                   borderColor: AppColors.mainBlue,
                   borderWidth: 2,
                 ),
+                EnrollmentBlocListener()
               ],
             ),
           ),

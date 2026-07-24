@@ -28,48 +28,65 @@ EnrollmentModel _$EnrollmentModelFromJson(Map<String, dynamic> json) =>
     EnrollmentModel(
       id: (json['id'] as num).toInt(),
       status: json['status'] as String,
-      amountPaid: json['amount_paid'] as String,
       completionPercentage: json['completion_percentage'] as String,
-      course: CourseModel.fromJson(json['course'] as Map<String, dynamic>),
+      course: EnrollmentCourseModel.fromJson(
+        json['course'] as Map<String, dynamic>,
+      ),
+      lastAccessedLesson: json['last_accessed_lesson'] == null
+          ? null
+          : LastAccessedLessonModel.fromJson(
+              json['last_accessed_lesson'] as Map<String, dynamic>,
+            ),
       enrolledAt: json['enrolled_at'] as String,
       lastAccessedAt: json['last_accessed_at'] as String?,
-      completedAt: json['completed_at'] as String?,
     );
 
 Map<String, dynamic> _$EnrollmentModelToJson(EnrollmentModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'status': instance.status,
-      'amount_paid': instance.amountPaid,
       'completion_percentage': instance.completionPercentage,
       'course': instance.course,
+      'last_accessed_lesson': instance.lastAccessedLesson,
       'enrolled_at': instance.enrolledAt,
       'last_accessed_at': instance.lastAccessedAt,
-      'completed_at': instance.completedAt,
     };
 
-CourseModel _$CourseModelFromJson(Map<String, dynamic> json) => CourseModel(
+EnrollmentCourseModel _$EnrollmentCourseModelFromJson(
+  Map<String, dynamic> json,
+) => EnrollmentCourseModel(
   id: (json['id'] as num).toInt(),
   title: json['title'] as String,
   thumbnail: json['thumbnail'] as String?,
-  instructor: InstructorModel.fromJson(
+  instructor: EnrollmentInstructorModel.fromJson(
     json['instructor'] as Map<String, dynamic>,
   ),
 );
 
-Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'thumbnail': instance.thumbnail,
-      'instructor': instance.instructor,
-    };
+Map<String, dynamic> _$EnrollmentCourseModelToJson(
+  EnrollmentCourseModel instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'title': instance.title,
+  'thumbnail': instance.thumbnail,
+  'instructor': instance.instructor,
+};
 
-InstructorModel _$InstructorModelFromJson(Map<String, dynamic> json) =>
-    InstructorModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-    );
+EnrollmentInstructorModel _$EnrollmentInstructorModelFromJson(
+  Map<String, dynamic> json,
+) => EnrollmentInstructorModel(
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+);
 
-Map<String, dynamic> _$InstructorModelToJson(InstructorModel instance) =>
-    <String, dynamic>{'id': instance.id, 'name': instance.name};
+Map<String, dynamic> _$EnrollmentInstructorModelToJson(
+  EnrollmentInstructorModel instance,
+) => <String, dynamic>{'id': instance.id, 'name': instance.name};
+
+LastAccessedLessonModel _$LastAccessedLessonModelFromJson(
+  Map<String, dynamic> json,
+) => LastAccessedLessonModel();
+
+Map<String, dynamic> _$LastAccessedLessonModelToJson(
+  LastAccessedLessonModel instance,
+) => <String, dynamic>{};
