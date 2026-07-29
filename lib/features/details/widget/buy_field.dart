@@ -9,7 +9,7 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/widget/enrollment_bloc_listner.dart';
 import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/data/model/add_to_wishlist_request_body.dart';
-import 'package:nibras/features/wishlist/widgets/add_to_wishlost_bloclisitner.dart';
+import 'package:nibras/features/wishlist/widgets/add_to_wishlist_bloclisitner.dart';
 
 class BuyField extends StatelessWidget {
   final String discountedprice;
@@ -106,7 +106,7 @@ class BuyField extends StatelessWidget {
                   borderWidth: 2,
                 ),
                 EnrollmentBlocListener(),
-                AddToWishlostBloclisitner(),
+                AddToWishlistBloclisitner(),
               ],
             ),
           ),
