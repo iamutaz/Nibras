@@ -89,7 +89,7 @@ class SearchResponseBody {
 class InstructorModel {
   final int id;
   final String name;
-  final String email;
+  final String? email;
   final String? role;
   final bool? isInstructor;
   final String? avatar;
@@ -100,7 +100,7 @@ class InstructorModel {
   InstructorModel({
     required this.id,
     required this.name,
-    required this.email,
+    this.email,
     this.role,
     this.isInstructor,
     this.avatar,
@@ -113,7 +113,7 @@ class InstructorModel {
     return InstructorModel(
       id: json['id'] as int,
       name: json['name'] as String,
-      email: json['email'] as String,
+      email: json['email'] as String?,
       role: json['role'] as String?,
       isInstructor: json['is_instructor'] is int ? (json['is_instructor'] == 1) : json['is_instructor'] as bool?,
       avatar: json['avatar'] as String?,

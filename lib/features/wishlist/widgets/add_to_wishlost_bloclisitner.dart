@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/networking/api_error_handler.dart';
-import 'package:nibras/features/details/data/cubit/enrollment_course_cubit.dart';
-import 'package:nibras/features/details/data/cubit/enrollment_course_state.dart';
+import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
+import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_state.dart';
 
-class EnrollmentBlocListener extends StatelessWidget {
-  const EnrollmentBlocListener({super.key});
+class AddToWishlostBloclisitner extends StatelessWidget {
+  const AddToWishlostBloclisitner({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<EnrollmentCourseCubit, EnrollmentCourseState>(
+    return BlocListener<AddToWishlistCubit, AddToWishlistState>(
       listenWhen: (previous, current) =>
-          current is EnrollmentCourseLoading ||
-          current is EnrollmentCourseSuccess ||
-          current is EnrollmentCourseFailure,
+          current is AddToWishlistLoading ||
+          current is AddToWishlistSuccess ||
+          current is AddToWishlistFailure,
       listener: (context, state) {
         state.whenOrNull(
-          enrollmentcourseloading: () {
+          addtowishlistloading: () {
             showDialog(
               context: context,
               barrierDismissible: false, // يمنع إغلاق التحميل عند الضغط خارجه
@@ -26,7 +26,7 @@ class EnrollmentBlocListener extends StatelessWidget {
               },
             );
           },
-          enrollmentcoursesuccess: (data) {
+          addtowishlistsuccess: (data) {
             context.pop(); // إغلاق دائرة التحميل
 
             // إظهار رسالة النجاح
@@ -35,7 +35,7 @@ class EnrollmentBlocListener extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text("Success"),
-                  content: const Text("Enrollment successfully!"),
+                  content: const Text("Added to wishlist successfully!"),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -48,7 +48,7 @@ class EnrollmentBlocListener extends StatelessWidget {
               },
             );
           },
-          enrollmentcoursetailure: (error) {
+          addtowishlistfailure: (error) {
             setupErrorState(context, error); // إظهار رسالة الخطأ
           },
         );

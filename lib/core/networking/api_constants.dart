@@ -21,5 +21,7 @@ class ApiConstants {
   static const String enrollcourse='enrollments';
   static const String courses = "courses";
   static const String onboardingInterests = "onboarding/interests";
+  static const String addtowishlist='wishlist';
+  static const String getmywishlist='wishlist/my';
   
 }
