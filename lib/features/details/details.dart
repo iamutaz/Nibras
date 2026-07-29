@@ -16,6 +16,7 @@ import 'package:nibras/features/details/widget/lessons_section.dart';
 import 'package:nibras/features/details/widget/meta_area.dart';
 import 'package:nibras/features/details/widget/reviews_section.dart';
 import 'package:nibras/features/details/widget/what_you_will_learn.dart';
+import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
 
 class Details extends StatefulWidget {
   final int id;
@@ -84,8 +85,15 @@ class _DetailsState extends State<Details> {
                         course?.totalEnrollments?.toString() ?? '31427',
                     thumbnail: course?.thumbnail ?? 'assets/images/IBM.png',
                   ),
-                  BlocProvider(
-                    create: (context) => getIt<EnrollmentCourseCubit>(),
+                  MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => getIt<EnrollmentCourseCubit>(),
+                      ),
+                      BlocProvider(
+                        create: (context) => getIt<AddToWishlistCubit>(),
+                      ),
+                    ],
                     child: BuyField(
                       courseId: course!.id,
                       discountedprice: course != null
