@@ -13,6 +13,11 @@ import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
 import 'package:nibras/features/enrollments/data/repo/enrollmets_repo.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/data/repo/login_repo.dart';
+import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
+import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
+import 'package:nibras/features/notes/data/repo/notes_repo.dart';
+import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
+import 'package:nibras/features/progression/data/repo/progression_repo.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/reviews/repo/review_repo.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -74,6 +79,10 @@ void setupinjection() async {
   getIt.registerFactory<AddToWishlistCubit>(() => AddToWishlistCubit(getIt()));
   getIt.registerFactory<MyWishlistCubit>(() => MyWishlistCubit(getIt()));
 
+  getIt.registerLazySingleton<NotesRepo>(() => NotesRepo(getIt()));
+  getIt.registerFactory<GetNotesByIdCubit>(() => GetNotesByIdCubit(getIt()));
+  getIt.registerFactory<AddNoteCubit>(() => AddNoteCubit(getIt()));
 
-
+  getIt.registerLazySingleton<ProgressionRepo>(() => ProgressionRepo(getIt()));
+  getIt.registerFactory<ProgressionCubit>(() => ProgressionCubit(getIt()));
 }

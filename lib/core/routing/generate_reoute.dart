@@ -17,6 +17,7 @@ import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
@@ -84,7 +85,16 @@ class GenerateRoute {
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
       case RoutesName.progressionincourse:
-        return MaterialPageRoute(builder: (context) => ProgressionPage());
+        final courseId = settings.arguments is int
+            ? settings.arguments as int
+            : 1;
+
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<ProgressionCubit>(),
+            child: ProgressionPage(courseId: courseId),
+          ),
+        );
       case RoutesName.wishlist:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(

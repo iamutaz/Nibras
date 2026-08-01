@@ -92,7 +92,10 @@ class EnrollmentCourseBody extends StatelessWidget {
 
                         Expanded(
                           child: AppTextButton(
-                            onpressed: ()=> context.pushNamed(RoutesName.progressionincourse),
+                            onpressed: () => context.pushNamed(
+                              RoutesName.progressionincourse,
+                              aurgment: enrollment.course.id,
+                            ),
                             textButton: "Continue Learning",
                             textStyle: TextStyles.font14authblackbold,
                           ),

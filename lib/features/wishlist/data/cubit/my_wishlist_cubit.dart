@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/features/wishlist/data/cubit/my_wishlist_state.dart';
 import 'package:nibras/features/wishlist/data/repos/wishlist_repo.dart';

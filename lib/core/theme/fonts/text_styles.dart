@@ -21,6 +21,14 @@ class TextStyles {
     color: AppColors.mainBlack,
     fontFamily: "Montserrat",
   );
+
+    static TextStyle font20whitesemibold = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+    fontFamily: "Montserrat",
+  );
+
   static TextStyle font16lighterblacksemiBold = TextStyle(
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
@@ -96,6 +104,13 @@ class TextStyles {
     fontFamily: "Montserrat",
     decoration: TextDecoration.underline,
     decorationColor: AppColors.mainYellow,
+  );
+
+    static TextStyle font12mainyellowmid = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.mainYellow,
+    fontFamily: "Montserrat",
   );
 
   static TextStyle font12orangesemibold = TextStyle(

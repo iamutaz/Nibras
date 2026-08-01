@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
@@ -71,14 +72,20 @@ class _WishlistPageState extends State<WishlistPage> {
                 itemBuilder: (context, index) {
                   final course = courses[index];
 
-                  return WishlistCourseBody(
-                    title: course.title ?? 'No Title',
-                    thumbnailUrl: course.thumbnail,
-                    price: (course.price ?? 0).toDouble(),
-                    isFree: course.isFree ?? false,
-                    averageRating: (course.averageRating ?? 0).toDouble(),
-                    reviewsCount: course.reviewsCount ?? 0,
-                    instructorName: course.instructor?.name ?? 'Unknown',
+                  return InkWell(
+                    onTap: () => context.pushNamed(
+                      RoutesName.details,
+                      aurgment: course.id,
+                    ),
+                    child: WishlistCourseBody(
+                      title: course.title ?? 'No Title',
+                      thumbnailUrl: course.thumbnail,
+                      price: (course.price ?? 0).toDouble(),
+                      isFree: course.isFree ?? false,
+                      averageRating: (course.averageRating ?? 0).toDouble(),
+                      reviewsCount: course.reviewsCount ?? 0,
+                      instructorName: course.instructor?.name ?? 'Unknown',
+                    ),
                   );
                 },
               );
