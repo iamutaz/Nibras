@@ -12,7 +12,6 @@ import 'package:nibras/core/widgets/app_text_form_feild.dart';
 import 'package:nibras/features/setting/data/repos/account_repo.dart';
 import 'package:nibras/features/signup/signup.dart';
 
-
 class AccountDetails extends StatefulWidget {
   const AccountDetails({super.key});
 
@@ -22,7 +21,7 @@ class AccountDetails extends StatefulWidget {
 
 class _AccountDetailsState extends State<AccountDetails> {
   final AccountRepo _accountRepo = AccountRepo();
-  File? _selectedImage; // 🎯 الصورة المختارة محلياً، لسا ما انرفعت
+  File? _selectedImage;
   bool _isSaving = false;
 
   Future<void> _pickImage() async {
@@ -33,13 +32,12 @@ class _AccountDetailsState extends State<AccountDetails> {
 
     if (pickedFile != null) {
       setState(() {
-        _selectedImage = File(pickedFile.path); // 🎯 بس preview محلي، ما في رفع لسا
+        _selectedImage = File(pickedFile.path);
       });
     }
   }
 
   Future<void> _saveChanges() async {
-    // 🎯 لو ما اختار صورة جديدة أصلاً، ما في شي نحفظه
     if (_selectedImage == null) return;
 
     setState(() => _isSaving = true);
@@ -54,7 +52,7 @@ class _AccountDetailsState extends State<AccountDetails> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Avatar updated successfully')),
         );
-        // الصورة المحلية ضلت معروضة، وصارت محفوظة فعلياً بالباك (url)
+        Navigator.pop(context, url);
       },
       failure: (error) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +60,6 @@ class _AccountDetailsState extends State<AccountDetails> {
             content: Text(error.apiErrorModel.message ?? 'Failed to upload avatar'),
           ),
         );
-        // 🎯 ما بنرجع _selectedImage لـ null هون، حتى يقدر يحاول يحفظ تاني بنفس الصورة
       },
     );
   }
@@ -89,12 +86,12 @@ class _AccountDetailsState extends State<AccountDetails> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0.h),
                 child: GestureDetector(
-                  onTap: _pickImage, // 🎯 هلق الأفتار قابل للضغط
+                  onTap: _pickImage,
                   child: CircleAvatar(
                     backgroundColor: AppColors.avatarColor,
                     radius: 35.r,
                     backgroundImage: _selectedImage != null
-                        ? FileImage(_selectedImage!) // 🎯 لو اختار صورة، هاي بتظهر
+                        ? FileImage(_selectedImage!)
                         : const AssetImage('assets/svg/profile_circle_gray.svg')
                             as ImageProvider,
                     child: _selectedImage == null
@@ -103,7 +100,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                             height: 30.h,
                             width: 30.w,
                           )
-                        : null, // 🎯 لو في صورة مختارة، ما منعرض الأيقونة الافتراضية فوقها
+                        : null,
                   ),
                 ),
               ),

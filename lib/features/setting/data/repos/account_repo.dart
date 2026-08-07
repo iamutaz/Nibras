@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:nibras/core/networking/api_constants.dart';
 import 'package:nibras/core/networking/api_error_handler.dart';
 import 'package:nibras/core/networking/api_result.dart';
@@ -15,9 +16,15 @@ class AccountRepo {
         'image': await MultipartFile.fromFile(image.path, filename: fileName),
       });
 
+      final headers = Map<String, dynamic>.from(dio.options.headers);
+      headers.remove('Content-Type');
+
+      debugPrint('🔑 TOKEN BEING SENT: ${headers['Authorization']}'); 
+
       final response = await dio.post(
         '${ApiConstants.baseurl}${ApiConstants.uploadAvatar}',
         data: formData,
+        options: Options(headers: headers),
       );
 
       final url = response.data['data']['url'] as String;

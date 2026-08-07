@@ -24,9 +24,12 @@ class LearningAndAchivementes extends StatelessWidget {
               imagepath: "assets/svg/courses.svg",
             ),
           ),
-          SettingTileBody(
-            title: "WishList",
-            imagepath: "assets/svg/wishlist.svg",
+          InkWell(
+            onTap: () => context.pushNamed(RoutesName.wishlist),  
+            child: SettingTileBody(
+              title: "WishList",
+              imagepath: "assets/svg/wishlist.svg",
+            ),
           ),
         ],
       ),

@@ -11,8 +11,7 @@ import 'package:nibras/features/Home/data/cubit/home_state.dart';
 import 'package:nibras/features/Home/data/cubit/recommended_cubit.dart';
 import 'package:nibras/features/Home/data/cubit/recommended_state.dart';
 import 'package:nibras/features/Home/data/model/body_course.dart';
-import 'package:nibras/features/Home/widgets/categories_list.dart';
-import 'package:nibras/features/Home/widgets/categories_see_all.dart';
+
 import 'package:nibras/features/Home/widgets/profile_row.dart';
 
 class Home extends StatefulWidget {
@@ -28,6 +27,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
     context.read<HomeCubit>().emitAllCoursesState();
     context.read<RecommendedCubit>().emitRecommendedCoursesState();
   }
@@ -42,10 +42,7 @@ class _HomeState extends State<Home> {
             children: [
               ProfileRow(username: username),
               Divider(color: AppColors.avatarColor, thickness: 1),
-              SizedBox(height: 30.h),
-              CategoriesSeeAll(),
-              SizedBox(height: 16.5.h),
-              DoubledCategoryList(),
+
               SizedBox(height: 30.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0.w),
@@ -91,8 +88,6 @@ class _HomeState extends State<Home> {
                                       allcourses[index].instructor.name,
                                   rate: allcourses[index].rate,
                                   logo: "assets/svg/frame.svg",
-                                  // skills:
-                                  //     allcourses[index].skills.toString(),
                                   numberOfReviews: allcourses[index].reviews,
                                   discountedPrice: 9,
                                   realPrice: allcourses[index].price,

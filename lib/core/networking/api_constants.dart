@@ -1,7 +1,7 @@
 import 'dart:core';
 
 class ApiConstants {
-  // static const String baseurl = "http://10.0.3.2:8000/api/";
+  //static const String baseurl = "http://10.0.3.2:8000/api/";
   static const String baseurl = "http://10.0.2.2:8000/api/";
 
   static const String login = "auth/login";
@@ -14,12 +14,13 @@ class ApiConstants {
   static const String verfycode = 'auth/verify-reset-code';
   static const String getcoursebyid = 'courses/find';
   static const String getreviewsbycoursebyid = 'courses/reviews';
-  static const String getratingdetailed='courses/rating-stats';
-  static const String getrecommendedcourses='courses/recommended';
-  static const String getmyenrollments='enrollments/my';
-  static const String enrollcourse='enrollments';
+  static const String getratingdetailed = 'courses/rating-stats';
+  static const String getrecommendedcourses = 'courses/recommended';
+  static const String getmyenrollments = 'enrollments/my';
+  static const String enrollcourse = 'enrollments';
   static const String courses = "courses";
   static const String onboardingInterests = "onboarding/interests";
   static const String uploadAvatar = "upload/avatar";
-  
+  static const String addtowishlist = 'wishlist';
+  static const String getmywishlist = 'wishlist/my';
 }

@@ -21,6 +21,9 @@ import 'package:nibras/features/setting/data/repos/forget_password_repo.dart';
 import 'package:nibras/features/setting/data/repos/logout_repo.dart';
 import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
 import 'package:nibras/features/signup/data/repo/signup_repo.dart';
+import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
+import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
+import 'package:nibras/features/wishlist/data/repos/wishlist_repo.dart';
 
 final getIt = GetIt.instance;
 void setupinjection() async {
@@ -66,4 +69,11 @@ void setupinjection() async {
   getIt.registerFactory<EnrollmentCourseCubit>(
     () => EnrollmentCourseCubit(getIt()),
   );
+
+  getIt.registerLazySingleton<WishlistRepo>(() => WishlistRepo(getIt()));
+  getIt.registerFactory<AddToWishlistCubit>(() => AddToWishlistCubit(getIt()));
+  getIt.registerFactory<MyWishlistCubit>(() => MyWishlistCubit(getIt()));
+
+
+
 }

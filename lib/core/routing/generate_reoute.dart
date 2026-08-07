@@ -32,6 +32,9 @@ import 'package:nibras/features/setting/pages/security_and_password.dart';
 import 'package:nibras/features/setting/pages/setting_page.dart';
 import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
 import 'package:nibras/features/signup/signup.dart';
+import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
+import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
+import 'package:nibras/features/wishlist/wishlist_page.dart';
 
 class GenerateRoute {
   Route? generateRoute(RouteSettings settings) {
@@ -80,8 +83,15 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
-              case RoutesName.progressionincourse:
+      case RoutesName.progressionincourse:
         return MaterialPageRoute(builder: (context) => ProgressionPage());
+      case RoutesName.wishlist:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<MyWishlistCubit>(),
+            child: WishlistPage(),
+          ),
+        );
       case RoutesName.showcourses:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
@@ -133,14 +143,15 @@ class GenerateRoute {
             child: InsertCode(email: email),
           ),
         );
-        case RoutesName.results:
+      case RoutesName.results:
         final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (context) => ResultsPage(
+        return MaterialPageRoute(
+          builder: (context) => ResultsPage(
             categoryId: args['categoryId'] as int,
             categoryName: args['categoryName'] as String,
           ),
         );
-        case RoutesName.filter:
+      case RoutesName.filter:
         return MaterialPageRoute(builder: (context) => FilterPage());
 
       default:

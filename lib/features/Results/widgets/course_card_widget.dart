@@ -26,7 +26,9 @@ class CourseCardWidget extends StatelessWidget {
               Container(
                 height: 88.h,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
                   image: DecorationImage(
                     image: NetworkImage(
                       course.thumbnail ?? 'https://via.placeholder.com/350x140',
@@ -48,10 +50,14 @@ class CourseCardWidget extends StatelessWidget {
                         color: Colors.black.withOpacity(0.05),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
-                      )
+                      ),
                     ],
                   ),
-                  child: const Icon(Icons.layers, size: 18, color: AppColors.mainBlack),
+                  child: const Icon(
+                    Icons.layers,
+                    size: 18,
+                    color: AppColors.mainBlack,
+                  ),
                 ),
               ),
             ],
@@ -64,14 +70,18 @@ class CourseCardWidget extends StatelessWidget {
               children: [
                 Text(
                   course.title,
-                  style: TextStyles.font16homeblackbold.copyWith(fontSize: 15.sp),
+                  style: TextStyles.font16homeblackbold.copyWith(
+                    fontSize: 15.sp,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
                   course.instructor?.name ?? '',
-                  style: TextStyles.font10lightgreyregular.copyWith(fontSize: 12.sp),
+                  style: TextStyles.font10lightgreyregular.copyWith(
+                    fontSize: 12.sp,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -93,7 +103,9 @@ class CourseCardWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      course.isFree == true ? 'Free' : '€${course.price ?? '0'}',
+                      course.isFree == true
+                          ? 'Free'
+                          : '€${course.price ?? '0'}',
                       style: TextStyles.font14mainbluesemiBold.copyWith(
                         color: AppColors.mainBlue,
                         fontWeight: FontWeight.bold,
