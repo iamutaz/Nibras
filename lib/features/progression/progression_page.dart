@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/DI/injection.dart';
+import 'package:nibras/core/routing/app_route_observer.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/pages/notes_by_id_lesson.dart';
@@ -18,13 +19,37 @@ class ProgressionPage extends StatefulWidget {
   State<ProgressionPage> createState() => _ProgressionPageState();
 }
 
-class _ProgressionPageState extends State<ProgressionPage> {
-  @override
-  void initState() {
-    super.initState();
+class _ProgressionPageState extends State<ProgressionPage> with RouteAware {
+  void _loadProgression() {
     context.read<ProgressionCubit>().emitAllCoursesState(
       ProgressionRequestBody(courseId: widget.courseId),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProgression();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void didPopNext() {
+    _loadProgression();
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override

@@ -62,7 +62,7 @@ class EnrollmentCourseBody extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Lesson ${enrollments[index].lastAccessedLesson}',
+                          'Lesson ${enrollments[index].lastAccessedLesson?.lessonId ?? '0'}: ${enrollments[index].lastAccessedLesson?.lessonTitle ?? 'start learning!!'}',
                           style: TextStyles.font14authblackbold,
                         ),
 

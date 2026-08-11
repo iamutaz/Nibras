@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/app_text_button.dart';
+import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 
 class ResumeLearningCard extends StatelessWidget {
-  final dynamic resumeLesson;
+  final ResumeLesson resumeLesson;
+  final VoidCallback onResumeTap; 
 
-  const ResumeLearningCard({super.key, required this.resumeLesson});
+  const ResumeLearningCard({super.key, required this.resumeLesson,required this.onResumeTap});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class ResumeLearningCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           AppTextButton(
-            onpressed: () {},
+            onpressed: onResumeTap,
             textButton: "Resume learning",
             textStyle: TextStyles.font14authblackbold,
           ),

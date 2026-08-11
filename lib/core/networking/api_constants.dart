@@ -23,6 +23,8 @@ class ApiConstants {
   static const String addtowishlist = 'wishlist';
   static const String getmywishlist = 'wishlist/my';
   static const String showmyprogression = 'courses/progress';
+  static const String progressLessonComplete = 'progress/lesson/complete';
+  static const String progressVideo = 'progress/video';
   static const String getnotesbyid='notes/lesson';
   static const String addnote='notes';
 }

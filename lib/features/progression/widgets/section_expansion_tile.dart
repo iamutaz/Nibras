@@ -26,7 +26,7 @@ class SectionExpansionTile extends StatelessWidget {
           title: Text(
             section.title,
             style: TextStyles.font14authblackregular.copyWith(
-              color: Color(0xFF030712),
+              color: const Color(0xFF030712),
             ),
           ),
           subtitle: Text(
@@ -42,6 +42,12 @@ class SectionExpansionTile extends StatelessWidget {
               itemCount: lessons.length,
               itemBuilder: (context, index) {
                 final lesson = lessons[index];
+
+                // التحقق هل الدرس منتهي
+                final bool isCompleted =
+                    lesson.status == 'completed' ||
+                    (lesson.isCompleted ?? false);
+
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -55,18 +61,10 @@ class SectionExpansionTile extends StatelessWidget {
                     lesson.type,
                     style: TextStyles.font12lightgreymedium,
                   ),
-                  trailing: lesson.status == 'current'
-                      ? const Icon(
-                          Icons.play_circle_fill,
-                          color: Colors.purple,
-                          size: 20,
-                        )
-                      : const Icon(
-                          Icons.lock_outline,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
+                  // إظهار الأيقونة حسب حالة الدرس
+                  trailing: _buildTrailingIcon(lesson.status, isCompleted),
                   onTap: () {
+                    // يستدعي التابع الأصلي بإرسال الـ id والـ duration
                     onLessonSelected?.call(lesson.id, lesson.duration);
                   },
                 );
@@ -76,5 +74,15 @@ class SectionExpansionTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildTrailingIcon(String? status, bool isCompleted) {
+    if (isCompleted || status == 'completed') {
+      return const Icon(Icons.check_circle, color: Colors.green, size: 20);
+    } else if (status == 'current') {
+      return const Icon(Icons.play_circle_fill, color: Colors.purple, size: 20);
+    } else {
+      return const Icon(Icons.lock_outline, color: Colors.grey, size: 20);
+    }
   }
 }

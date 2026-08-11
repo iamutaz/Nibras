@@ -7,7 +7,6 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/data/models/enrollment_response_body.dart';
 
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
-import 'package:nibras/features/enrollments/widgets/enrollment_course_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
