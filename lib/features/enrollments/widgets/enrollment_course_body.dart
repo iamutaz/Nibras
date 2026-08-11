@@ -62,7 +62,7 @@ class EnrollmentCourseBody extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Lesson ${enrollments[index].lastAccessedLesson}',
+                          'Lesson ${enrollments[index].lastAccessedLesson?.lessonId ?? '0'}: ${enrollments[index].lastAccessedLesson?.lessonTitle ?? 'start learning!!'}',
                           style: TextStyles.font14authblackbold,
                         ),
 
@@ -92,7 +92,10 @@ class EnrollmentCourseBody extends StatelessWidget {
 
                         Expanded(
                           child: AppTextButton(
-                            onpressed: ()=> context.pushNamed(RoutesName.progressionincourse),
+                            onpressed: () => context.pushNamed(
+                              RoutesName.progressionincourse,
+                              aurgment: enrollment.course.id,
+                            ),
                             textButton: "Continue Learning",
                             textStyle: TextStyles.font14authblackbold,
                           ),

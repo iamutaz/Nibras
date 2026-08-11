@@ -5,8 +5,8 @@ import 'package:nibras/core/networking/api_error_handler.dart';
 import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_state.dart';
 
-class AddToWishlostBloclisitner extends StatelessWidget {
-  const AddToWishlostBloclisitner({super.key});
+class AddToWishlistBloclisitner extends StatelessWidget {
+  const AddToWishlistBloclisitner({super.key});
 
   @override
   Widget build(BuildContext context) {

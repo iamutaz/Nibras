@@ -7,9 +7,14 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/data/models/enrollment_response_body.dart';
 
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
-import 'package:nibras/features/enrollments/widgets/enrollment_course_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
+import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
+import 'package:nibras/features/notes/data/models/add_note_responst_body.dart';
+import 'package:nibras/features/notes/data/models/get_notes_by_id_request_body.dart';
+import 'package:nibras/features/notes/data/models/get_notes_by_id_response_body.dart';
+import 'package:nibras/features/progression/data/model/progression_request_body.dart';
+import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 import 'package:nibras/features/reviews/model/rating_response_body.dart';
 import 'package:nibras/features/reviews/model/review_request_body.dart';
 import 'package:nibras/features/reviews/model/review_response_body.dart';
@@ -89,4 +94,17 @@ abstract class WebServices {
   );
   @GET(ApiConstants.getmywishlist)
   Future<MyWishlistResponseBody> getMyWishlist();
+  @GET(ApiConstants.showmyprogression)
+  Future<ProgressionResponseBody> showMyProgression(
+    @Body() ProgressionRequestBody request,
+  );
+
+  @GET(ApiConstants.getnotesbyid)
+  Future<GetNotesByIdResponseBody> getNotesByIdLesson(
+    @Body() GetNotesByIdRequestBody request,
+  );
+  @POST(ApiConstants.addnote)
+  Future<AddNoteResponstBody> addNote(
+    @Body() AddNoteRequestBody request,
+  );
 }

@@ -33,7 +33,7 @@ class CourseDetails {
   @JsonKey(name: 'is_free')
   final bool isFree;
 
-  final int price;
+  final num price;
 
   @JsonKey(name: 'average_rating')
   final num averageRating;
@@ -114,7 +114,7 @@ class Instructor {
     required this.name,
     this.avatar,
     this.coursesCount,
-    this.totalStudents
+    this.totalStudents,
   });
 
   factory Instructor.fromJson(Map<String, dynamic> json) =>
@@ -128,10 +128,7 @@ class Category {
   final int id;
   final String name;
 
-  Category({
-    required this.id,
-    required this.name,
-  });
+  Category({required this.id, required this.name});
 
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);
@@ -167,7 +164,9 @@ class Lesson {
   final int id;
   final String title;
   final String type;
-  final int duration;
+
+  // التعديل هنا: إضافة ? ليقبل الـ null
+  final int? duration;
 
   @JsonKey(name: 'is_free_preview')
   final bool isFreePreview;
@@ -191,7 +190,7 @@ class Lesson {
     required this.id,
     required this.title,
     required this.type,
-    required this.duration,
+    this.duration, // التعديل هنا: إزالة required
     required this.isFreePreview,
     required this.orderIndex,
     this.videoUrl,
@@ -200,8 +199,7 @@ class Lesson {
     required this.createdAt,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json) =>
-      _$LessonFromJson(json);
+  factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
 
   Map<String, dynamic> toJson() => _$LessonToJson(this);
 }

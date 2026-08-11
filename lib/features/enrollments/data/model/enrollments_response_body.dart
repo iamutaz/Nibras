@@ -80,10 +80,7 @@ class EnrollmentInstructorModel {
   final int id;
   final String name;
 
-  EnrollmentInstructorModel({
-    required this.id,
-    required this.name,
-  });
+  EnrollmentInstructorModel({required this.id, required this.name});
 
   factory EnrollmentInstructorModel.fromJson(Map<String, dynamic> json) =>
       _$EnrollmentInstructorModelFromJson(json);
@@ -91,10 +88,30 @@ class EnrollmentInstructorModel {
   Map<String, dynamic> toJson() => _$EnrollmentInstructorModelToJson(this);
 }
 
-/// حالياً الـ API يرجع null دائماً، لكن هيك بتكون جاهز إذا صار يرجع بيانات لاحقاً.
 @JsonSerializable()
 class LastAccessedLessonModel {
-  LastAccessedLessonModel();
+  @JsonKey(name: 'lesson_id')
+  final int lessonId;
+
+  @JsonKey(name: 'lesson_title')
+  final String lessonTitle;
+
+  @JsonKey(name: 'section_id')
+  final int sectionId;
+
+  @JsonKey(name: 'section_title')
+  final String sectionTitle;
+
+  @JsonKey(name: 'last_position_seconds')
+  final int lastPositionSeconds;
+
+  LastAccessedLessonModel({
+    required this.lessonId,
+    required this.lessonTitle,
+    required this.sectionId,
+    required this.sectionTitle,
+    required this.lastPositionSeconds,
+  });
 
   factory LastAccessedLessonModel.fromJson(Map<String, dynamic> json) =>
       _$LastAccessedLessonModelFromJson(json);

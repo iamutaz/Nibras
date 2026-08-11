@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nibras/core/routing/app_route_observer.dart';
 import 'package:nibras/core/routing/generate_reoute.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 
@@ -18,6 +19,7 @@ class Manager extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: RoutesName.login,
           onGenerateRoute: generateRoute.generateRoute,
+          navigatorObservers: [routeObserver],
         );
       },
     );
