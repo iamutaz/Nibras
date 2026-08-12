@@ -25,7 +25,7 @@ class ProgressionSuccessView extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => LessonVideoPage(
-          videoUrl: url,
+          videoUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
           lessonTitle: title,
           lessonId: lessonId,
           startPositionSeconds: lastPositionSeconds,

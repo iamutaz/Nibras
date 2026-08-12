@@ -19,6 +19,8 @@ import 'package:nibras/features/onboarding/presentation/pages/continue_with_goog
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/progression_page.dart';
+import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
+import 'package:nibras/features/quiz/quiz_page.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -163,6 +165,14 @@ class GenerateRoute {
         );
       case RoutesName.filter:
         return MaterialPageRoute(builder: (context) => FilterPage());
+
+      case RoutesName.enrollquiz:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<EnrollQuizCubit>(),
+            child: QuizPage(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(

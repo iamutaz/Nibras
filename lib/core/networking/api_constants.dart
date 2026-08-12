@@ -27,4 +27,6 @@ class ApiConstants {
   static const String progressVideo = 'progress/video';
   static const String getnotesbyid='notes/lesson';
   static const String addnote='notes';
+  static const String enrollQuiz='quizzes/2/attempt';
+  static const String submitQuiz='quiz-attempts/2/submit';
 }
