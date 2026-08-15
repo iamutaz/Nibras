@@ -12,11 +12,15 @@ SubmitQuizRequestBody _$SubmitQuizRequestBodyFromJson(
   answers: (json['answers'] as List<dynamic>)
       .map((e) => QuizAnswerRequest.fromJson(e as Map<String, dynamic>))
       .toList(),
+  attemptID: (json['attempt_id'] as num).toInt(),
 );
 
 Map<String, dynamic> _$SubmitQuizRequestBodyToJson(
   SubmitQuizRequestBody instance,
-) => <String, dynamic>{'answers': instance.answers};
+) => <String, dynamic>{
+  'attempt_id': instance.attemptID,
+  'answers': instance.answers,
+};
 
 QuizAnswerRequest _$QuizAnswerRequestFromJson(Map<String, dynamic> json) =>
     QuizAnswerRequest(

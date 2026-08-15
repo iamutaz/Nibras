@@ -15,7 +15,10 @@ import 'package:nibras/features/notes/data/models/get_notes_by_id_request_body.d
 import 'package:nibras/features/notes/data/models/get_notes_by_id_response_body.dart';
 import 'package:nibras/features/progression/data/model/progression_request_body.dart';
 import 'package:nibras/features/progression/data/model/progression_response_body.dart';
+import 'package:nibras/features/quiz/data/model/enroll_quiz_request_body.dart';
 import 'package:nibras/features/quiz/data/model/enroll_quiz_response_body.dart';
+import 'package:nibras/features/quiz/data/model/submit_quiz_request_body.dart';
+import 'package:nibras/features/quiz/data/model/submit_quiz_response_body.dart';
 import 'package:nibras/features/reviews/model/rating_response_body.dart';
 import 'package:nibras/features/reviews/model/review_request_body.dart';
 import 'package:nibras/features/reviews/model/review_response_body.dart';
@@ -107,9 +110,11 @@ abstract class WebServices {
   @POST(ApiConstants.addnote)
   Future<AddNoteResponstBody> addNote(@Body() AddNoteRequestBody request);
 
-  
-  @POST(ApiConstants.enrollQuiz)
-  Future<EnrollQuizResponseBody> enrollQuiz();
 
+  @POST(ApiConstants.enrollQuiz)
+  Future<EnrollQuizResponseBody> enrollQuiz(@Body() EnrollQuizRequestBody request);
+
+  @POST(ApiConstants.submitQuiz)
+  Future<SubmitQuizResponseBody> submitQuiz(@Body() SubmitQuizRequestBody request);
 
 }

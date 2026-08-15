@@ -37,6 +37,9 @@ ProgressionResponseBodyData _$ProgressionResponseBodyDataFromJson(
   sections: (json['sections'] as List<dynamic>)
       .map((e) => CourseSection.fromJson(e as Map<String, dynamic>))
       .toList(),
+  finalExam: json['final_exam'] == null
+      ? null
+      : FinalExam.fromJson(json['final_exam'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ProgressionResponseBodyDataToJson(
@@ -46,6 +49,7 @@ Map<String, dynamic> _$ProgressionResponseBodyDataToJson(
   'resume_lesson': instance.resumeLesson,
   'next_lesson': instance.nextLesson,
   'sections': instance.sections,
+  'final_exam': instance.finalExam,
 };
 
 LearningCourse _$LearningCourseFromJson(Map<String, dynamic> json) =>
@@ -115,6 +119,7 @@ SectionLesson _$SectionLessonFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       type: json['type'] as String,
       duration: (json['duration'] as num?)?.toInt(),
+      videoUrl: json['video_url'] as String?,
       isFreePreview: json['is_free_preview'] as bool,
       orderIndex: (json['order_index'] as num).toInt(),
       status: json['status'] as String,
@@ -128,9 +133,24 @@ Map<String, dynamic> _$SectionLessonToJson(SectionLesson instance) =>
       'title': instance.title,
       'type': instance.type,
       'duration': instance.duration,
+      'video_url': instance.videoUrl,
       'is_free_preview': instance.isFreePreview,
       'order_index': instance.orderIndex,
       'status': instance.status,
       'last_position_seconds': instance.lastPositionSeconds,
       'is_completed': instance.isCompleted,
     };
+
+FinalExam _$FinalExamFromJson(Map<String, dynamic> json) => FinalExam(
+  id: (json['id'] as num).toInt(),
+  title: json['title'] as String,
+  maxAttempts: (json['max_attempts'] as num).toInt(),
+  passingScore: _parseDouble(json['passing_score']),
+);
+
+Map<String, dynamic> _$FinalExamToJson(FinalExam instance) => <String, dynamic>{
+  'id': instance.id,
+  'title': instance.title,
+  'max_attempts': instance.maxAttempts,
+  'passing_score': instance.passingScore,
+};

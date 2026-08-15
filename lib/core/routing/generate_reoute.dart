@@ -20,6 +20,7 @@ import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.da
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/submit_quiz_cubit.dart';
 import 'package:nibras/features/quiz/quiz_page.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
@@ -35,7 +36,6 @@ import 'package:nibras/features/setting/pages/security_and_password.dart';
 import 'package:nibras/features/setting/pages/setting_page.dart';
 import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
 import 'package:nibras/features/signup/signup.dart';
-import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/wishlist_page.dart';
 
@@ -167,10 +167,15 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => FilterPage());
 
       case RoutesName.enrollquiz:
+        final id = settings.arguments as int;
+
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => getIt<EnrollQuizCubit>(),
-            child: QuizPage(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<EnrollQuizCubit>()),
+              BlocProvider(create: (context) => getIt<SubmitQuizCubit>()),
+            ],
+            child: QuizPage(quizID: id),
           ),
         );
 

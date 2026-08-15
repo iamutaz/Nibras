@@ -171,13 +171,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(height: 20.h),
-              AppTextButton(
-                onpressed: () {
-                  context.pushNamed(RoutesName.enrollquiz);
-                },
-                textButton: "start quiz",
-                textStyle: TextStyles.font16mainbluebold,
-              ),
             ],
           ),
         ),

@@ -3,8 +3,10 @@ part 'submit_quiz_request_body.g.dart';
 
 @JsonSerializable()
 class SubmitQuizRequestBody {
+  @JsonKey(name: 'attempt_id')
+  int attemptID;
   final List<QuizAnswerRequest> answers;
-  SubmitQuizRequestBody({required this.answers});
+  SubmitQuizRequestBody({required this.answers,required this.attemptID});
   factory SubmitQuizRequestBody.fromJson(Map<String, dynamic> json) =>
       _$SubmitQuizRequestBodyFromJson(json);
   Map<String, dynamic> toJson() => _$SubmitQuizRequestBodyToJson(this);

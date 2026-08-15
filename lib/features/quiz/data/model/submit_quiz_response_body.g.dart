@@ -6,19 +6,21 @@ part of 'submit_quiz_response_body.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SubmitQuizResponse _$SubmitQuizResponseFromJson(Map<String, dynamic> json) =>
-    SubmitQuizResponse(
-      success: json['success'] as bool,
-      message: json['message'] as String,
-      data: SubmitQuizData.fromJson(json['data'] as Map<String, dynamic>),
-    );
+SubmitQuizResponseBody _$SubmitQuizResponseBodyFromJson(
+  Map<String, dynamic> json,
+) => SubmitQuizResponseBody(
+  success: json['success'] as bool,
+  message: json['message'] as String,
+  data: SubmitQuizData.fromJson(json['data'] as Map<String, dynamic>),
+);
 
-Map<String, dynamic> _$SubmitQuizResponseToJson(SubmitQuizResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'message': instance.message,
-      'data': instance.data,
-    };
+Map<String, dynamic> _$SubmitQuizResponseBodyToJson(
+  SubmitQuizResponseBody instance,
+) => <String, dynamic>{
+  'success': instance.success,
+  'message': instance.message,
+  'data': instance.data,
+};
 
 SubmitQuizData _$SubmitQuizDataFromJson(Map<String, dynamic> json) =>
     SubmitQuizData(

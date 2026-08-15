@@ -6,9 +6,11 @@ double _parseDouble(dynamic value) {
   if (value is num) {
     return value.toDouble();
   }
+
   if (value is String) {
     return double.tryParse(value) ?? 0.0;
   }
+
   return 0.0;
 }
 
@@ -42,11 +44,15 @@ class ProgressionResponseBodyData {
 
   final List<CourseSection> sections;
 
+  @JsonKey(name: 'final_exam')
+  final FinalExam? finalExam;
+
   ProgressionResponseBodyData({
     required this.course,
     this.resumeLesson,
     this.nextLesson,
     required this.sections,
+    this.finalExam,
   });
 
   factory ProgressionResponseBodyData.fromJson(Map<String, dynamic> json) =>
@@ -63,7 +69,10 @@ class LearningCourse {
   @JsonKey(name: 'total_lessons')
   final int totalLessons;
 
-  @JsonKey(name: 'completion_percentage', fromJson: _parseDouble)
+  @JsonKey(
+    name: 'completion_percentage',
+    fromJson: _parseDouble,
+  )
   final double completionPercentage;
 
   LearningCourse({
@@ -91,6 +100,7 @@ class ResumeLesson {
   final String sectionTitle;
 
   final String type;
+
   final int? duration;
 
   @JsonKey(name: 'video_url')
@@ -158,6 +168,9 @@ class SectionLesson {
 
   final int? duration;
 
+  @JsonKey(name: 'video_url')
+  final String? videoUrl;
+
   @JsonKey(name: 'is_free_preview')
   final bool isFreePreview;
 
@@ -177,6 +190,7 @@ class SectionLesson {
     required this.title,
     required this.type,
     this.duration,
+    this.videoUrl,
     required this.isFreePreview,
     required this.orderIndex,
     required this.status,
@@ -188,4 +202,31 @@ class SectionLesson {
       _$SectionLessonFromJson(json);
 
   Map<String, dynamic> toJson() => _$SectionLessonToJson(this);
+}
+
+@JsonSerializable()
+class FinalExam {
+  final int id;
+  final String title;
+
+  @JsonKey(name: 'max_attempts')
+  final int maxAttempts;
+
+  @JsonKey(
+    name: 'passing_score',
+    fromJson: _parseDouble,
+  )
+  final double passingScore;
+
+  FinalExam({
+    required this.id,
+    required this.title,
+    required this.maxAttempts,
+    required this.passingScore,
+  });
+
+  factory FinalExam.fromJson(Map<String, dynamic> json) =>
+      _$FinalExamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FinalExamToJson(this);
 }

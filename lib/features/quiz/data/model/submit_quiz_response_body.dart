@@ -2,18 +2,18 @@ import 'package:json_annotation/json_annotation.dart';
 part 'submit_quiz_response_body.g.dart';
 
 @JsonSerializable()
-class SubmitQuizResponse {
+class SubmitQuizResponseBody {
   final bool success;
   final String message;
   final SubmitQuizData data;
-  SubmitQuizResponse({
+  SubmitQuizResponseBody({
     required this.success,
     required this.message,
     required this.data,
   });
-  factory SubmitQuizResponse.fromJson(Map<String, dynamic> json) =>
-      _$SubmitQuizResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$SubmitQuizResponseToJson(this);
+  factory SubmitQuizResponseBody.fromJson(Map<String, dynamic> json) =>
+      _$SubmitQuizResponseBodyFromJson(json);
+  Map<String, dynamic> toJson() => _$SubmitQuizResponseBodyToJson(this);
 }
 
 @JsonSerializable()
