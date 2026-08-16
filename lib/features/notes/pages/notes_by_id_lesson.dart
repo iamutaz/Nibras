@@ -58,10 +58,13 @@ class _NotesByIdLessonState extends State<NotesByIdLesson> {
                   final notes = (response as GetNotesByIdResponseBody).data;
 
                   if (notes.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No notes for this lesson yet.',
-                        style: TextStyles.font14authblackregular,
+                    return Padding(
+                      padding:   EdgeInsets.symmetric(vertical:  32.0.h),
+                      child: Center(
+                        child: Text(
+                          'No notes for this lesson yet.',
+                          style: TextStyles.font14authblackregular,
+                        ),
                       ),
                     );
                   }
@@ -88,14 +91,7 @@ class _NotesByIdLessonState extends State<NotesByIdLesson> {
               );
             },
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 32.0.h, horizontal: 16.w),
-            child: AppTextButton(
-              onpressed: () {},
-              textButton: "Add note",
-              textStyle: TextStyles.font16authblackbold,
-            ),
-          ),
+
         ],
       ),
     );

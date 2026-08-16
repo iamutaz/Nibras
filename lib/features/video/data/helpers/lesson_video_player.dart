@@ -45,8 +45,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     setState(() {});
   }
 
-  // === دالة التقديم 10 ثواني ===
-  void _seekForward() {
+   void _seekForward() {
     final currentPosition = widget.controller.value.position;
     final duration = widget.controller.value.duration;
 
@@ -58,8 +57,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     widget.controller.seekTo(newPosition);
   }
 
-  // === دالة التأخير 10 ثواني ===
-  void _seekBackward() {
+   void _seekBackward() {
     final currentPosition = widget.controller.value.position;
 
     var newPosition = currentPosition - const Duration(seconds: 10);
@@ -87,7 +85,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     final videoValue = widget.controller.value;
 
     if (!videoValue.isInitialized) {
-      return const AspectRatio(
+      return   AspectRatio(
         aspectRatio: 16 / 9,
         child: ColoredBox(
           color: Colors.black,
@@ -123,15 +121,15 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
             if (_showControls)
               Positioned.fill(
                 child: Container(
-                  color: Colors.black45, // تغميق الخلفية قليلاً لتوضيح الأزرار
+                  color: Colors.black45, 
                   child: Stack(
                     children: [
-                      // أزرار التحكم الوسطى (تقديم، تشغيل/إيقاف، تأخير)
+                 
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // زر الرجوع 10 ثواني
+                     
                             IconButton(
                               onPressed: _seekBackward,
                               icon: const Icon(
@@ -143,7 +141,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
                             const SizedBox(width: 20),
 
-                            // زر التشغيل والإيقاف
+   
                             GestureDetector(
                               onTap: _togglePlayPause,
                               child: Container(
@@ -165,8 +163,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
                             const SizedBox(width: 20),
 
-                            // زر التقديم 10 ثواني
-                            IconButton(
+                             IconButton(
                               onPressed: _seekForward,
                               icon: const Icon(
                                 Icons.forward_10,
@@ -178,36 +175,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
                         ),
                       ),
 
-                      // إعدادات الجودة (أيقونة الترس في الأعلى)
-                      Positioned(
-                        top: 10,
-                        right: 10,
-                        child: PopupMenuButton<String>(
-                          icon: const Icon(Icons.settings, color: Colors.white),
-                          onSelected: (String quality) {
-                            // هنا يجب أن تقوم بتمرير الحدث للأب (LessonVideoPage)
-                            // ليقوم بتغيير رابط الفيديو إلى الجودة المختارة وإعادة تهيئة الـ Controller
-                            debugPrint("تم اختيار الجودة: $quality");
-                          },
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<String>>[
-                                const PopupMenuItem<String>(
-                                  value: '1080p',
-                                  child: Text('1080p'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: '720p',
-                                  child: Text('720p'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: '480p',
-                                  child: Text('480p'),
-                                ),
-                              ],
-                        ),
-                      ),
-
-                      // Bottom controls (الشريط السفلي)
+                      // Bottom controls  
                       Positioned(
                         left: 16,
                         right: 16,

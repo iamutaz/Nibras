@@ -3,10 +3,22 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nibras/core/DI/injection.dart';
+import 'package:nibras/core/networking/api_result.dart';
+import 'package:nibras/core/networking/dio_factory.dart';
+import 'package:nibras/core/networking/web_services.dart';
+import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
 import 'package:nibras/features/notes/pages/notes_in_video.dart';
+import 'package:nibras/features/quiz/data/model/in_video_answer_request_body.dart';
+import 'package:nibras/features/quiz/data/model/lesson_quizzes_response_body.dart';
+import 'package:nibras/features/quiz/data/repo/quiz_repo.dart';
+import 'package:nibras/features/quiz/helpers/interactive_qustion_sheet.dart';
 import 'package:nibras/features/video/data/helpers/lesson_video_player.dart';
 import 'package:nibras/features/video/data/repo/lesson_progress_repo.dart';
 import 'package:video_player/video_player.dart';
+
+// ignore_for_file: use_build_context_synchronously
 
 class LessonVideoPage extends StatefulWidget {
   final String videoUrl;
@@ -29,8 +41,7 @@ class LessonVideoPage extends StatefulWidget {
 class _LessonVideoPageState extends State<LessonVideoPage> {
   late final VideoPlayerController _videoController;
 
-  final LessonProgressRepo _progressRepository =
-      LessonProgressRepo();
+  final LessonProgressRepo _progressRepository = LessonProgressRepo();
 
   bool _isLoading = true;
   bool _isError = false;
@@ -40,6 +51,10 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   bool _wasPlaying = false;
 
   int _lastSavedPositionSeconds = 0;
+
+  final QuizRepo _quizRepo = QuizRepo(WebServices(DioFactory.getDio()));
+  List<LessonQuizData> _inVideoQuizzes = [];
+  final Set<int> _shownQuizIds = {};
 
   @override
   void initState() {
@@ -57,6 +72,9 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       await _videoController.initialize();
 
       _videoController.addListener(_videoListener);
+
+      // fetch quizzes for this lesson (if any)
+      unawaited(_fetchInVideoQuizzes());
 
       await _seekToStartPosition();
 
@@ -84,17 +102,11 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       return;
     }
 
-    final durationSeconds =
-        _videoController.value.duration.inSeconds;
+    final durationSeconds = _videoController.value.duration.inSeconds;
 
-    final safePosition = min(
-      startPosition,
-      durationSeconds,
-    );
+    final safePosition = min(startPosition, durationSeconds);
 
-    await _videoController.seekTo(
-      Duration(seconds: safePosition),
-    );
+    await _videoController.seekTo(Duration(seconds: safePosition));
 
     _lastSavedPositionSeconds = safePosition;
   }
@@ -128,6 +140,26 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
     }
 
     _wasPlaying = isPlaying;
+
+    // check for quizzes to show at this second
+    if (_inVideoQuizzes.isNotEmpty) {
+      for (final quiz in _inVideoQuizzes) {
+        try {
+          final int quizId = quiz.id;
+          if (_shownQuizIds.contains(quizId)) continue;
+
+          if (currentPosition >= quiz.triggerSecond) {
+            _shownQuizIds.add(quizId);
+            try {
+              _videoController.pause();
+            } catch (_) {}
+            unawaited(_showInVideoQuiz(quiz));
+          }
+        } catch (_) {
+          // ignore malformed quiz entries
+        }
+      }
+    }
   }
 
   Future<void> _saveProgress() async {
@@ -149,29 +181,21 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
     _hasSentComplete = true;
 
     try {
-      final durationSeconds =
-          _videoController.value.duration.inSeconds;
+      final durationSeconds = _videoController.value.duration.inSeconds;
 
       await _progressRepository.saveVideoProgress(
         lessonId: widget.lessonId,
-        positionSeconds: max(
-          _lastSavedPositionSeconds,
-          durationSeconds,
-        ),
+        positionSeconds: max(_lastSavedPositionSeconds, durationSeconds),
       );
 
-      await _progressRepository.completeLesson(
-        lessonId: widget.lessonId,
-      );
+      await _progressRepository.completeLesson(lessonId: widget.lessonId);
     } catch (_) {
       _hasSentComplete = false;
     }
   }
 
   Future<void> _enterFullscreen() async {
-    await SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky,
-    );
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
@@ -186,13 +210,9 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   }
 
   Future<void> _exitFullscreen() async {
-    await SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.edgeToEdge,
-    );
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     if (!mounted) return;
 
@@ -217,6 +237,130 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
     Navigator.pop(context);
   }
 
+  Future<void> _fetchInVideoQuizzes() async {
+    try {
+      final result = await _quizRepo.getLessonQuizzes(widget.lessonId);
+
+      result.when(
+        success: (response) {
+          debugPrint('Lesson quizzes fetched: ${response.data.length}');
+          if (mounted) {
+            setState(() {
+              _inVideoQuizzes = response.data;
+            });
+          } else {
+            _inVideoQuizzes = response.data;
+          }
+        },
+        failure: (error) {
+          debugPrint(
+            'Failed to fetch in-video quizzes: ${error.apiErrorModel.message}',
+          );
+        },
+      );
+    } catch (e, st) {
+      debugPrint('Failed to fetch in-video quizzes: $e');
+      debugPrint('$st');
+    }
+  }
+
+  Future<void> _showInVideoQuiz(LessonQuizData quiz) async {
+    try {
+      if (_isFullscreen) {
+        await _exitFullscreen();
+      }
+
+      await _videoController.pause();
+
+      final questions = quiz.questions;
+      if (questions.isEmpty) {
+        await _videoController.play();
+        return;
+      }
+
+      final currentContext = context;
+      if (!mounted) return;
+
+      for (final question in questions) {
+        final int questionId = question.id;
+        final String questionText =
+            (question.text != null && question.text!.trim().isNotEmpty)
+            ? question.text!
+            : 'Question';
+        final opts = <Map<String, dynamic>>[];
+        for (final option in question.options) {
+          opts.add({
+            'id': option.id,
+            'text': option.text,
+            'is_correct': option.isCorrect,
+          });
+        }
+
+        await InteractiveQuestionSheet.show(
+          currentContext,
+          quizId: quiz.id,
+          questionId: questionId,
+          questionText: questionText,
+          options: opts,
+          onSubmit: (int selectedOptionId) async {
+            try {
+              final result = await _quizRepo.submitInVideoAnswer(
+                InVideoAnswerRequestBody(
+                  quizId: quiz.id,
+                  questionId: questionId,
+                  selectedOptionId: selectedOptionId,
+                ),
+              );
+
+              return result.when(
+                success: (response) {
+                  debugPrint('Submit result: ${response.data.isCorrect}');
+                  return {
+                    'success': response.success,
+                    'message': response.message,
+                    'data': {
+                      'is_correct': response.data.isCorrect,
+                      'correct_option': response.data.correctOption == null
+                          ? null
+                          : {
+                              'id': response.data.correctOption!.id,
+                              'text': response.data.correctOption!.text,
+                            },
+                      'explanation': response.data.explanation,
+                    },
+                  };
+                },
+                failure: (error) {
+                  debugPrint('Submit failure: ${error.apiErrorModel.message}');
+                  return {
+                    'success': false,
+                    'message': error.apiErrorModel.message ?? 'Network error',
+                    'data': {'is_correct': false},
+                  };
+                },
+              );
+            } catch (e, st) {
+              debugPrint('Submit exception: $e');
+              debugPrint('$st');
+              return {
+                'success': false,
+                'message': 'Network error',
+                'data': {'is_correct': false},
+              };
+            }
+          },
+        );
+      }
+
+      // resume playback
+      await _videoController.play();
+    } catch (_) {
+      try {
+        await _videoController.play();
+      } catch (_) {}
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -227,8 +371,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
         }
       },
       child: Scaffold(
-        backgroundColor:
-            _isFullscreen ? Colors.black : Colors.white,
+        backgroundColor: _isFullscreen ? Colors.black : Colors.white,
         appBar: _isFullscreen
             ? null
             : AppBar(
@@ -261,10 +404,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
                     onPressed: () {
                       // TODO: More options
                     },
-                    icon: const Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
-                    ),
+                    icon: const Icon(Icons.more_vert, color: Colors.black),
                   ),
                 ],
               ),
@@ -275,18 +415,14 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (_isError) {
       return const Center(
         child: Text(
           'Error loading video',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          style: TextStyle(color: Colors.black),
         ),
       );
     }
@@ -308,7 +444,10 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
         ),
 
         Expanded(
-          child: NotesInVideo(),
+          child: BlocProvider(
+            create: (context) => getIt<AddNoteCubit>(),
+            child: NotesInVideo(lessonId: widget.lessonId),
+          ),
         ),
       ],
     );
@@ -318,13 +457,9 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   void dispose() {
     unawaited(_saveProgress());
 
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.edgeToEdge,
-    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     _videoController.removeListener(_videoListener);
     _videoController.dispose();

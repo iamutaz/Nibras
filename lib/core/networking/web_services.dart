@@ -17,6 +17,9 @@ import 'package:nibras/features/progression/data/model/progression_request_body.
 import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 import 'package:nibras/features/quiz/data/model/enroll_quiz_request_body.dart';
 import 'package:nibras/features/quiz/data/model/enroll_quiz_response_body.dart';
+import 'package:nibras/features/quiz/data/model/in_video_answer_request_body.dart';
+import 'package:nibras/features/quiz/data/model/in_video_answer_response_body.dart';
+import 'package:nibras/features/quiz/data/model/lesson_quizzes_response_body.dart';
 import 'package:nibras/features/quiz/data/model/submit_quiz_request_body.dart';
 import 'package:nibras/features/quiz/data/model/submit_quiz_response_body.dart';
 import 'package:nibras/features/reviews/model/rating_response_body.dart';
@@ -116,5 +119,15 @@ abstract class WebServices {
 
   @POST(ApiConstants.submitQuiz)
   Future<SubmitQuizResponseBody> submitQuiz(@Body() SubmitQuizRequestBody request);
+
+  @GET(ApiConstants.lessonQuizzes)
+  Future<LessonQuizzesResponseBody> getLessonQuizzes(
+    @Query('lesson_id') int lessonId,
+  );
+
+  @POST(ApiConstants.inVideoAnswer)
+  Future<InVideoAnswerResponseBody> submitInVideoAnswer(
+    @Body() InVideoAnswerRequestBody request,
+  );
 
 }
