@@ -45,7 +45,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     setState(() {});
   }
 
-   void _seekForward() {
+  void _seekForward() {
     final currentPosition = widget.controller.value.position;
     final duration = widget.controller.value.duration;
 
@@ -57,7 +57,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     widget.controller.seekTo(newPosition);
   }
 
-   void _seekBackward() {
+  void _seekBackward() {
     final currentPosition = widget.controller.value.position;
 
     var newPosition = currentPosition - const Duration(seconds: 10);
@@ -85,7 +85,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     final videoValue = widget.controller.value;
 
     if (!videoValue.isInitialized) {
-      return   AspectRatio(
+      return AspectRatio(
         aspectRatio: 16 / 9,
         child: ColoredBox(
           color: Colors.black,
@@ -113,7 +113,10 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
             // =========================
             // VIDEO
             // =========================
-            VideoPlayer(widget.controller),
+            AspectRatio(
+              aspectRatio: videoAspectRatio,
+              child: VideoPlayer(widget.controller),
+            ),
 
             // =========================
             // CONTROLS
@@ -121,15 +124,13 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
             if (_showControls)
               Positioned.fill(
                 child: Container(
-                  color: Colors.black45, 
+                  color: Colors.black45,
                   child: Stack(
                     children: [
-                 
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                     
                             IconButton(
                               onPressed: _seekBackward,
                               icon: const Icon(
@@ -141,7 +142,6 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
                             const SizedBox(width: 20),
 
-   
                             GestureDetector(
                               onTap: _togglePlayPause,
                               child: Container(
@@ -163,7 +163,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
                             const SizedBox(width: 20),
 
-                             IconButton(
+                            IconButton(
                               onPressed: _seekForward,
                               icon: const Icon(
                                 Icons.forward_10,
@@ -175,7 +175,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
                         ),
                       ),
 
-                      // Bottom controls  
+                      // Bottom controls
                       Positioned(
                         left: 16,
                         right: 16,

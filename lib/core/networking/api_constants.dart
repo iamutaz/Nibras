@@ -31,4 +31,5 @@ class ApiConstants {
   static const String submitQuiz='quiz-attempts/submit';
   static const String lessonQuizzes='lessons/quizzes';
   static const String inVideoAnswer='quizzes/in-video-answer';
+  static const String reportCourse='reports/courses';
 }

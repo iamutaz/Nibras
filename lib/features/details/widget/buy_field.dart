@@ -13,7 +13,6 @@ import 'package:nibras/features/wishlist/widgets/add_to_wishlist_bloclisitner.da
 
 class BuyField extends StatelessWidget {
   final String discountedprice;
-  final String? originalprice;
   final bool isFree;
   final int courseId;
 
@@ -21,7 +20,6 @@ class BuyField extends StatelessWidget {
     super.key,
     required this.courseId,
     required this.discountedprice,
-    this.originalprice,
     this.isFree = false,
   });
 
@@ -49,16 +47,7 @@ class BuyField extends StatelessWidget {
                         text: isFree ? 'Free' : '\$$discountedprice',
                         style: TextStyles.font20mainbluesemiBold,
                       ),
-                      if (!isFree)
-                        TextSpan(
-                          text: '  \$$originalprice',
-                          style: TextStyles.font14hintcolorregular,
-                        ),
-                      if (!isFree)
-                        TextSpan(
-                          text: '    20% off',
-                          style: TextStyles.font16mainblueregular,
-                        ),
+ 
                     ],
                   ),
                 ),

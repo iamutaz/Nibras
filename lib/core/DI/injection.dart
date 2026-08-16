@@ -23,6 +23,8 @@ import 'package:nibras/features/quiz/data/cubit/in_video_answer_cubit.dart';
 import 'package:nibras/features/quiz/data/cubit/lesson_quizzes_cubit.dart';
 import 'package:nibras/features/quiz/data/cubit/submit_quiz_cubit.dart';
 import 'package:nibras/features/quiz/data/repo/quiz_repo.dart';
+import 'package:nibras/features/report/data/cubit/reports_cubit.dart';
+import 'package:nibras/features/report/data/repo/reports_repo.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/reviews/repo/review_repo.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -97,4 +99,8 @@ void setupinjection() async {
   getIt.registerFactory<InVideoAnswerCubit>(() => InVideoAnswerCubit(getIt()));
 
   getIt.registerFactory<SubmitQuizCubit>(() => SubmitQuizCubit(getIt()));
+
+  getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo(getIt()));
+
+  getIt.registerFactory<ReportsCubit>(() => ReportsCubit(getIt()));
 }

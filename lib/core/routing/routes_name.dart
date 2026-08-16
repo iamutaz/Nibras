@@ -24,4 +24,5 @@ class RoutesName {
   static const String filter = '/filter';
   static const String wishlist = '/wishlist';
   static const String enrollquiz='/enrollquiz';
+  static const String reportpage='/reportepage';
 }

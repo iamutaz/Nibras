@@ -5,15 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/DI/injection.dart';
+import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/core/networking/dio_factory.dart';
 import 'package:nibras/core/networking/web_services.dart';
+import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
 import 'package:nibras/features/notes/pages/notes_in_video.dart';
 import 'package:nibras/features/quiz/data/model/in_video_answer_request_body.dart';
 import 'package:nibras/features/quiz/data/model/lesson_quizzes_response_body.dart';
 import 'package:nibras/features/quiz/data/repo/quiz_repo.dart';
 import 'package:nibras/features/quiz/helpers/interactive_qustion_sheet.dart';
+import 'package:nibras/features/report/course_report_sheet.dart';
+import 'package:nibras/features/report/data/cubit/reports_cubit.dart';
+import 'package:nibras/features/report/data/model/report_request_body.dart';
+import 'package:nibras/features/report/reports_bloc_listiner.dart';
 import 'package:nibras/features/video/data/helpers/lesson_video_player.dart';
 import 'package:nibras/features/video/data/repo/lesson_progress_repo.dart';
 import 'package:video_player/video_player.dart';
@@ -40,6 +46,7 @@ class LessonVideoPage extends StatefulWidget {
 
 class _LessonVideoPageState extends State<LessonVideoPage> {
   late final VideoPlayerController _videoController;
+  Key _playerKey = UniqueKey();
 
   final LessonProgressRepo _progressRepository = LessonProgressRepo();
 
@@ -70,14 +77,10 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       );
 
       await _videoController.initialize();
-
       _videoController.addListener(_videoListener);
 
-      // fetch quizzes for this lesson (if any)
       unawaited(_fetchInVideoQuizzes());
-
       await _seekToStartPosition();
-
       await _videoController.play();
 
       if (!mounted) return;
@@ -85,9 +88,17 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       setState(() {
         _isLoading = false;
       });
+
+      // إجبار remount كامل للـ VideoPlayer بعد أول فريم
+      // (نفس تأثير تبديل الفل سكرين اللي عم يصلح المشكلة عندك)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        setState(() {
+          _playerKey = UniqueKey();
+        });
+      });
     } catch (_) {
       if (!mounted) return;
-
       setState(() {
         _isLoading = false;
         _isError = true;
@@ -400,11 +411,61 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
                 ),
 
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      // TODO: More options
-                    },
-                    icon: const Icon(Icons.more_vert, color: Colors.black),
+                  BlocProvider(
+                    create: (_) => getIt<ReportsCubit>(),
+                    child: Builder(
+                      builder: (context) {
+                        return Stack(
+                          children: [
+                            PopupMenuButton<String>(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: Colors.black,
+                              ),
+                              onSelected: (value) {
+                                if (value == 'report') {
+                                  final reportsCubit = context
+                                      .read<ReportsCubit>();
+
+                                  CourseReportSheet.show(
+                                    context,
+                                    onSubmit: (reason, details) async {
+                                      await reportsCubit.report(
+                                        ReportRequestBody(
+                                          courseId: widget.lessonId,
+                                          reason: reason,
+                                          description: details,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 'report',
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.report_problem,
+                                        color: Colors.red,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        'Report',
+                                        style: TextStyles.font12redmiduem,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const ReportsBlocListener(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -430,6 +491,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
     if (_isFullscreen) {
       return Center(
         child: LessonVideoPlayer(
+          key: _playerKey,
           controller: _videoController,
           onFullscreen: _toggleFullscreen,
         ),
@@ -439,6 +501,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
     return Column(
       children: [
         LessonVideoPlayer(
+          key: _playerKey,
           controller: _videoController,
           onFullscreen: _toggleFullscreen,
         ),

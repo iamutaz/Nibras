@@ -22,6 +22,7 @@ import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
 import 'package:nibras/features/quiz/data/cubit/submit_quiz_cubit.dart';
 import 'package:nibras/features/quiz/quiz_page.dart';
+import 'package:nibras/features/report/course_report_sheet.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -166,6 +167,7 @@ class GenerateRoute {
       case RoutesName.filter:
         return MaterialPageRoute(builder: (context) => FilterPage());
 
+ 
       case RoutesName.enrollquiz:
         final id = settings.arguments as int;
 

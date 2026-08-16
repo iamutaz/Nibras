@@ -99,9 +99,7 @@ class _DetailsState extends State<Details> {
                       discountedprice: course != null
                           ? course.price.toString()
                           : '9.99',
-                      originalprice: course != null
-                          ? course.price.toString()
-                          : '14.99',
+ 
                       isFree: course?.isFree ?? false,
                     ),
                   ),
