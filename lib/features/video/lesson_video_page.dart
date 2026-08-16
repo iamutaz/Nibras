@@ -1,10 +1,24 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
-import 'package:nibras/core/networking/api_constants.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nibras/core/DI/injection.dart';
+import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/core/networking/dio_factory.dart';
+import 'package:nibras/core/networking/web_services.dart';
+import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
+import 'package:nibras/features/notes/pages/notes_in_video.dart';
+import 'package:nibras/features/quiz/data/model/in_video_answer_request_body.dart';
+import 'package:nibras/features/quiz/data/model/lesson_quizzes_response_body.dart';
+import 'package:nibras/features/quiz/data/repo/quiz_repo.dart';
+import 'package:nibras/features/quiz/helpers/interactive_qustion_sheet.dart';
+import 'package:nibras/features/video/data/helpers/lesson_video_player.dart';
+import 'package:nibras/features/video/data/repo/lesson_progress_repo.dart';
+import 'package:video_player/video_player.dart';
+
+// ignore_for_file: use_build_context_synchronously
 
 class LessonVideoPage extends StatefulWidget {
   final String videoUrl;
@@ -25,148 +39,431 @@ class LessonVideoPage extends StatefulWidget {
 }
 
 class _LessonVideoPageState extends State<LessonVideoPage> {
-  late VideoPlayerController _videoPlayerController;
-  ChewieController? _chewieController;
+  late final VideoPlayerController _videoController;
+
+  final LessonProgressRepo _progressRepository = LessonProgressRepo();
+
+  bool _isLoading = true;
   bool _isError = false;
+
+  bool _isFullscreen = false;
   bool _hasSentComplete = false;
   bool _wasPlaying = false;
+
   int _lastSavedPositionSeconds = 0;
+
+  final QuizRepo _quizRepo = QuizRepo(WebServices(DioFactory.getDio()));
+  List<LessonQuizData> _inVideoQuizzes = [];
+  final Set<int> _shownQuizIds = {};
 
   @override
   void initState() {
     super.initState();
-    _initializePlayer();
+
+    _initializeVideo();
   }
 
-  Future<void> _initializePlayer() async {
+  Future<void> _initializeVideo() async {
     try {
-      _videoPlayerController = VideoPlayerController.networkUrl(
+      _videoController = VideoPlayerController.networkUrl(
         Uri.parse(widget.videoUrl),
       );
-      await _videoPlayerController.initialize();
-      _videoPlayerController.addListener(_videoListener);
 
-      if (widget.startPositionSeconds != null &&
-          widget.startPositionSeconds! > 0) {
-        final durationSeconds = _videoPlayerController.value.duration.inSeconds;
-        final seekSeconds = min(widget.startPositionSeconds!, durationSeconds);
-        await _videoPlayerController.seekTo(Duration(seconds: seekSeconds));
-        _lastSavedPositionSeconds = seekSeconds;
-      }
+      await _videoController.initialize();
 
-      _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
-        aspectRatio: _videoPlayerController.value.aspectRatio,
-        autoPlay: true,
-        looping: false,
-        allowFullScreen: true,
-        materialProgressColors: ChewieProgressColors(
-          playedColor: Colors.purple,
-          handleColor: Colors.purple,
-          backgroundColor: Colors.grey,
-          bufferedColor: Colors.purple.shade100,
-        ),
-      );
-      setState(() {});
+      _videoController.addListener(_videoListener);
+
+      // fetch quizzes for this lesson (if any)
+      unawaited(_fetchInVideoQuizzes());
+
+      await _seekToStartPosition();
+
+      await _videoController.play();
+
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = false;
+      });
     } catch (_) {
-      setState(() => _isError = true);
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = false;
+        _isError = true;
+      });
     }
   }
 
+  Future<void> _seekToStartPosition() async {
+    final startPosition = widget.startPositionSeconds;
+
+    if (startPosition == null || startPosition <= 0) {
+      return;
+    }
+
+    final durationSeconds = _videoController.value.duration.inSeconds;
+
+    final safePosition = min(startPosition, durationSeconds);
+
+    await _videoController.seekTo(Duration(seconds: safePosition));
+
+    _lastSavedPositionSeconds = safePosition;
+  }
+
   void _videoListener() {
-    if (!_videoPlayerController.value.isInitialized) return;
+    if (!_videoController.value.isInitialized) {
+      return;
+    }
 
-    final position = _videoPlayerController.value.position;
-    final duration = _videoPlayerController.value.duration;
-    final currentPosition = position.inSeconds;
+    final value = _videoController.value;
 
-    // تحديث أعلى ثانية وصل إليها الطالب
+    final currentPosition = value.position.inSeconds;
+    final durationSeconds = value.duration.inSeconds;
+
     if (currentPosition > _lastSavedPositionSeconds) {
       _lastSavedPositionSeconds = currentPosition;
     }
 
-    final isPlaying = _videoPlayerController.value.isPlaying;
+    final isPlaying = value.isPlaying;
 
-    // 1. اكتشاف الإيقاف المؤقت (User Paused Video)
+    // Video paused
     if (_wasPlaying && !isPlaying) {
-      _sendVideoProgress(_lastSavedPositionSeconds);
+      unawaited(_saveProgress());
     }
 
-    // 2. اكتشاف وصول الفيديو للنهاية (Lesson Completed)
-    if (duration.inSeconds > 0 &&
-        currentPosition >= duration.inSeconds - 1 &&
+    // Video completed
+    if (durationSeconds > 0 &&
+        currentPosition >= durationSeconds - 1 &&
         !_hasSentComplete) {
-      _sendLessonComplete();
+      unawaited(_completeLesson());
     }
 
     _wasPlaying = isPlaying;
-  }
 
-  Future<void> _sendVideoProgress(int seconds) async {
-    try {
-      await DioFactory.getDio().post(
-        '${ApiConstants.baseurl}${ApiConstants.progressVideo}',
-        data: {'lesson_id': widget.lessonId, 'position_seconds': seconds},
-      );
-    } catch (_) {
-      // ignore save errors
+    // check for quizzes to show at this second
+    if (_inVideoQuizzes.isNotEmpty) {
+      for (final quiz in _inVideoQuizzes) {
+        try {
+          final int quizId = quiz.id;
+          if (_shownQuizIds.contains(quizId)) continue;
+
+          if (currentPosition >= quiz.triggerSecond) {
+            _shownQuizIds.add(quizId);
+            try {
+              _videoController.pause();
+            } catch (_) {}
+            unawaited(_showInVideoQuiz(quiz));
+          }
+        } catch (_) {
+          // ignore malformed quiz entries
+        }
+      }
     }
   }
 
-  Future<void> _sendLessonComplete() async {
-    if (_hasSentComplete) return;
+  Future<void> _saveProgress() async {
+    try {
+      await _progressRepository.saveVideoProgress(
+        lessonId: widget.lessonId,
+        positionSeconds: _lastSavedPositionSeconds,
+      );
+    } catch (_) {
+      // Ignore progress errors.
+    }
+  }
+
+  Future<void> _completeLesson() async {
+    if (_hasSentComplete) {
+      return;
+    }
+
     _hasSentComplete = true;
 
     try {
-      final durationSeconds = _videoPlayerController.value.duration.inSeconds;
+      final durationSeconds = _videoController.value.duration.inSeconds;
 
-      // إرسال آخر نقطة تقدم للسيرفر أولاً حتى يحسب الـ 80%+ بنجاح
-      await _sendVideoProgress(max(_lastSavedPositionSeconds, durationSeconds));
-
-      // ثم إرسال طلب إكمال الدرس
-      await DioFactory.getDio().post(
-        '${ApiConstants.baseurl}${ApiConstants.progressLessonComplete}',
-        data: {'lesson_id': widget.lessonId},
+      await _progressRepository.saveVideoProgress(
+        lessonId: widget.lessonId,
+        positionSeconds: max(_lastSavedPositionSeconds, durationSeconds),
       );
+
+      await _progressRepository.completeLesson(lessonId: widget.lessonId);
     } catch (_) {
-      _hasSentComplete = false; // إعادة الضبط في حال فشل الطلب
+      _hasSentComplete = false;
     }
   }
 
-  @override
-  void dispose() {
-    if (!_hasSentComplete && _videoPlayerController.value.isInitialized) {
-      _sendVideoProgress(_lastSavedPositionSeconds);
+  Future<void> _enterFullscreen() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    if (!mounted) return;
+
+    setState(() {
+      _isFullscreen = true;
+    });
+  }
+
+  Future<void> _exitFullscreen() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    if (!mounted) return;
+
+    setState(() {
+      _isFullscreen = false;
+    });
+  }
+
+  Future<void> _toggleFullscreen() async {
+    if (_isFullscreen) {
+      await _exitFullscreen();
+    } else {
+      await _enterFullscreen();
     }
-    _videoPlayerController.removeListener(_videoListener);
-    _videoPlayerController.dispose();
-    _chewieController?.dispose();
-    super.dispose();
+  }
+
+  Future<void> _goBack() async {
+    await _saveProgress();
+
+    if (!mounted) return;
+
+    Navigator.pop(context);
+  }
+
+  Future<void> _fetchInVideoQuizzes() async {
+    try {
+      final result = await _quizRepo.getLessonQuizzes(widget.lessonId);
+
+      result.when(
+        success: (response) {
+          debugPrint('Lesson quizzes fetched: ${response.data.length}');
+          if (mounted) {
+            setState(() {
+              _inVideoQuizzes = response.data;
+            });
+          } else {
+            _inVideoQuizzes = response.data;
+          }
+        },
+        failure: (error) {
+          debugPrint(
+            'Failed to fetch in-video quizzes: ${error.apiErrorModel.message}',
+          );
+        },
+      );
+    } catch (e, st) {
+      debugPrint('Failed to fetch in-video quizzes: $e');
+      debugPrint('$st');
+    }
+  }
+
+  Future<void> _showInVideoQuiz(LessonQuizData quiz) async {
+    try {
+      if (_isFullscreen) {
+        await _exitFullscreen();
+      }
+
+      await _videoController.pause();
+
+      final questions = quiz.questions;
+      if (questions.isEmpty) {
+        await _videoController.play();
+        return;
+      }
+
+      final currentContext = context;
+      if (!mounted) return;
+
+      for (final question in questions) {
+        final int questionId = question.id;
+        final String questionText =
+            (question.text != null && question.text!.trim().isNotEmpty)
+            ? question.text!
+            : 'Question';
+        final opts = <Map<String, dynamic>>[];
+        for (final option in question.options) {
+          opts.add({
+            'id': option.id,
+            'text': option.text,
+            'is_correct': option.isCorrect,
+          });
+        }
+
+        await InteractiveQuestionSheet.show(
+          currentContext,
+          quizId: quiz.id,
+          questionId: questionId,
+          questionText: questionText,
+          options: opts,
+          onSubmit: (int selectedOptionId) async {
+            try {
+              final result = await _quizRepo.submitInVideoAnswer(
+                InVideoAnswerRequestBody(
+                  quizId: quiz.id,
+                  questionId: questionId,
+                  selectedOptionId: selectedOptionId,
+                ),
+              );
+
+              return result.when(
+                success: (response) {
+                  debugPrint('Submit result: ${response.data.isCorrect}');
+                  return {
+                    'success': response.success,
+                    'message': response.message,
+                    'data': {
+                      'is_correct': response.data.isCorrect,
+                      'correct_option': response.data.correctOption == null
+                          ? null
+                          : {
+                              'id': response.data.correctOption!.id,
+                              'text': response.data.correctOption!.text,
+                            },
+                      'explanation': response.data.explanation,
+                    },
+                  };
+                },
+                failure: (error) {
+                  debugPrint('Submit failure: ${error.apiErrorModel.message}');
+                  return {
+                    'success': false,
+                    'message': error.apiErrorModel.message ?? 'Network error',
+                    'data': {'is_correct': false},
+                  };
+                },
+              );
+            } catch (e, st) {
+              debugPrint('Submit exception: $e');
+              debugPrint('$st');
+              return {
+                'success': false,
+                'message': 'Network error',
+                'data': {'is_correct': false},
+              };
+            }
+          },
+        );
+      }
+
+      // resume playback
+      await _videoController.play();
+    } catch (_) {
+      try {
+        await _videoController.play();
+      } catch (_) {}
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(
-          widget.lessonTitle,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ),
-      body: Center(
-        child: _isError
-            ? const Text(
-                'Error loading video',
-                style: TextStyle(color: Colors.white),
-              )
-            : _chewieController != null &&
-                  _chewieController!.videoPlayerController.value.isInitialized
-            ? Chewie(controller: _chewieController!)
-            : const CircularProgressIndicator(color: Colors.purple),
+    return PopScope(
+      canPop: !_isFullscreen,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop && _isFullscreen) {
+          await _exitFullscreen();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: _isFullscreen ? Colors.black : Colors.white,
+        appBar: _isFullscreen
+            ? null
+            : AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                centerTitle: true,
+
+                leading: IconButton(
+                  onPressed: _goBack,
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.black,
+                    size: 20,
+                  ),
+                ),
+
+                title: Text(
+                  widget.lessonTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      // TODO: More options
+                    },
+                    icon: const Icon(Icons.more_vert, color: Colors.black),
+                  ),
+                ],
+              ),
+        body: _buildBody(),
       ),
     );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_isError) {
+      return const Center(
+        child: Text(
+          'Error loading video',
+          style: TextStyle(color: Colors.black),
+        ),
+      );
+    }
+
+    if (_isFullscreen) {
+      return Center(
+        child: LessonVideoPlayer(
+          controller: _videoController,
+          onFullscreen: _toggleFullscreen,
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        LessonVideoPlayer(
+          controller: _videoController,
+          onFullscreen: _toggleFullscreen,
+        ),
+
+        Expanded(
+          child: BlocProvider(
+            create: (context) => getIt<AddNoteCubit>(),
+            child: NotesInVideo(lessonId: widget.lessonId),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    unawaited(_saveProgress());
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    _videoController.removeListener(_videoListener);
+    _videoController.dispose();
+
+    super.dispose();
   }
 }

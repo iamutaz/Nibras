@@ -14,10 +14,10 @@ class AppTextButton extends StatelessWidget {
       widthbutton,
       raduisbutton,
       borderWidth;
-  Color? buttoncolor, borderColor;
-  String? icon;
+  final Color? buttoncolor, borderColor;
+  final String? icon;
 
-  AppTextButton({
+  const AppTextButton({
     super.key,
     required this.onpressed,
     required this.textButton,
@@ -30,7 +30,7 @@ class AppTextButton extends StatelessWidget {
     this.buttoncolor,
     this.borderWidth,
     this.borderColor,
-    this.icon
+    this.icon,
   });
 
   @override
@@ -42,9 +42,9 @@ class AppTextButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(raduisbutton ?? 25),
             side: borderWidth != null && borderColor != null
                 ? BorderSide(
-              color: borderColor!,
-              width: borderWidth!,
-            )
+                    color: borderColor!,
+                    width: borderWidth!,
+                  )
                 : BorderSide.none,
           ),
         ),
@@ -62,17 +62,15 @@ class AppTextButton extends StatelessWidget {
         ),
       ),
       onPressed: onpressed,
-      child: Expanded(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          
-          children: [
-            if (icon != null) SvgPicture.asset(icon!, width: 22.w, height: 22.h),
-            SizedBox(width: icon != null ? 10.w : 0.w,),
-            Text(textButton, style: textStyle),
-          ],
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) SvgPicture.asset(icon!, width: 22.w, height: 22.h),
+          if (icon != null) SizedBox(width: 10.w),
+          Text(textButton, style: textStyle),
+        ],
       ),
     );
   }

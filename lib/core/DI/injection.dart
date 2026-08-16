@@ -18,6 +18,11 @@ import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/data/repo/notes_repo.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/data/repo/progression_repo.dart';
+import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/in_video_answer_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/lesson_quizzes_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/submit_quiz_cubit.dart';
+import 'package:nibras/features/quiz/data/repo/quiz_repo.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/reviews/repo/review_repo.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -85,4 +90,11 @@ void setupinjection() async {
 
   getIt.registerLazySingleton<ProgressionRepo>(() => ProgressionRepo(getIt()));
   getIt.registerFactory<ProgressionCubit>(() => ProgressionCubit(getIt()));
+
+  getIt.registerLazySingleton<QuizRepo>(() => QuizRepo(getIt()));
+  getIt.registerFactory<EnrollQuizCubit>(() => EnrollQuizCubit(getIt()));
+  getIt.registerFactory<LessonQuizzesCubit>(() => LessonQuizzesCubit(getIt()));
+  getIt.registerFactory<InVideoAnswerCubit>(() => InVideoAnswerCubit(getIt()));
+
+  getIt.registerFactory<SubmitQuizCubit>(() => SubmitQuizCubit(getIt()));
 }
