@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,20 +8,25 @@ class ProfileRow extends StatelessWidget {
   const ProfileRow({
     super.key,
     required this.username,
+    this.avatarUrl, 
   });
 
   final String username;
+  final String? avatarUrl; 
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal:  16.w,vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Row(
         children: [
-          CircleAvatar(radius: 32.r,backgroundColor: AppColors.avatarColor),
-          
+          CircleAvatar(
+            radius: 32.r,
+            backgroundColor: AppColors.avatarColor,
+            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null, 
+          ),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 14.0.w),
+            padding: EdgeInsets.symmetric(horizontal: 14.0.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

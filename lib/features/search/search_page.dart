@@ -7,7 +7,6 @@ import 'package:nibras/features/interesting/data/cubit/categories_cubit.dart';
 import 'package:nibras/features/interesting/data/cubit/categories_state.dart';
 import 'package:nibras/features/interesting/data/repo/categories_repo.dart';
 import 'widgets/search_bar_widget.dart';
-import 'widgets/top_searches_widget.dart';
 import 'widgets/categories_list_widget.dart';
 
 class SearchPage extends StatelessWidget {
@@ -15,19 +14,6 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> topSearches = [
-      'Python',
-      'excel',
-      'Java',
-      'C#',
-      'Ai',
-      'SQL',
-      'ASP.net',
-      'Java Script',
-      'AWS',
-      'React',
-    ];
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -37,17 +23,6 @@ class SearchPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchBarWidget(),
-              const SizedBox(height: 32),
-
-              Text(
-                'Top Searches',
-                style: TextStyles.font20blackbold.copyWith(
-                  fontSize: 18.sp,
-                  color: AppColors.mainBlack,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TopSearchesWidget(tags: topSearches),
               const SizedBox(height: 32),
 
               Text(

@@ -32,7 +32,6 @@ import 'package:nibras/features/setting/pages/security_and_password.dart';
 import 'package:nibras/features/setting/pages/setting_page.dart';
 import 'package:nibras/features/signup/data/cubit/signup_cubit.dart';
 import 'package:nibras/features/signup/signup.dart';
-import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/wishlist_page.dart';
 
