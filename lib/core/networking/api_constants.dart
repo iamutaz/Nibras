@@ -23,4 +23,8 @@ class ApiConstants {
   static const String uploadAvatar = "upload/avatar";
   static const String addtowishlist = 'wishlist';
   static const String getmywishlist = 'wishlist/my';
+  static const String leaderboard = 'leaderboard';
+  static const String me = 'auth/me';
+  static const String streak = 'streak';
+  static const String xpStats = 'xp/stats';
 }
