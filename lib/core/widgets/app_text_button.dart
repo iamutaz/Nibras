@@ -3,11 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 
 class AppTextButton extends StatelessWidget {
-  final VoidCallback onpressed;
+  final VoidCallback? onpressed;
   final String textButton;
   final TextStyle textStyle;
-  final double?
-      horizontalpadding,
+  final double? horizontalpadding,
       verticalpadding,
       hieghtbutton,
       widthbutton,
@@ -20,7 +19,7 @@ class AppTextButton extends StatelessWidget {
 
   const AppTextButton({
     super.key,
-    required this.onpressed,
+    this.onpressed,
     required this.textButton,
     required this.textStyle,
     this.horizontalpadding,
@@ -42,10 +41,7 @@ class AppTextButton extends StatelessWidget {
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(raduisbutton ?? 25),
             side: borderWidth != null && borderColor != null
-                ? BorderSide(
-                    color: borderColor!,
-                    width: borderWidth!,
-                  )
+                ? BorderSide(color: borderColor!, width: borderWidth!)
                 : BorderSide.none,
           ),
         ),
@@ -59,10 +55,7 @@ class AppTextButton extends StatelessWidget {
           ),
         ),
         fixedSize: WidgetStateProperty.all(
-          Size(
-            widthbutton ?? double.maxFinite,
-            hieghtbutton ?? 52.h,
-          ),
+          Size(widthbutton ?? double.maxFinite, hieghtbutton ?? 52.h),
         ),
       ),
       onPressed: onpressed,
@@ -73,10 +66,7 @@ class AppTextButton extends StatelessWidget {
         children: [
           if (icon != null) icon!,
           if (icon != null) SizedBox(width: 10.w),
-          Text(
-            textButton,
-            style: textStyle,
-          ),
+          Text(textButton, style: textStyle),
         ],
       ),
     );

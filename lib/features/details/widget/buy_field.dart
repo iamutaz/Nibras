@@ -17,11 +17,15 @@ class BuyField extends StatelessWidget {
   final String discountedprice;
   final bool isFree;
   final int courseId;
+  final String courseName;
+  final String instructorName;
 
   const BuyField({
     super.key,
     required this.courseId,
     required this.discountedprice,
+    required this.courseName,
+    required this.instructorName,
     this.isFree = false,
   });
 
@@ -90,7 +94,15 @@ class BuyField extends StatelessWidget {
                         EnrollmentRequestBody(courseId: courseId),
                       );
                     } else {
-                      context.pushNamed(RoutesName.payment);
+                      context.pushNamed(
+                        RoutesName.payment,
+                        aurgment: {
+                          'courseId': courseId,
+                          'courseName': courseName,
+                          'instructorName': instructorName,
+                          'originalPrice': double.parse(discountedprice),
+                        },
+                      );
                     }
                   },
                   buttoncolor: Colors.white,

@@ -10,7 +10,7 @@ CreatePaymentIntentRequest _$CreatePaymentIntentRequestFromJson(
   Map<String, dynamic> json,
 ) => CreatePaymentIntentRequest(
   courseId: (json['course_id'] as num).toInt(),
-  couponCode: json['coupon_code'] as String,
+  couponCode: json['coupon_code'] as String?,
 );
 
 Map<String, dynamic> _$CreatePaymentIntentRequestToJson(

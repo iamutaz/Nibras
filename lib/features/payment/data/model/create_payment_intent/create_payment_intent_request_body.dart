@@ -8,16 +8,12 @@ class CreatePaymentIntentRequest {
   final int courseId;
 
   @JsonKey(name: 'coupon_code')
-  final String couponCode;
+  final String? couponCode;
 
-  CreatePaymentIntentRequest({
-    required this.courseId,
-    required this.couponCode,
-  });
+  CreatePaymentIntentRequest({required this.courseId, this.couponCode});
 
   factory CreatePaymentIntentRequest.fromJson(Map<String, dynamic> json) =>
       _$CreatePaymentIntentRequestFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$CreatePaymentIntentRequestToJson(this);
+  Map<String, dynamic> toJson() => _$CreatePaymentIntentRequestToJson(this);
 }

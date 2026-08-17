@@ -49,9 +49,9 @@ class _DetailsState extends State<Details> {
         ),
         actions: [
           GestureDetector(
-            child: Padding(
+             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-              child: SvgPicture.asset("assets/svg/cart.svg"),
+              child: SvgPicture.asset("assets/svg/wishlist.svg"),
             ),
           ),
         ],
@@ -95,11 +95,10 @@ class _DetailsState extends State<Details> {
                       ),
                     ],
                     child: BuyField(
-                       courseId: course?.id ?? 1,
-                      discountedprice: course != null
-                          ? course.price.toString()
-                          : '9.99',
- 
+                      courseId: course?.id ?? 1,
+                      courseName: course?.title ?? 'Course',
+                      instructorName: course?.instructor.name ?? 'Instructor',
+                      discountedprice: course?.price.toString() ?? '0.0',
                       isFree: course?.isFree ?? false,
                     ),
                   ),

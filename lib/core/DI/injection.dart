@@ -16,6 +16,10 @@ import 'package:nibras/features/login/data/repo/login_repo.dart';
 import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
 import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/data/repo/notes_repo.dart';
+import 'package:nibras/features/payment/data/cubit/confirm_payment_cubit.dart';
+import 'package:nibras/features/payment/data/cubit/coupon_cubit.dart';
+import 'package:nibras/features/payment/data/cubit/intent_cubit.dart';
+import 'package:nibras/features/payment/data/repo/payment_repo.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/data/repo/progression_repo.dart';
 import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
@@ -42,6 +46,16 @@ void setupinjection() async {
   //web services
   Dio dio = DioFactory.getDio();
   getIt.registerLazySingleton<WebServices>(() => WebServices(dio));
+  // payment
+  // register PaymentRepo so UI can access payment APIs
+  // Note: PaymentRepo depends on WebServices
+  getIt.registerLazySingleton<PaymentRepo>(() => PaymentRepo(getIt()));
+
+  getIt.registerFactory<ConfirmPaymentCubit>(
+    () => ConfirmPaymentCubit(getIt()),
+  );
+  getIt.registerFactory<CouponCubit>(() => CouponCubit(getIt()));
+  getIt.registerFactory<IntentCubit>(() => IntentCubit(getIt()));
 
   //login
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));

@@ -169,15 +169,16 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => FilterPage());
 
       case RoutesName.payment:
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
           builder: (context) => PaymentPage(
-            courseId: 1,
-            courseName: 'test course',
-            instructorName: 'test instructor',
-            originalPrice: 100.0,
+            courseId: args['courseId'] as int,
+            courseName: args['courseName'] as String,
+            instructorName: args['instructorName'] as String,
+            originalPrice: args['originalPrice'] as double,
           ),
         );
-
       case RoutesName.enrollquiz:
         final id = settings.arguments as int;
 
