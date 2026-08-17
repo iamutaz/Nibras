@@ -17,6 +17,7 @@ import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/payment/payment_page.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
@@ -167,7 +168,16 @@ class GenerateRoute {
       case RoutesName.filter:
         return MaterialPageRoute(builder: (context) => FilterPage());
 
- 
+      case RoutesName.payment:
+        return MaterialPageRoute(
+          builder: (context) => PaymentPage(
+            courseId: 1,
+            courseName: 'test course',
+            instructorName: 'test instructor',
+            originalPrice: 100.0,
+          ),
+        );
+
       case RoutesName.enrollquiz:
         final id = settings.arguments as int;
 

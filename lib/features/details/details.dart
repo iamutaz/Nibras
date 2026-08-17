@@ -95,7 +95,7 @@ class _DetailsState extends State<Details> {
                       ),
                     ],
                     child: BuyField(
-                      courseId: course?.id ?? 1,
+                       courseId: course?.id ?? 1,
                       discountedprice: course != null
                           ? course.price.toString()
                           : '9.99',

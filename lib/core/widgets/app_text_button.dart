@@ -1,21 +1,22 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 
 class AppTextButton extends StatelessWidget {
   final VoidCallback onpressed;
   final String textButton;
   final TextStyle textStyle;
-  final double? horizontalpadding,
+  final double?
+      horizontalpadding,
       verticalpadding,
       hieghtbutton,
       widthbutton,
       raduisbutton,
       borderWidth;
+
   final Color? buttoncolor, borderColor;
-  final String? icon;
+
+  final Widget? icon;
 
   const AppTextButton({
     super.key,
@@ -58,7 +59,10 @@ class AppTextButton extends StatelessWidget {
           ),
         ),
         fixedSize: WidgetStateProperty.all(
-          Size(widthbutton ?? double.maxFinite, hieghtbutton ?? 52.h),
+          Size(
+            widthbutton ?? double.maxFinite,
+            hieghtbutton ?? 52.h,
+          ),
         ),
       ),
       onPressed: onpressed,
@@ -67,9 +71,12 @@ class AppTextButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (icon != null) SvgPicture.asset(icon!, width: 22.w, height: 22.h),
+          if (icon != null) icon!,
           if (icon != null) SizedBox(width: 10.w),
-          Text(textButton, style: textStyle),
+          Text(
+            textButton,
+            style: textStyle,
+          ),
         ],
       ),
     );

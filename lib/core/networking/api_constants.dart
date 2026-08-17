@@ -32,4 +32,7 @@ class ApiConstants {
   static const String lessonQuizzes='lessons/quizzes';
   static const String inVideoAnswer='quizzes/in-video-answer';
   static const String reportCourse='reports/courses';
+  static const String validateCoupon='coupons/validate';
+  static const String craetepaymentIntent='payments/intent';
+  static const String confirmPayment='payments/confirm';
 }

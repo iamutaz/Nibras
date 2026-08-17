@@ -55,17 +55,19 @@ Map<String, dynamic> _$LessonQuizDataToJson(LessonQuizData instance) =>
 LessonQuestion _$LessonQuestionFromJson(Map<String, dynamic> json) =>
     LessonQuestion(
       id: (json['id'] as num).toInt(),
-      text: json['text'] as String?,
+      question: json['question'] as String?,
       options: (json['options'] as List<dynamic>)
           .map((e) => LessonQuizOption.fromJson(e as Map<String, dynamic>))
           .toList(),
+      explanation: json['explanation'] as String,
     );
 
 Map<String, dynamic> _$LessonQuestionToJson(LessonQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'text': instance.text,
+      'question': instance.question,
       'options': instance.options,
+      'explanation': instance.explanation,
     };
 
 LessonQuizOption _$LessonQuizOptionFromJson(Map<String, dynamic> json) =>

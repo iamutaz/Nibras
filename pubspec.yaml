@@ -54,6 +54,7 @@ dependencies:
   bloc: ^9.2.1
   video_player: ^2.8.2
   chewie: ^1.7.4
+  flutter_stripe: ^14.0.0
 
 dev_dependencies:
   flutter_test:

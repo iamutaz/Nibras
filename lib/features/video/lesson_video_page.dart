@@ -295,8 +295,8 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       for (final question in questions) {
         final int questionId = question.id;
         final String questionText =
-            (question.text != null && question.text!.trim().isNotEmpty)
-            ? question.text!
+            (question.question != null && question.question!.trim().isNotEmpty)
+            ? question.question!
             : 'Question';
         final opts = <Map<String, dynamic>>[];
         for (final option in question.options) {

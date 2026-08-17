@@ -13,6 +13,12 @@ import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_responst_body.dart';
 import 'package:nibras/features/notes/data/models/get_notes_by_id_request_body.dart';
 import 'package:nibras/features/notes/data/models/get_notes_by_id_response_body.dart';
+import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_request_body.dart';
+import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_response_body.dart';
+import 'package:nibras/features/payment/data/model/create_payment_intent/create_payment_intent_request_body.dart';
+import 'package:nibras/features/payment/data/model/create_payment_intent/create_payment_intent_response_body.dart';
+import 'package:nibras/features/payment/data/model/validate_coupon/validate_coupon_request_body.dart';
+import 'package:nibras/features/payment/data/model/validate_coupon/validate_coupon_response_body.dart';
 import 'package:nibras/features/progression/data/model/progression_request_body.dart';
 import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 import 'package:nibras/features/quiz/data/model/enroll_quiz_request_body.dart';
@@ -137,4 +143,18 @@ abstract class WebServices {
 
   @POST(ApiConstants.reportCourse)
   Future<ReportResponseBody> reportCourse(@Body() ReportRequestBody request);
+
+  @POST(ApiConstants.validateCoupon)
+  Future<ValidateCouponResponseBody> validateCoupon(
+    @Body() ValidateCouponRequestBody request,
+  );
+
+  @POST(ApiConstants.craetepaymentIntent)
+  Future<CreatePaymentIntentResponseBody> createIntent(
+    @Body() CreatePaymentIntentRequest request,
+  );
+  @POST(ApiConstants.confirmPayment)
+  Future<ConfirmPaymentResponseBody> confirmPayment(
+    @Body() ConfirmPaymentRequestBody request,
+  );
 }
