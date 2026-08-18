@@ -20,17 +20,23 @@ class InteractiveQuestionSheet {
   }) async {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // مهم للسماح بالتحكم في الارتفاع
-      backgroundColor: Colors.transparent, // لجعل الحواف العلوية دائرية بحرية
+      isScrollControlled: true, 
+      backgroundColor: Colors.transparent, 
       builder: (BuildContext context) {
         int? selectedOptionIndex;
         bool isConfirmed = false;
         bool isSubmitting = false;
         Map<String, dynamic>? submitResponse;
         
-        // هنا نستخدم StatefulBuilder لتحديث حالة الاختيارات داخل الـ BottomSheet فقط
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+            final bool? _isCorrect = submitResponse?['data']?['is_correct'] == true;
+            final String _resultText = submitResponse != null
+                ? (submitResponse?['message']?.toString() ?? (_isCorrect == true ? 'Correct answer.' : 'Incorrect answer.'))
+                : 'Submitting...';
+            final String? _explanation = submitResponse != null
+                ? (submitResponse?['data']?['explanation']?.toString() ?? submitResponse?['explanation']?.toString())
+                : null;
             return Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
@@ -42,8 +48,7 @@ class InteractiveQuestionSheet {
                   mainAxisSize: MainAxisSize.min, // يأخذ مساحة المحتوى فقط
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // --- رأس النافذة (العنوان وزر الإغلاق) ---
-                    Row(
+                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
@@ -62,8 +67,7 @@ class InteractiveQuestionSheet {
                     ),
                     const SizedBox(height: 8),
 
-                    // --- نص السؤال ---
-                    Text(
+                     Text(
                       questionText,
                       style: const TextStyle(
                         fontSize: 18,
@@ -73,8 +77,7 @@ class InteractiveQuestionSheet {
                     ),
                     const SizedBox(height: 24),
 
-                    // --- خيارات ديناميكية ---
-                    for (var i = 0; i < options.length; i++) ...[
+                     for (var i = 0; i < options.length; i++) ...[
                       _buildOption(
                         text: options[i]['text']?.toString() ?? '',
                         isSelected: selectedOptionIndex == i,
@@ -87,42 +90,60 @@ class InteractiveQuestionSheet {
                       const SizedBox(height: 12),
                     ],
 
-                    // --- رسالة النتيجة (تظهر فقط بعد التأكيد) ---
                     if (isConfirmed || isSubmitting) ...[
                       const SizedBox(height: 16),
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                            color: (submitResponse?['data']?['is_correct'] == true)
-                              ? Colors.green.shade50
-                              : Colors.red.shade50,
+                          color: (_isCorrect == true) ? Colors.green.shade50 : Colors.red.shade50,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: isSubmitting
                             ? const Center(child: CircularProgressIndicator())
-                            : Text(
-                                submitResponse != null
-                                  ? (submitResponse?['message']?.toString() ?? '')
-                                  : 'Submitting...'.toString(),
-                                style: TextStyle(
-                                    color: (submitResponse?['data']?['is_correct'] == true)
-                                      ? Colors.green.shade700
-                                      : Colors.red.shade700,
-                                  fontSize: 14,
-                                ),
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    _resultText,
+                                    style: TextStyle(
+                                      color: (_isCorrect == true) ? Colors.green.shade700 : Colors.red.shade700,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  if (_explanation != null && _explanation.isNotEmpty) ...[
+                                    Text(
+                                      'Explanation:',
+                                      style: TextStyle(
+                                        color: (_isCorrect == true) ? Colors.green.shade800 : Colors.red.shade800,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      _explanation,
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ],
                               ),
                       ),
                     ],
 
                     const SizedBox(height: 24),
 
-                    // --- زر التأكيد ---
-                    SizedBox(
+                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFC7F464), // اللون الأخضر الفاتح من التصميم
+                          backgroundColor: const Color(0xFFC7F464), 
                           foregroundColor: Colors.black,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -135,8 +156,7 @@ class InteractiveQuestionSheet {
                                   isSubmitting = true;
                                 });
 
-                                // call submit callback with selected option id
-                                try {
+                                 try {
                                   final selectedOption = options[selectedOptionIndex!];
                                   final int selectedOptionId = (selectedOption['id'] is int)
                                       ? selectedOption['id'] as int
@@ -161,7 +181,7 @@ class InteractiveQuestionSheet {
                                   });
                                 }
                               }
-                            : null, // تعطيل الزر إذا لم يتم اختيار إجابة
+                            : null,  
                         child: const Text(
                           'Confirm The Answer',
                           style: TextStyle(
@@ -200,8 +220,7 @@ class InteractiveQuestionSheet {
     );
   }
 
-  // --- ودجت مخصص لتصميم الخيار (Radio Button مخصص) ---
-  static Widget _buildOption({
+   static Widget _buildOption({
     required String text,
     required bool isSelected,
     required VoidCallback onTap,
@@ -220,8 +239,7 @@ class InteractiveQuestionSheet {
         ),
         child: Row(
           children: [
-            // أيقونة الراديو
-            Container(
+             Container(
               width: 20,
               height: 20,
               decoration: BoxDecoration(
@@ -245,8 +263,7 @@ class InteractiveQuestionSheet {
                   : null,
             ),
             const SizedBox(width: 12),
-            // نص الخيار
-            Expanded(
+             Expanded(
               child: Text(
                 text,
                 style: TextStyle(

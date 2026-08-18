@@ -11,12 +11,18 @@ import 'package:nibras/features/details/details.dart';
 import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
 import 'package:nibras/features/Results/resulte_page.dart';
 import 'package:nibras/features/filter/filter.dart';
+import 'package:nibras/features/gift/data/cubit/claim_gift_cubit.dart';
+import 'package:nibras/features/gift/data/cubit/confirm_gift_cubit.dart';
+import 'package:nibras/features/gift/data/cubit/craete_gift_cubit.dart';
+import 'package:nibras/features/gift/data/cubit/my_gifts_cubit.dart';
+import 'package:nibras/features/gift/gift_page.dart';
 import 'package:nibras/features/interesting/interesting.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/payment/payment_page.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/progression_page.dart';
 import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
@@ -32,6 +38,7 @@ import 'package:nibras/features/setting/pages/contact_us.dart';
 import 'package:nibras/features/setting/pages/email_submit.dart';
 import 'package:nibras/features/setting/pages/help_center.dart';
 import 'package:nibras/features/setting/pages/insert_code.dart';
+import 'package:nibras/features/setting/pages/my_gifts.dart';
 import 'package:nibras/features/setting/pages/policy_page.dart';
 import 'package:nibras/features/setting/pages/security_and_password.dart';
 import 'package:nibras/features/setting/pages/setting_page.dart';
@@ -87,6 +94,13 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
+      case RoutesName.mygifts:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+             create: (context) => getIt<MyGiftsCubit>()..getMyGifts(),
+            child: MyGifts(),
+          ),
+        );
       case RoutesName.progressionincourse:
         final courseId = settings.arguments is int
             ? settings.arguments as int
@@ -100,8 +114,11 @@ class GenerateRoute {
         );
       case RoutesName.wishlist:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => getIt<MyWishlistCubit>(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<MyWishlistCubit>()),
+              BlocProvider(create: (context) => getIt<ClaimGiftCubit>()),
+            ],
             child: WishlistPage(),
           ),
         );
@@ -167,7 +184,35 @@ class GenerateRoute {
       case RoutesName.filter:
         return MaterialPageRoute(builder: (context) => FilterPage());
 
- 
+      case RoutesName.payment:
+        final args = settings.arguments as Map<String, dynamic>;
+
+        return MaterialPageRoute(
+          builder: (context) => PaymentPage(
+            courseId: args['courseId'] as int,
+            courseName: args['courseName'] as String,
+            instructorName: args['instructorName'] as String,
+            originalPrice: args['originalPrice'] as double,
+          ),
+        );
+      case RoutesName.gift:
+        final args = settings.arguments as Map<String, dynamic>;
+
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<ConfirmGiftCubit>()),
+              BlocProvider(create: (context) => getIt<ClaimGiftCubit>()),
+              BlocProvider(create: (context) => getIt<CraeteGiftCubit>()),
+            ],
+            child: GiftPage(
+              courseId: args['courseId'] as int,
+              courseName: args['courseName'] as String,
+              instructorName: args['instructorName'] as String,
+              originalPrice: args['originalPrice'] as double,
+            ),
+          ),
+        );
       case RoutesName.enrollquiz:
         final id = settings.arguments as int;
 

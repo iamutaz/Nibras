@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
@@ -33,13 +34,13 @@ class ContinueWithGoogle extends StatelessWidget {
               textButton: "Continue with Google",
               textStyle: TextStyles.font16lighterblacksemiBold,
               widthbutton: 322.w,
-              icon: "assets/svg/Google.svg",
+              icon: SvgPicture.asset("assets/svg/Google.svg")
 
             ),
             SizedBox(height: 16.h,),
             AppTextButton(onpressed: () => context.pushNamed(RoutesName.signup),
               textButton: "Continue with Email",
-              icon: "assets/svg/mail.svg",
+              icon: SvgPicture.asset("assets/svg/mail.svg"),
               textStyle: TextStyles.font16lighterblacksemiBold,
               widthbutton: 322.w,
               buttoncolor: Colors.white,

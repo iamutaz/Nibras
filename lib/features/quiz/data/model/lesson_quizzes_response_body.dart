@@ -64,10 +64,11 @@ class LessonQuizData {
 @JsonSerializable()
 class LessonQuestion {
   final int id;
-  final String? text;
+  final String? question;
   final List<LessonQuizOption> options;
+  final String explanation;
 
-  LessonQuestion({required this.id, this.text, required this.options});
+  LessonQuestion({required this.id, this.question, required this.options,required this.explanation});
 
   factory LessonQuestion.fromJson(Map<String, dynamic> json) =>
       _$LessonQuestionFromJson(json);

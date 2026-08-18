@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nibras/core/DI/injection.dart';
 import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_state.dart';
@@ -47,14 +48,7 @@ class _DetailsState extends State<Details> {
           onTap: () => context.pop(),
           child: Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
         ),
-        actions: [
-          GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-              child: SvgPicture.asset("assets/svg/cart.svg"),
-            ),
-          ),
-        ],
+
         title: Text("Course Page", style: TextStyles.font16homeblackbold),
         centerTitle: true,
       ),
@@ -96,10 +90,9 @@ class _DetailsState extends State<Details> {
                     ],
                     child: BuyField(
                       courseId: course?.id ?? 1,
-                      discountedprice: course != null
-                          ? course.price.toString()
-                          : '9.99',
- 
+                      courseName: course?.title ?? 'Course',
+                      instructorName: course?.instructor.name ?? 'Instructor',
+                      discountedprice: course?.price.toString() ?? '0.0',
                       isFree: course?.isFree ?? false,
                     ),
                   ),
