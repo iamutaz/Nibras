@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/routing/routes_name.dart' show RoutesName;
+import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/setting/widgets/settingpage/setting_tile_body.dart';
 
 class LearningAndAchivementes extends StatelessWidget {
@@ -25,10 +26,19 @@ class LearningAndAchivementes extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () => context.pushNamed(RoutesName.wishlist),  
+            onTap: () => context.pushNamed(RoutesName.wishlist),
             child: SettingTileBody(
               title: "WishList",
               imagepath: "assets/svg/wishlist.svg",
+            ),
+          ),
+          GestureDetector(
+            onTap: () => context.pushNamed(RoutesName.mygifts),
+
+            child: ListTile(
+              leading: Icon(Icons.card_giftcard_outlined),
+              title: Text("My Gifts", style: TextStyles.font14blacksettings),
+              trailing: Icon(Icons.keyboard_arrow_right_sharp),
             ),
           ),
         ],

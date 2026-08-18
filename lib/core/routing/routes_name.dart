@@ -26,4 +26,6 @@ class RoutesName {
   static const String enrollquiz='/enrollquiz';
   static const String reportpage='/reportepage';
   static const String payment='/payment';
+  static const String gift='/gift';
+  static const String mygifts='/mygifts';
 }

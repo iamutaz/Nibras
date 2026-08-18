@@ -7,6 +7,13 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/data/models/enrollment_response_body.dart';
 
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
+import 'package:nibras/features/gift/data/model/all_gift_sents_response_body.dart';
+import 'package:nibras/features/gift/data/model/claim_gift_request_body.dart';
+import 'package:nibras/features/gift/data/model/claim_gift_response_body.dart';
+import 'package:nibras/features/gift/data/model/confirm_gift_request_body.dart';
+import 'package:nibras/features/gift/data/model/confirm_gift_response_body.dart';
+import 'package:nibras/features/gift/data/model/create_gift_request_body.dart';
+import 'package:nibras/features/gift/data/model/create_gift_response_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
@@ -157,4 +164,18 @@ abstract class WebServices {
   Future<ConfirmPaymentResponseBody> confirmPayment(
     @Body() ConfirmPaymentRequestBody request,
   );
+  @POST(ApiConstants.creategift)
+  Future<CreateGiftResponseBody> createGift(
+    @Body() CreateGiftRequestBody request,
+  );
+  @POST(ApiConstants.confirmgift)
+  Future<ConfirmGiftResponseBody> confirmGift(
+    @Body() ConfirmGiftRequestBody request,
+  );
+
+  @POST(ApiConstants.claimgift)
+  Future<ClaimGiftResponseBody> claimGift(@Body() ClaimGiftRequestBody request);
+
+  @GET(ApiConstants.giftsent)
+  Future<AllGiftSentsResponseBody> getAllSentGifts();
 }

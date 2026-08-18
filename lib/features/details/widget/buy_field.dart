@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
@@ -46,15 +47,35 @@ class BuyField extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: isFree ? 'Free' : '\$$discountedprice',
-                        style: TextStyles.font20mainbluesemiBold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: isFree ? 'Free' : '\$$discountedprice',
+                            style: TextStyles.font20mainbluesemiBold,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    GestureDetector(
+                      onTap: () => context.pushNamed(
+                        RoutesName.gift,
+                        aurgment: {
+                          'courseId': courseId,
+                          'courseName': courseName,
+                          'instructorName': instructorName,
+                          'originalPrice': double.parse(discountedprice),
+                        },
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+                        child: SvgPicture.asset("assets/svg/wishlist.svg",width: 25.w,),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 4.h),
                 // if (!isFree)

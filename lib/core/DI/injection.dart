@@ -11,6 +11,11 @@ import 'package:nibras/features/details/data/repo/course_by_id_repo.dart';
 import 'package:nibras/features/details/data/repo/enrollment_course_repo.dart';
 import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
 import 'package:nibras/features/enrollments/data/repo/enrollmets_repo.dart';
+import 'package:nibras/features/gift/data/cubit/claim_gift_cubit.dart';
+import 'package:nibras/features/gift/data/cubit/confirm_gift_cubit.dart';
+import 'package:nibras/features/gift/data/cubit/craete_gift_cubit.dart';
+import 'package:nibras/features/gift/data/cubit/my_gifts_cubit.dart';
+import 'package:nibras/features/gift/data/repo/gift_repo.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/data/repo/login_repo.dart';
 import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
@@ -50,6 +55,13 @@ void setupinjection() async {
   // register PaymentRepo so UI can access payment APIs
   // Note: PaymentRepo depends on WebServices
   getIt.registerLazySingleton<PaymentRepo>(() => PaymentRepo(getIt()));
+
+  getIt.registerFactory<CraeteGiftCubit>(() => CraeteGiftCubit(getIt()));
+  getIt.registerFactory<ClaimGiftCubit>(() => ClaimGiftCubit(getIt()));
+  getIt.registerFactory<ConfirmGiftCubit>(() => ConfirmGiftCubit(getIt()));
+  getIt.registerFactory<MyGiftsCubit>(() => MyGiftsCubit(getIt()));
+
+  getIt.registerLazySingleton<GiftRepo>(() => GiftRepo(getIt()));
 
   getIt.registerFactory<ConfirmPaymentCubit>(
     () => ConfirmPaymentCubit(getIt()),
