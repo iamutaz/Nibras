@@ -24,17 +24,22 @@ class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ResultsCubit(ResultsRepo())..getFilteredCourses(categoryId),
+      create: (_) =>
+          ResultsCubit(ResultsRepo())..getFilteredCourses(categoryId),
       child: Builder(
         builder: (context) {
           return Scaffold(
-            backgroundColor: AppColors.white,
+            backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: AppColors.white,
+              backgroundColor: Colors.white,
               elevation: 0,
               scrolledUnderElevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: AppColors.mainBlack, size: 20),
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.mainBlack,
+                  size: 20,
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
               title: Text(
@@ -46,13 +51,18 @@ class ResultsPage extends StatelessWidget {
                 IconButton(
                   icon: SvgPicture.asset(
                     'assets/svg/filter.svg',
-                    colorFilter: const ColorFilter.mode(AppColors.mainBlack, BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.mainBlack,
+                      BlendMode.srcIn,
+                    ),
                     width: 24,
                     height: 24,
                   ),
                   onPressed: () async {
-              
-                    final result = await Navigator.pushNamed(context, RoutesName.filter);
+                    final result = await Navigator.pushNamed(
+                      context,
+                      RoutesName.filter,
+                    );
 
                     if (result is FilterParams) {
                       context.read<ResultsCubit>().applyFilters(result);
@@ -83,14 +93,17 @@ class ResultsPage extends StatelessWidget {
 
                   if (state is ResultsSuccess) {
                     if (state.courses.isEmpty) {
-                      return const Center(child: Text('there is no courses to display'));
+                      return const Center(
+                        child: Text('there is no courses to display'),
+                      );
                     }
                     return SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       child: Column(
-                        children: [
-                          CoursesListWidget(courses: state.courses),
-                        ],
+                        children: [CoursesListWidget(courses: state.courses)],
                       ),
                     );
                   }
