@@ -873,7 +873,7 @@ class _WebServices implements WebServices {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            "gifts/sent",
+            'gifts/sent',
             queryParameters: queryParameters,
             data: _data,
           )
