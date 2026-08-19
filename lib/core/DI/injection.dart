@@ -13,6 +13,22 @@ import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
 import 'package:nibras/features/enrollments/data/repo/enrollmets_repo.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/data/repo/login_repo.dart';
+import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
+import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
+import 'package:nibras/features/notes/data/repo/notes_repo.dart';
+import 'package:nibras/features/payment/data/cubit/confirm_payment_cubit.dart';
+import 'package:nibras/features/payment/data/cubit/coupon_cubit.dart';
+import 'package:nibras/features/payment/data/cubit/intent_cubit.dart';
+import 'package:nibras/features/payment/data/repo/payment_repo.dart';
+import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
+import 'package:nibras/features/progression/data/repo/progression_repo.dart';
+import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/in_video_answer_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/lesson_quizzes_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/submit_quiz_cubit.dart';
+import 'package:nibras/features/quiz/data/repo/quiz_repo.dart';
+import 'package:nibras/features/report/data/cubit/reports_cubit.dart';
+import 'package:nibras/features/report/data/repo/reports_repo.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/reviews/repo/review_repo.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -30,6 +46,16 @@ void setupinjection() async {
   //web services
   Dio dio = DioFactory.getDio();
   getIt.registerLazySingleton<WebServices>(() => WebServices(dio));
+  // payment
+  // register PaymentRepo so UI can access payment APIs
+  // Note: PaymentRepo depends on WebServices
+  getIt.registerLazySingleton<PaymentRepo>(() => PaymentRepo(getIt()));
+
+  getIt.registerFactory<ConfirmPaymentCubit>(
+    () => ConfirmPaymentCubit(getIt()),
+  );
+  getIt.registerFactory<CouponCubit>(() => CouponCubit(getIt()));
+  getIt.registerFactory<IntentCubit>(() => IntentCubit(getIt()));
 
   //login
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
@@ -74,6 +100,21 @@ void setupinjection() async {
   getIt.registerFactory<AddToWishlistCubit>(() => AddToWishlistCubit(getIt()));
   getIt.registerFactory<MyWishlistCubit>(() => MyWishlistCubit(getIt()));
 
+  getIt.registerLazySingleton<NotesRepo>(() => NotesRepo(getIt()));
+  getIt.registerFactory<GetNotesByIdCubit>(() => GetNotesByIdCubit(getIt()));
+  getIt.registerFactory<AddNoteCubit>(() => AddNoteCubit(getIt()));
 
+  getIt.registerLazySingleton<ProgressionRepo>(() => ProgressionRepo(getIt()));
+  getIt.registerFactory<ProgressionCubit>(() => ProgressionCubit(getIt()));
 
+  getIt.registerLazySingleton<QuizRepo>(() => QuizRepo(getIt()));
+  getIt.registerFactory<EnrollQuizCubit>(() => EnrollQuizCubit(getIt()));
+  getIt.registerFactory<LessonQuizzesCubit>(() => LessonQuizzesCubit(getIt()));
+  getIt.registerFactory<InVideoAnswerCubit>(() => InVideoAnswerCubit(getIt()));
+
+  getIt.registerFactory<SubmitQuizCubit>(() => SubmitQuizCubit(getIt()));
+
+  getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo(getIt()));
+
+  getIt.registerFactory<ReportsCubit>(() => ReportsCubit(getIt()));
 }

@@ -32,7 +32,9 @@ class LessonsSection extends StatelessWidget {
 
               int totalDurationSeconds = 0;
               for (var lesson in section.lessons) {
-                totalDurationSeconds += (lesson.duration as int);
+                // استخدمنا ?? 0 بدلاً من as int
+                // هذا يعني: إذا كان lesson.duration يمتلك قيمة أضفها، وإذا كان null أضف 0
+                totalDurationSeconds += (lesson.duration ?? 0);
               }
 
               int durationInMinutes = totalDurationSeconds ~/ 60;

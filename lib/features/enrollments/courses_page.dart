@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/app_route_observer.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/enrollments/data/cubit/enrollments_cubit.dart';
@@ -15,12 +16,35 @@ class CoursesPage extends StatefulWidget {
   State<CoursesPage> createState() => _CoursesPageState();
 }
 
-class _CoursesPageState extends State<CoursesPage> {
+class _CoursesPageState extends State<CoursesPage> with RouteAware {
+  void _loadEnrollments() {
+    context.read<EnrollmentsCubit>().emitAllCoursesState();
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    context.read<EnrollmentsCubit>().emitAllCoursesState();
+    _loadEnrollments();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void didPopNext() {
+    _loadEnrollments();
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override

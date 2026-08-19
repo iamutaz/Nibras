@@ -6,11 +6,13 @@ import 'package:nibras/core/theme/fonts/text_styles.dart';
 class CurrentUserCard extends StatelessWidget {
   final int rank;
   final String name;
+  final String? avatarUrl; 
 
   const CurrentUserCard({
     super.key,
     required this.rank,
     required this.name,
+    this.avatarUrl,
   });
 
   @override
@@ -34,7 +36,10 @@ class CurrentUserCard extends StatelessWidget {
           CircleAvatar(
             radius: 20.r,
             backgroundColor: AppColors.avatarColor,
-            child: const Icon(Icons.person, color: AppColors.lightgrey),
+            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
+            child: avatarUrl == null
+                ? const Icon(Icons.person, color: AppColors.lightgrey)
+                : null, 
           ),
           SizedBox(width: 12.w),
           Expanded(

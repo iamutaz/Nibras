@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nibras/core/helpers/extension.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart' show TextStyles;
 import 'package:nibras/core/widgets/app_text_button.dart';
@@ -9,19 +11,21 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/widget/enrollment_bloc_listner.dart';
 import 'package:nibras/features/wishlist/data/cubit/add_to_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/data/model/add_to_wishlist_request_body.dart';
-import 'package:nibras/features/wishlist/widgets/add_to_wishlost_bloclisitner.dart';
+import 'package:nibras/features/wishlist/widgets/add_to_wishlist_bloclisitner.dart';
 
 class BuyField extends StatelessWidget {
   final String discountedprice;
-  final String? originalprice;
   final bool isFree;
   final int courseId;
+  final String courseName;
+  final String instructorName;
 
   const BuyField({
     super.key,
     required this.courseId,
     required this.discountedprice,
-    this.originalprice,
+    required this.courseName,
+    required this.instructorName,
     this.isFree = false,
   });
 
@@ -49,16 +53,6 @@ class BuyField extends StatelessWidget {
                         text: isFree ? 'Free' : '\$$discountedprice',
                         style: TextStyles.font20mainbluesemiBold,
                       ),
-                      if (!isFree)
-                        TextSpan(
-                          text: '  \$$originalprice',
-                          style: TextStyles.font14hintcolorregular,
-                        ),
-                      if (!isFree)
-                        TextSpan(
-                          text: '    20% off',
-                          style: TextStyles.font16mainblueregular,
-                        ),
                     ],
                   ),
                 ),
@@ -95,18 +89,30 @@ class BuyField extends StatelessWidget {
                 SizedBox(height: 16.h),
                 AppTextButton(
                   onpressed: () {
-                    context.read<EnrollmentCourseCubit>().emitEnrollInCourse(
-                      EnrollmentRequestBody(courseId: courseId),
-                    );
+                    if (isFree) {
+                      context.read<EnrollmentCourseCubit>().emitEnrollInCourse(
+                        EnrollmentRequestBody(courseId: courseId),
+                      );
+                    } else {
+                      context.pushNamed(
+                        RoutesName.payment,
+                        aurgment: {
+                          'courseId': courseId,
+                          'courseName': courseName,
+                          'instructorName': instructorName,
+                          'originalPrice': double.parse(discountedprice),
+                        },
+                      );
+                    }
                   },
                   buttoncolor: Colors.white,
-                  textButton: "Buy NOW!",
+                  textButton: isFree ? "ENROLL NOW!" : "Buy NOW!",
                   textStyle: TextStyles.font16mainbluebold,
                   borderColor: AppColors.mainBlue,
                   borderWidth: 2,
                 ),
                 EnrollmentBlocListener(),
-                AddToWishlostBloclisitner(),
+                AddToWishlistBloclisitner(),
               ],
             ),
           ),

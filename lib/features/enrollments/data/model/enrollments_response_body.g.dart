@@ -85,8 +85,20 @@ Map<String, dynamic> _$EnrollmentInstructorModelToJson(
 
 LastAccessedLessonModel _$LastAccessedLessonModelFromJson(
   Map<String, dynamic> json,
-) => LastAccessedLessonModel();
+) => LastAccessedLessonModel(
+  lessonId: (json['lesson_id'] as num).toInt(),
+  lessonTitle: json['lesson_title'] as String,
+  sectionId: (json['section_id'] as num).toInt(),
+  sectionTitle: json['section_title'] as String,
+  lastPositionSeconds: (json['last_position_seconds'] as num).toInt(),
+);
 
 Map<String, dynamic> _$LastAccessedLessonModelToJson(
   LastAccessedLessonModel instance,
-) => <String, dynamic>{};
+) => <String, dynamic>{
+  'lesson_id': instance.lessonId,
+  'lesson_title': instance.lessonTitle,
+  'section_id': instance.sectionId,
+  'section_title': instance.sectionTitle,
+  'last_position_seconds': instance.lastPositionSeconds,
+};

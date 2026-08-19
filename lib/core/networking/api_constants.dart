@@ -27,4 +27,23 @@ class ApiConstants {
   static const String me = 'auth/me';
   static const String streak = 'streak';
   static const String xpStats = 'xp/stats';
+  // static const String addtowishlist = 'wishlist';
+  // static const String getmywishlist = 'wishlist/my';
+  static const String showmyprogression = 'courses/progress';
+  static const String progressLessonComplete = 'progress/lesson/complete';
+  static const String progressVideo = 'progress/video';
+  static const String getnotesbyid='notes/lesson';
+  static const String addnote='notes';
+  static const String enrollQuiz='quizzes/attempt';
+  static const String submitQuiz='quiz-attempts/submit';
+  static const String lessonQuizzes='lessons/quizzes';
+  static const String inVideoAnswer='quizzes/in-video-answer';
+  static const String reportCourse='reports/courses';
+  static const String validateCoupon='coupons/validate';
+  static const String craetepaymentIntent='payments/intent';
+  static const String confirmPayment='payments/confirm';
+  static const String ratingStats = 'courses/rating-stats';
+  static const String reviews = 'reviews';
+  static const String quizResults = 'courses/quiz-results';
+
 }

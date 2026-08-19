@@ -7,9 +7,29 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/data/models/enrollment_response_body.dart';
 
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
-import 'package:nibras/features/enrollments/widgets/enrollment_course_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
+import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
+import 'package:nibras/features/notes/data/models/add_note_responst_body.dart';
+import 'package:nibras/features/notes/data/models/get_notes_by_id_request_body.dart';
+import 'package:nibras/features/notes/data/models/get_notes_by_id_response_body.dart';
+import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_request_body.dart';
+import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_response_body.dart';
+import 'package:nibras/features/payment/data/model/create_payment_intent/create_payment_intent_request_body.dart';
+import 'package:nibras/features/payment/data/model/create_payment_intent/create_payment_intent_response_body.dart';
+import 'package:nibras/features/payment/data/model/validate_coupon/validate_coupon_request_body.dart';
+import 'package:nibras/features/payment/data/model/validate_coupon/validate_coupon_response_body.dart';
+import 'package:nibras/features/progression/data/model/progression_request_body.dart';
+import 'package:nibras/features/progression/data/model/progression_response_body.dart';
+import 'package:nibras/features/quiz/data/model/enroll_quiz_request_body.dart';
+import 'package:nibras/features/quiz/data/model/enroll_quiz_response_body.dart';
+import 'package:nibras/features/quiz/data/model/in_video_answer_request_body.dart';
+import 'package:nibras/features/quiz/data/model/in_video_answer_response_body.dart';
+import 'package:nibras/features/quiz/data/model/lesson_quizzes_response_body.dart';
+import 'package:nibras/features/quiz/data/model/submit_quiz_request_body.dart';
+import 'package:nibras/features/quiz/data/model/submit_quiz_response_body.dart';
+import 'package:nibras/features/report/data/model/report_request_body.dart';
+import 'package:nibras/features/report/data/model/report_response_body.dart';
 import 'package:nibras/features/reviews/model/rating_response_body.dart';
 import 'package:nibras/features/reviews/model/review_request_body.dart';
 import 'package:nibras/features/reviews/model/review_response_body.dart';
@@ -89,4 +109,52 @@ abstract class WebServices {
   );
   @GET(ApiConstants.getmywishlist)
   Future<MyWishlistResponseBody> getMyWishlist();
+  @GET(ApiConstants.showmyprogression)
+  Future<ProgressionResponseBody> showMyProgression(
+    @Body() ProgressionRequestBody request,
+  );
+
+  @GET(ApiConstants.getnotesbyid)
+  Future<GetNotesByIdResponseBody> getNotesByIdLesson(
+    @Body() GetNotesByIdRequestBody request,
+  );
+  @POST(ApiConstants.addnote)
+  Future<AddNoteResponstBody> addNote(@Body() AddNoteRequestBody request);
+
+  @POST(ApiConstants.enrollQuiz)
+  Future<EnrollQuizResponseBody> enrollQuiz(
+    @Body() EnrollQuizRequestBody request,
+  );
+
+  @POST(ApiConstants.submitQuiz)
+  Future<SubmitQuizResponseBody> submitQuiz(
+    @Body() SubmitQuizRequestBody request,
+  );
+
+  @GET(ApiConstants.lessonQuizzes)
+  Future<LessonQuizzesResponseBody> getLessonQuizzes(
+    @Query('lesson_id') int lessonId,
+  );
+
+  @POST(ApiConstants.inVideoAnswer)
+  Future<InVideoAnswerResponseBody> submitInVideoAnswer(
+    @Body() InVideoAnswerRequestBody request,
+  );
+
+  @POST(ApiConstants.reportCourse)
+  Future<ReportResponseBody> reportCourse(@Body() ReportRequestBody request);
+
+  @POST(ApiConstants.validateCoupon)
+  Future<ValidateCouponResponseBody> validateCoupon(
+    @Body() ValidateCouponRequestBody request,
+  );
+
+  @POST(ApiConstants.craetepaymentIntent)
+  Future<CreatePaymentIntentResponseBody> createIntent(
+    @Body() CreatePaymentIntentRequest request,
+  );
+  @POST(ApiConstants.confirmPayment)
+  Future<ConfirmPaymentResponseBody> confirmPayment(
+    @Body() ConfirmPaymentRequestBody request,
+  );
 }
