@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/DI/injection.dart';
 import 'package:nibras/core/routing/app_route_observer.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+import 'package:nibras/features/certificate/generate_certificate_page.dart';
+import 'package:nibras/features/certificate/data/cubit/generate_certificate_cubit.dart';
 import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/pages/notes_by_id_lesson.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
@@ -12,8 +14,13 @@ import 'package:nibras/features/progression/widgets/progression_success_view.dar
 
 class ProgressionPage extends StatefulWidget {
   final int courseId;
+  final int enrollmentId;
 
-  const ProgressionPage({super.key, this.courseId = 1});
+  const ProgressionPage({
+    super.key,
+    required this.courseId,
+    required this.enrollmentId,
+  });
 
   @override
   State<ProgressionPage> createState() => _ProgressionPageState();
@@ -55,7 +62,7 @@ class _ProgressionPageState extends State<ProgressionPage> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4, // عدد الـ Tabs
+      length: 5, // عدد الـ Tabs
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -99,6 +106,7 @@ class _ProgressionPageState extends State<ProgressionPage> with RouteAware {
               Tab(text: "Units"),
               Tab(text: "Grades"),
               Tab(text: "Notes"),
+              Tab(text: "Reviews"),
               Tab(text: "Certificate"),
             ],
           ),
@@ -119,6 +127,10 @@ class _ProgressionPageState extends State<ProgressionPage> with RouteAware {
                       child: NotesByIdLesson(lessonId: widget.courseId),
                     ),
                     const Center(child: Text("Certificate Page")),
+                    BlocProvider(
+                      create: (context) => getIt<GenerateCertificateCubit>(),
+                      child: GenerateCertificatePage(enrollmentId: widget.enrollmentId),
+                    ),
                   ],
                 );
               },

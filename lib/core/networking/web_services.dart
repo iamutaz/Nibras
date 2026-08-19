@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:nibras/core/networking/api_constants.dart';
 import 'package:nibras/features/Home/data/model/home_response_body.dart';
+import 'package:nibras/features/certificate/data/model/generate_certificate/generate_certificate_request_body.dart';
+import 'package:nibras/features/certificate/data/model/generate_certificate/generate_certificate_response_body.dart';
+import 'package:nibras/features/certificate/data/model/my_certificates/my_certificate_response_body.dart';
 import 'package:nibras/features/details/data/models/course_details_request_body.dart';
 import 'package:nibras/features/details/data/models/course_details_response_body.dart';
 import 'package:nibras/features/details/data/models/enrollment_request_body.dart';
@@ -178,4 +181,10 @@ abstract class WebServices {
 
   @GET(ApiConstants.giftsent)
   Future<AllGiftSentsResponseBody> getAllSentGifts();
+
+  @GET(ApiConstants.myCertificate)
+  Future<MyCertificateResponseBody> myCertificate();
+
+  @POST(ApiConstants.generateCertificate)
+  Future<GenerateCertificateResponseBody> generateCertificate(@Body() GenerateCertificateRequestBody request);
 }

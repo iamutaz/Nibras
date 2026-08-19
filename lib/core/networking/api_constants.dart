@@ -44,4 +44,6 @@ class ApiConstants {
   static const String me = 'auth/me';
   static const String streak = 'streak';
   static const String xpStats = 'xp/stats';
+  static const String myCertificate='certificates/my';
+  static const String generateCertificate='certificates/generate';
 }
