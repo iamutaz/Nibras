@@ -14,9 +14,13 @@ class LearningAndAchivementes extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 22.h),
       child: Column(
         children: [
-          SettingTileBody(
-            title: "My Certificates",
-            imagepath: "assets/svg/certification.svg",
+          InkWell(
+            onTap: () => context.pushNamed(RoutesName.mycertificates),
+            child: SettingTileBody(
+              
+              title: "My Certificates",
+              imagepath: "assets/svg/certification.svg",
+            ),
           ),
           InkWell(
             onTap: () => context.pushNamed(RoutesName.showcourses),

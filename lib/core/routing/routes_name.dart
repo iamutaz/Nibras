@@ -28,4 +28,5 @@ class RoutesName {
   static const String payment='/payment';
   static const String gift='/gift';
   static const String mygifts='/mygifts';
+  static const String mycertificates='/mycertificates';
 }

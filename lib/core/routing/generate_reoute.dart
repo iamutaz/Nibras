@@ -5,6 +5,8 @@ import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
 import 'package:nibras/features/Home/helper/navigator_home.dart';
 import 'package:nibras/features/Home/home.dart';
+import 'package:nibras/features/certificate/data/cubit/my_certificates_cubit.dart';
+import 'package:nibras/features/certificate/my_certificate_page.dart';
 import 'package:nibras/features/enrollments/courses_page.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/details.dart';
@@ -94,22 +96,33 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
+      case RoutesName.mycertificates:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<MyCertificatesCubit>(),
+            child: MyCertificatePage(),
+          ),
+        );
       case RoutesName.mygifts:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
-             create: (context) => getIt<MyGiftsCubit>()..getMyGifts(),
+            create: (context) => getIt<MyGiftsCubit>()..getMyGifts(),
             child: MyGifts(),
           ),
         );
       case RoutesName.progressionincourse:
-        final courseId = settings.arguments is int
-            ? settings.arguments as int
-            : 1;
+        final args = settings.arguments as Map<String, dynamic>;
+
+        final courseId = args['courseId'] as int;
+        final enrollmentId = args['enrollmentId'] as int;
 
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => getIt<ProgressionCubit>(),
-            child: ProgressionPage(courseId: courseId),
+            child: ProgressionPage(
+              courseId: courseId,
+              enrollmentId: enrollmentId,
+            ),
           ),
         );
       case RoutesName.wishlist:

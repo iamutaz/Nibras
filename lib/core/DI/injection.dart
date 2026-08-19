@@ -5,6 +5,9 @@ import 'package:nibras/core/networking/web_services.dart';
 import 'package:nibras/features/Home/data/cubit/home_cubit.dart';
 import 'package:nibras/features/Home/data/cubit/recommended_cubit.dart';
 import 'package:nibras/features/Home/data/repo/home_repo.dart';
+import 'package:nibras/features/certificate/data/cubit/generate_certificate_cubit.dart';
+import 'package:nibras/features/certificate/data/cubit/my_certificates_cubit.dart';
+import 'package:nibras/features/certificate/data/repo/certificate_repo.dart';
 import 'package:nibras/features/details/data/cubit/course_by_id_cubit.dart';
 import 'package:nibras/features/details/data/cubit/enrollment_course_cubit.dart';
 import 'package:nibras/features/details/data/repo/course_by_id_repo.dart';
@@ -129,4 +132,14 @@ void setupinjection() async {
   getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo(getIt()));
 
   getIt.registerFactory<ReportsCubit>(() => ReportsCubit(getIt()));
+
+  getIt.registerLazySingleton<CertificateRepo>(() => CertificateRepo(getIt()));
+
+  getIt.registerFactory<GenerateCertificateCubit>(
+    () => GenerateCertificateCubit(getIt()),
+  );
+
+  getIt.registerFactory<MyCertificatesCubit>(
+    () => MyCertificatesCubit(getIt()),
+  );
 }
