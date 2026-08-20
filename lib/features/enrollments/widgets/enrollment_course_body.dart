@@ -64,6 +64,8 @@ class EnrollmentCourseBody extends StatelessWidget {
                         Text(
                           'Lesson ${enrollments[index].lastAccessedLesson?.lessonId ?? '0'}: ${enrollments[index].lastAccessedLesson?.lessonTitle ?? 'start learning!!'}',
                           style: TextStyles.font14authblackbold,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
 
                         SizedBox(height: 6.h),
@@ -82,7 +84,7 @@ class EnrollmentCourseBody extends StatelessWidget {
                             minHeight: 6.h,
                             backgroundColor: Colors
                                 .grey
-                                .shade100, // لون الخلفية الرمادي الفاتح
+                                .shade100,  
                             valueColor: const AlwaysStoppedAnimation<Color>(
                               Color(0xFFDBFF3D), // اللون المطلوب
                             ),

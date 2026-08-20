@@ -23,6 +23,8 @@ import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_responst_body.dart';
 import 'package:nibras/features/notes/data/models/get_notes_by_id_request_body.dart';
 import 'package:nibras/features/notes/data/models/get_notes_by_id_response_body.dart';
+import 'package:nibras/features/notifications/data/model/all_notifications_response_body.dart';
+import 'package:nibras/features/notifications/data/model/read_all_notifications_response_body.dart';
 import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_request_body.dart';
 import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_response_body.dart';
 import 'package:nibras/features/payment/data/model/create_payment_intent/create_payment_intent_request_body.dart';
@@ -186,5 +188,14 @@ abstract class WebServices {
   Future<MyCertificateResponseBody> myCertificate();
 
   @POST(ApiConstants.generateCertificate)
-  Future<GenerateCertificateResponseBody> generateCertificate(@Body() GenerateCertificateRequestBody request);
+  Future<GenerateCertificateResponseBody> generateCertificate(
+    @Body() GenerateCertificateRequestBody request,
+  );
+
+  @GET(ApiConstants.notifications)
+  Future<AllNorificationsResponseBody> getAllNotification();
+
+  @POST(ApiConstants.readallnotification)
+  Future<ReadAllNotificationsResponseBody> readAllNotifications();
+
 }

@@ -24,6 +24,9 @@ import 'package:nibras/features/login/data/repo/login_repo.dart';
 import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
 import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/data/repo/notes_repo.dart';
+import 'package:nibras/features/notifications/data/cubit/all_notifications_cubit.dart';
+import 'package:nibras/features/notifications/data/cubit/read_all_notifications_cubit.dart';
+import 'package:nibras/features/notifications/data/repo/notifications_repo.dart';
 import 'package:nibras/features/payment/data/cubit/confirm_payment_cubit.dart';
 import 'package:nibras/features/payment/data/cubit/coupon_cubit.dart';
 import 'package:nibras/features/payment/data/cubit/intent_cubit.dart';
@@ -141,5 +144,16 @@ void setupinjection() async {
 
   getIt.registerFactory<MyCertificatesCubit>(
     () => MyCertificatesCubit(getIt()),
+  );
+
+  getIt.registerLazySingleton<NotificationsRepo>(
+    () => NotificationsRepo(getIt()),
+  );
+
+  getIt.registerFactory<AllNotificationsCubit>(
+    () => AllNotificationsCubit(getIt()),
+  );
+  getIt.registerFactory<ReadAllNotificationsCubit>(
+    () => ReadAllNotificationsCubit(getIt()),
   );
 }
