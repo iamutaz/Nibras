@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "349785982482",
+    "project_id": "nibras-1e6fc",
+    "storage_bucket": "nibras-1e6fc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349785982482:android:b3d1bcf5163820a4893acb",
+        "android_client_info": {
+          "package_name": "com.example.nibras"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsNs8u3YyRP0xjKe026yPgYjEzy42gx24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

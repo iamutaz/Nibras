@@ -22,6 +22,9 @@ import 'package:nibras/features/interesting/interesting.dart';
 import 'package:nibras/features/leaderboard/leaderboard_page.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
+import 'package:nibras/features/notifications/data/cubit/all_notifications_cubit.dart';
+import 'package:nibras/features/notifications/data/cubit/read_all_notifications_cubit.dart';
+import 'package:nibras/features/notifications/notifications_page.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:nibras/features/payment/payment_page.dart';
@@ -96,6 +99,16 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (context) => HelpCenter());
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
+      case RoutesName.notification:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<AllNotificationsCubit>()),
+              BlocProvider(create: (context) => getIt<ReadAllNotificationsCubit>()),
+            ],
+            child: NotificationsPage(),
+          ),
+        );
       case RoutesName.mycertificates:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(

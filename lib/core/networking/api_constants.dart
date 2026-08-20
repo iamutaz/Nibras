@@ -46,4 +46,6 @@ class ApiConstants {
   static const String xpStats = 'xp/stats';
   static const String myCertificate='certificates/my';
   static const String generateCertificate='certificates/generate';
+  static const String  notifications= 'notifications';
+  static const String readallnotification='notifications/read-all';
 }

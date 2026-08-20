@@ -103,8 +103,8 @@ class _HomeState extends State<Home> {
                                   rate: allcourses[index].rate,
                                   logo: "assets/svg/frame.svg",
                                   numberOfReviews: allcourses[index].reviews,
-                                  discountedPrice: 9,
                                   realPrice: allcourses[index].price,
+                                  thumbnail: allcourses[index].thumbnail,
                                 ),
                               ),
                             );
@@ -165,8 +165,8 @@ class _HomeState extends State<Home> {
                                   rate: allcourses[index].rate,
                                   logo: "assets/svg/frame.svg",
                                   numberOfReviews: allcourses[index].reviews,
-                                  discountedPrice: 9,
                                   realPrice: allcourses[index].price,
+                                  thumbnail: allcourses[index].thumbnail,
                                 ),
                               ),
                             );
