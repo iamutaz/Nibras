@@ -3,9 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 
 class LeaderboardHeader extends StatelessWidget {
-  final String points;
-
-  const LeaderboardHeader({super.key, required this.points});
+  const LeaderboardHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,23 +19,6 @@ class LeaderboardHeader extends StatelessWidget {
           ),
         ),
         SizedBox(width: 48.w),
-        // Container(
-        //   margin: EdgeInsets.only(right: 12.w),
-        //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-        //   decoration: BoxDecoration(
-        //     color: AppColors.mainYellow,
-        //     borderRadius: BorderRadius.circular(20),
-        //   ),
-        //   child: Text(
-        //     '$points\nPoints',
-        //     textAlign: TextAlign.center,
-        //     style: TextStyles.font10lightgreyBold.copyWith(
-        //       color: AppColors.mainBlack,
-        //       fontSize: 11.sp,
-        //       height: 1.2,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

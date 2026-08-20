@@ -17,7 +17,13 @@ import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/login.dart';
 import 'package:nibras/features/onboarding/presentation/pages/continue_with_google.dart';
 import 'package:nibras/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:nibras/features/payment/payment_page.dart';
+import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/progression_page.dart';
+import 'package:nibras/features/quiz/data/cubit/enroll_quiz_cubit.dart';
+import 'package:nibras/features/quiz/data/cubit/submit_quiz_cubit.dart';
+import 'package:nibras/features/quiz/quiz_page.dart';
+import 'package:nibras/features/report/course_report_sheet.dart';
 import 'package:nibras/features/reviews/cubit/review_cubit.dart';
 import 'package:nibras/features/search/search_page.dart';
 import 'package:nibras/features/setting/data/cubits/logoutcubit/logout_cubit.dart';
@@ -83,7 +89,16 @@ class GenerateRoute {
       case RoutesName.policy:
         return MaterialPageRoute(builder: (context) => PolicyPage());
       case RoutesName.progressionincourse:
-        return MaterialPageRoute(builder: (context) => ProgressionPage());
+        final courseId = settings.arguments is int
+            ? settings.arguments as int
+            : 1;
+
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<ProgressionCubit>(),
+            child: ProgressionPage(courseId: courseId),
+          ),
+        );
       case RoutesName.wishlist:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
@@ -109,6 +124,7 @@ class GenerateRoute {
         );
       case RoutesName.accountdetails:
         return MaterialPageRoute(builder: (context) => AccountDetails());
+        
       case RoutesName.securityandpassword:
         final args = settings.arguments as Map<String, dynamic>;
 
@@ -152,6 +168,30 @@ class GenerateRoute {
         );
       case RoutesName.filter:
         return MaterialPageRoute(builder: (context) => FilterPage());
+
+      case RoutesName.payment:
+        final args = settings.arguments as Map<String, dynamic>;
+
+      // return MaterialPageRoute(
+      //   builder: (context) => PaymentPage(
+      //     courseId: args['courseId'] as int,
+      //     courseName: args['courseName'] as String,
+      //     instructorName: args['instructorName'] as String,
+      //     originalPrice: args['originalPrice'] as double,
+      //   ),
+      // );
+      case RoutesName.enrollquiz:
+        final id = settings.arguments as int;
+
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<EnrollQuizCubit>()),
+              BlocProvider(create: (context) => getIt<SubmitQuizCubit>()),
+            ],
+            child: QuizPage(quizID: id),
+          ),
+        );
 
       default:
         return MaterialPageRoute(

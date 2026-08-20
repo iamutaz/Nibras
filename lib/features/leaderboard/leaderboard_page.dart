@@ -19,7 +19,7 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
-  String _selectedDuration = 'All Time'; 
+  String _selectedDuration = 'All Time';
 
   String _periodFromLabel(String label) {
     switch (label) {
@@ -43,8 +43,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LeaderboardCubit(LeaderboardRepo())
-        ..getLeaderboard(_periodFromLabel(_selectedDuration)),
+      create: (_) =>
+          LeaderboardCubit(LeaderboardRepo())
+            ..getLeaderboard(_periodFromLabel(_selectedDuration)),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -54,7 +55,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: const LeaderboardHeader(points: '0'),
+                    child: const LeaderboardHeader(),
                   ),
                   SizedBox(height: 12.h),
                   Padding(
@@ -64,8 +65,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       onDurationChanged: (value) {
                         setState(() => _selectedDuration = value);
                         context.read<LeaderboardCubit>().getLeaderboard(
-                              _periodFromLabel(value),
-                            );
+                          _periodFromLabel(value),
+                        );
                       },
                     ),
                   ),
@@ -73,8 +74,11 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   Expanded(
                     child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
                       builder: (context, state) {
-                        if (state is LeaderboardLoading || state is LeaderboardInitial) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (state is LeaderboardLoading ||
+                            state is LeaderboardInitial) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }
 
                         if (state is LeaderboardFailure) {
@@ -85,75 +89,81 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           final list = state.data.leaderboard;
 
                           final rank1 = _findByRank(list, 1);
-final rank2 = _findByRank(list, 2);
-final rank3 = _findByRank(list, 3);
-final hasAnyPodium = rank1 != null || rank2 != null || rank3 != null;
+                          final rank2 = _findByRank(list, 2);
+                          final rank3 = _findByRank(list, 3);
+                          final hasAnyPodium =
+                              rank1 != null || rank2 != null || rank3 != null;
 
-final restList = list.where((e) => e.rank > 3).toList();
+                          final restList = list
+                              .where((e) => e.rank > 3)
+                              .toList();
 
-                      final myEntry = state.data.myRank != null
-    ? _findByRank(list, state.data.myRank!)
-    : null;
+                          final myEntry = state.data.myRank != null
+                              ? _findByRank(list, state.data.myRank!)
+                              : null;
 
-int pointsAway = 0;
-if (myEntry != null && state.data.myRank! > 1) {
-  final aboveEntry = _findByRank(list, state.data.myRank! - 1);
-  if (aboveEntry != null) {
-    pointsAway = aboveEntry.xp - myEntry.xp;
-  }
-}
+                          int pointsAway = 0;
+                          if (myEntry != null && state.data.myRank! > 1) {
+                            final aboveEntry = _findByRank(
+                              list,
+                              state.data.myRank! - 1,
+                            );
+                            if (aboveEntry != null) {
+                              pointsAway = aboveEntry.xp - myEntry.xp;
+                            }
+                          }
 
                           return Column(
                             children: [
-                     if (hasAnyPodium)
-  PodiumWidget(
-    first: rank1 != null
-        ? PodiumEntry(
-            name: rank1.student.name,
-            points: rank1.xp.toString(),
-            rank: 1,
-            avatarUrl: rank1.student.avatar,
-          )
-        : null,
-    second: rank2 != null
-        ? PodiumEntry(
-            name: rank2.student.name,
-            points: rank2.xp.toString(),
-            rank: 2,
-            avatarUrl: rank2.student.avatar,
-          )
-        : null,
-    third: rank3 != null
-        ? PodiumEntry(
-            name: rank3.student.name,
-            points: rank3.xp.toString(),
-            rank: 3,
-            avatarUrl: rank3.student.avatar,
-          )
-        : null,
-  ),
+                              if (hasAnyPodium)
+                                PodiumWidget(
+                                  first: rank1 != null
+                                      ? PodiumEntry(
+                                          name: rank1.student.name,
+                                          points: rank1.xp.toString(),
+                                          rank: 1,
+                                          avatarUrl: rank1.student.avatar,
+                                        )
+                                      : null,
+                                  second: rank2 != null
+                                      ? PodiumEntry(
+                                          name: rank2.student.name,
+                                          points: rank2.xp.toString(),
+                                          rank: 2,
+                                          avatarUrl: rank2.student.avatar,
+                                        )
+                                      : null,
+                                  third: rank3 != null
+                                      ? PodiumEntry(
+                                          name: rank3.student.name,
+                                          points: rank3.xp.toString(),
+                                          rank: 3,
+                                          avatarUrl: rank3.student.avatar,
+                                        )
+                                      : null,
+                                ),
                               SizedBox(height: 20.h),
                               Expanded(
                                 child: ListView.builder(
                                   padding: EdgeInsets.only(bottom: 8.h),
                                   itemCount: restList.length,
-                                itemBuilder: (context, index) {
-  final entry = restList[index];
-  return RankingListItem(
-    rank: entry.rank,
-    name: entry.student.name,
-    points: entry.xp.toString(),
-    avatarUrl: entry.student.avatar,
-  );
-},
+                                  itemBuilder: (context, index) {
+                                    final entry = restList[index];
+                                    return RankingListItem(
+                                      rank: entry.rank,
+                                      name: entry.student.name,
+                                      points: entry.xp.toString(),
+                                      avatarUrl: entry.student.avatar,
+                                    );
+                                  },
                                 ),
                               ),
-                      if (state.data.myRank != null)
-  CurrentUserCard(
-    rank: state.data.myRank!,
-    name: myEntry?.student.name ?? 'You',
-    avatarUrl: myEntry?.student.avatar,
-  ),
+                              if (state.data.myRank != null)
+                                CurrentUserCard(
+                                  rank: state.data.myRank!,
+                                  name: myEntry?.student.name ?? 'You',
+                                  avatarUrl: myEntry?.student.avatar,
+                                ),
                             ],
                           );
                         }

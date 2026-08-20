@@ -7,7 +7,7 @@ class PodiumEntry {
   final String name;
   final String points;
   final int rank;
-  final String? avatarUrl; // 🎯 جديد
+  final String? avatarUrl; 
 
   const PodiumEntry({
     required this.name,
@@ -84,10 +84,10 @@ class PodiumWidget extends StatelessWidget {
               backgroundColor: AppColors.avatarColor,
               backgroundImage: entry.avatarUrl != null
                   ? NetworkImage(entry.avatarUrl!)
-                  : null, // 🎯 جديد
+                  : null, 
               child: entry.avatarUrl == null
                   ? const Icon(Icons.person, color: AppColors.lightgrey)
-                  : null, // 🎯 جديد
+                  : null, 
             ),
           ),
         ],

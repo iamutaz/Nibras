@@ -35,7 +35,7 @@ class ReviewsPage extends StatelessWidget {
                 ..getFeedbackItems(courseId),
         ),
         BlocProvider(
-          create: (context) => AddReviewCubit(AddReviewRepo()), // 🎯 جديد
+          create: (context) => AddReviewCubit(AddReviewRepo()), 
         ),
       ],
       child: Builder(
@@ -70,7 +70,6 @@ class ReviewsPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
 
-                      // 1. ملخص التقييمات العلوي
                       BlocBuilder<RatingStatsCubit, RatingStatsState>(
                         builder: (context, state) {
                           if (state is RatingStatsLoading) {
@@ -96,7 +95,7 @@ class ReviewsPage extends StatelessWidget {
 
                       const SizedBox(height: 16),
 
-                      // 2. زر إضافة تقييم
+              
                       SizedBox(
                         width: double.infinity,
                         height: 52.h,

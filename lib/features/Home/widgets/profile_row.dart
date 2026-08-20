@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 
 class ProfileRow extends StatelessWidget {
-  const ProfileRow({
-    super.key,
-    required this.username,
-    this.avatarUrl, 
-  });
+  const ProfileRow({super.key, required this.username, this.avatarUrl});
 
   final String username;
-  final String? avatarUrl; 
+  final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +20,9 @@ class ProfileRow extends StatelessWidget {
           CircleAvatar(
             radius: 32.r,
             backgroundColor: AppColors.avatarColor,
-            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null, 
+            backgroundImage: avatarUrl != null
+                ? NetworkImage(avatarUrl!)
+                : null,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 14.0.w),
@@ -35,6 +34,9 @@ class ProfileRow extends StatelessWidget {
                   style: TextStyles.font16homeblackbold,
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RoutesName.interesting);
+                  },
                   child: Text(
                     "Edit occupation and interests",
                     style: TextStyles.font14mainbluesemiBold,
@@ -47,7 +49,7 @@ class ProfileRow extends StatelessWidget {
           GestureDetector(
             child: SvgPicture.asset("assets/svg/cart.svg"),
             onTap: () => print("Cart tapped"),
-          )
+          ),
         ],
       ),
     );
