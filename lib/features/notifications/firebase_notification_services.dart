@@ -58,8 +58,8 @@ class FirebaseNotificationService {
     });
 
     // الحصول على الـ Device Token (شنسيب للخادم)
-    String? token = await _firebaseMessaging.getToken();
-    print('Device Token: $token');
+   // String? token = await _firebaseMessaging.getToken();
+    //print('Device Token: $token');
   }
 
   /// تهيئة Local Notifications

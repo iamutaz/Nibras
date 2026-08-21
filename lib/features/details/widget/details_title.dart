@@ -42,7 +42,7 @@ class DetailsTitle extends StatelessWidget {
                 style: TextStyles.font24authblackbold,
               ),
             ),
-            Text(coursedescription, style: TextStyles.font16authblackregular),
+            Text(coursedescription, style: TextStyles.font16authblackregular,maxLines: 4,overflow: TextOverflow.ellipsis,),
             SizedBox(height: 24),
             Row(
               children: [
@@ -54,9 +54,11 @@ class DetailsTitle extends StatelessWidget {
 
                     borderRadius: BorderRadius.circular(4.r),
                   ),
-                  child: Text(
-                    "BestSaller",
-                    style: TextStyles.font12blackgreenmiduem,
+                  child: Center(
+                    child: Text(
+                      "BestSaller",
+                      style: TextStyles.font12blackgreenmiduem,
+                    ),
                   ),
                 ),
                 Padding(

@@ -12,6 +12,7 @@ import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
 import 'package:nibras/features/progression/data/cubit/progression_state.dart';
 import 'package:nibras/features/progression/data/model/progression_request_body.dart';
 import 'package:nibras/features/progression/widgets/progression_success_view.dart';
+import 'package:nibras/features/reviews/review_page.dart';
 
 class ProgressionPage extends StatefulWidget {
   final int courseId;
@@ -128,7 +129,7 @@ class _ProgressionPageState extends State<ProgressionPage> with RouteAware {
                       create: (context) => getIt<GetNotesByIdCubit>(),
                       child: NotesByIdLesson(lessonId: widget.courseId),
                     ),
-                    const ReviewsPage(),
+                    ReviewsPage(),
 
                     BlocProvider(
                       create: (context) => getIt<GenerateCertificateCubit>(),

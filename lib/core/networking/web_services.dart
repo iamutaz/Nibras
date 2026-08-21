@@ -17,6 +17,8 @@ import 'package:nibras/features/gift/data/model/confirm_gift_request_body.dart';
 import 'package:nibras/features/gift/data/model/confirm_gift_response_body.dart';
 import 'package:nibras/features/gift/data/model/create_gift_request_body.dart';
 import 'package:nibras/features/gift/data/model/create_gift_response_body.dart';
+import 'package:nibras/features/instructor/model/become_instructor_request_body.dart';
+import 'package:nibras/features/instructor/model/become_instructor_response_body.dart';
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
@@ -198,4 +200,6 @@ abstract class WebServices {
   @POST(ApiConstants.readallnotification)
   Future<ReadAllNotificationsResponseBody> readAllNotifications();
 
+  @POST(ApiConstants.becominstructor)
+  Future<BecomeInstructorResponseBody> becomeInstructor(@Body() BecomeInstructorRequestBody request);
 }

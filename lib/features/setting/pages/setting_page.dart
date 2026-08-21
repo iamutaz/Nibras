@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nibras/core/DI/injection.dart';
 import 'package:nibras/core/helpers/shared_pref_helper.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/app_text_button.dart';
+import 'package:nibras/features/instructor/become_instructor_sheet.dart';
+import 'package:nibras/features/instructor/cubit/become_instructor_cubit.dart';
 import 'package:nibras/features/setting/data/cubits/profile_cubit.dart';
 import 'package:nibras/features/setting/data/cubits/profile_state.dart';
 import 'package:nibras/features/setting/data/cubits/streak_cubit.dart';
@@ -72,7 +75,10 @@ class SettingPage extends StatelessWidget {
                                 : null,
                           ),
                           SizedBox(height: 10.h),
-                          Text(user.name, style: TextStyles.font16homeblackbold),
+                          Text(
+                            user.name,
+                            style: TextStyles.font16homeblackbold,
+                          ),
                           SizedBox(height: 5.h),
                           Text(
                             user.email,
@@ -162,6 +168,35 @@ class SettingPage extends StatelessWidget {
                   ),
                 ),
                 SupportAndHelp(),
+                SizedBox(height: 20.h),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled:
+                          true, // ضروري عشان الشيت ياخد راحته مع الكيبورد
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20.r),
+                        ),
+                      ),
+                      builder: (context) {
+                        return BlocProvider(
+                          // عم نجيب الـ Cubit من الـ GetIt متل ما انت مجهزه
+                          create: (context) => getIt<BecomeInstructorCubit>(),
+                          child: const BecomeInstructorBottomSheet(),
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    "Become instructor?",
+                    style: TextStyles.font16mainbluebold.copyWith(
+                       decoration: TextDecoration
+                          .underline, // اختياري إذا بدك يبين كأنه لينك
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.0.w,
@@ -175,16 +210,12 @@ class SettingPage extends StatelessWidget {
                     },
                     textButton: "Log Out",
                     textStyle: TextStyles.font16whitebold,
-<<<<<<< HEAD
                     icon: SvgPicture.asset("assets/svg/logout.svg"),
-=======
-                    // icon: ("assets/svg/logout.svg"),
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
                     raduisbutton: 12.r,
                     buttoncolor: Colors.red,
                   ),
                 ),
-                LogoutBlocListener()
+                LogoutBlocListener(),
               ],
             ),
           ),

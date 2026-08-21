@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'data/cubit/grades_cubit.dart';
 import 'data/cubit/grades_state.dart';
@@ -23,13 +24,13 @@ class GradesPage extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           scrolledUnderElevation: 0,
-          automaticallyImplyLeading: false, 
+          automaticallyImplyLeading: false,
           titleSpacing: 16.w,
           title: Text(
             'Record Your Grades',
             style: TextStyles.font20blackbold.copyWith(fontSize: 18.sp),
           ),
-          centerTitle: false, 
+          centerTitle: false,
         ),
         body: SafeArea(
           child: BlocBuilder<GradesCubit, GradesState>(
@@ -64,10 +65,25 @@ class GradesPage extends StatelessWidget {
                         passingScore: data.passingScore,
                       ),
                       SizedBox(height: 20.h),
-                      ...data.quizzes.map(
-                        (quiz) =>
-                            QuizResultCard(quiz: quiz, onActionTap: () {}),
-                      ),
+                      if (data.quizzes.isEmpty)
+                        SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: Center(
+                            child: Text(
+                              'No quizzes available yet',
+                              style: TextStyles.font14mainbluesemiBold.copyWith(
+                                color: AppColors.lightgrey,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      else
+                        ...data.quizzes.map(
+                          (quiz) =>
+                              QuizResultCard(quiz: quiz, onActionTap: () {}),
+                        ),
                     ],
                   ),
                 );

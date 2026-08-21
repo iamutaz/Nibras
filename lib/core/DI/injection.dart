@@ -19,6 +19,8 @@ import 'package:nibras/features/gift/data/cubit/confirm_gift_cubit.dart';
 import 'package:nibras/features/gift/data/cubit/craete_gift_cubit.dart';
 import 'package:nibras/features/gift/data/cubit/my_gifts_cubit.dart';
 import 'package:nibras/features/gift/data/repo/gift_repo.dart';
+import 'package:nibras/features/instructor/cubit/become_instructor_cubit.dart';
+import 'package:nibras/features/instructor/repo/instructor_repo.dart';
 import 'package:nibras/features/login/data/cubit/login_cubit.dart';
 import 'package:nibras/features/login/data/repo/login_repo.dart';
 import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
@@ -155,5 +157,11 @@ void setupinjection() async {
   );
   getIt.registerFactory<ReadAllNotificationsCubit>(
     () => ReadAllNotificationsCubit(getIt()),
+  );
+
+  getIt.registerLazySingleton<InstructorRepo>(() => InstructorRepo(getIt()));
+
+  getIt.registerFactory<BecomeInstructorCubit>(
+    () => BecomeInstructorCubit(getIt()),
   );
 }

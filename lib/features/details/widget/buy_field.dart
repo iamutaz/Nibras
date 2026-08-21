@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-<<<<<<< HEAD
 import 'package:flutter_svg/svg.dart';
-=======
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
@@ -62,7 +59,6 @@ class BuyField extends StatelessWidget {
                           ),
                         ],
                       ),
-<<<<<<< HEAD
                     ),
                     GestureDetector(
                       onTap: () => context.pushNamed(
@@ -80,10 +76,6 @@ class BuyField extends StatelessWidget {
                       ),
                     ),
                   ],
-=======
-                    ],
-                  ),
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
                 ),
                 SizedBox(height: 4.h),
                 // if (!isFree)
