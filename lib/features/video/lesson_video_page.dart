@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/DI/injection.dart';
+<<<<<<< HEAD
+=======
+import 'package:nibras/core/helpers/extension.dart';
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/core/networking/dio_factory.dart';
 import 'package:nibras/core/networking/web_services.dart';
@@ -30,7 +34,10 @@ class LessonVideoPage extends StatefulWidget {
   final String lessonTitle;
   final int lessonId;
   final int? startPositionSeconds;
+<<<<<<< HEAD
   final bool isPreview;
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 
   const LessonVideoPage({
     super.key,
@@ -38,7 +45,10 @@ class LessonVideoPage extends StatefulWidget {
     required this.lessonTitle,
     required this.lessonId,
     this.startPositionSeconds,
+<<<<<<< HEAD
     this.isPreview = false,
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
   });
 
   @override
@@ -80,9 +90,13 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       await _videoController.initialize();
       _videoController.addListener(_videoListener);
 
+<<<<<<< HEAD
       if (!widget.isPreview) {
         unawaited(_fetchInVideoQuizzes());
       }
+=======
+      unawaited(_fetchInVideoQuizzes());
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
       await _seekToStartPosition();
       await _videoController.play();
 
@@ -130,12 +144,15 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       return;
     }
 
+<<<<<<< HEAD
     if (widget.isPreview) {
       final value = _videoController.value;
       _wasPlaying = value.isPlaying;
       return;
     }
 
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     final value = _videoController.value;
 
     final currentPosition = value.position.inSeconds;
@@ -183,10 +200,13 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   }
 
   Future<void> _saveProgress() async {
+<<<<<<< HEAD
     if (widget.isPreview) {
       return;
     }
 
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     try {
       await _progressRepository.saveVideoProgress(
         lessonId: widget.lessonId,
@@ -198,7 +218,11 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   }
 
   Future<void> _completeLesson() async {
+<<<<<<< HEAD
     if (widget.isPreview || _hasSentComplete) {
+=======
+    if (_hasSentComplete) {
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
       return;
     }
 
@@ -423,6 +447,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
                   ),
                 ),
 
+<<<<<<< HEAD
                 actions: widget.isPreview
                     ? null
                     : [
@@ -483,6 +508,66 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
                           ),
                         ),
                       ],
+=======
+                actions: [
+                  BlocProvider(
+                    create: (_) => getIt<ReportsCubit>(),
+                    child: Builder(
+                      builder: (context) {
+                        return Stack(
+                          children: [
+                            PopupMenuButton<String>(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: Colors.black,
+                              ),
+                              onSelected: (value) {
+                                if (value == 'report') {
+                                  final reportsCubit = context
+                                      .read<ReportsCubit>();
+
+                                  CourseReportSheet.show(
+                                    context,
+                                    onSubmit: (reason, details) async {
+                                      await reportsCubit.report(
+                                        ReportRequestBody(
+                                          courseId: widget.lessonId,
+                                          reason: reason,
+                                          description: details,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 'report',
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.report_problem,
+                                        color: Colors.red,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        'Report',
+                                        style: TextStyles.font12redmiduem,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const ReportsBlocListener(),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
               ),
         body: _buildBody(),
       ),
@@ -503,6 +588,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       );
     }
 
+<<<<<<< HEAD
     final player = LessonVideoPlayer(
       key: _playerKey,
       controller: _videoController,
@@ -516,11 +602,30 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
 
     if (widget.isPreview) {
       return player;
+=======
+    if (_isFullscreen) {
+      return Center(
+        child: LessonVideoPlayer(
+          key: _playerKey,
+          controller: _videoController,
+          onFullscreen: _toggleFullscreen,
+        ),
+      );
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     }
 
     return Column(
       children: [
+<<<<<<< HEAD
         player,
+=======
+        LessonVideoPlayer(
+          key: _playerKey,
+          controller: _videoController,
+          onFullscreen: _toggleFullscreen,
+        ),
+
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
         Expanded(
           child: BlocProvider(
             create: (context) => getIt<AddNoteCubit>(),

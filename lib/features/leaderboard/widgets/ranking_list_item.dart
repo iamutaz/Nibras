@@ -7,13 +7,15 @@ class RankingListItem extends StatelessWidget {
   final int rank;
   final String name;
   final String points;
-
+  final String? avatarUrl; 
   const RankingListItem({
     super.key,
     required this.rank,
     required this.name,
     required this.points,
+    this.avatarUrl,
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +40,10 @@ class RankingListItem extends StatelessWidget {
           CircleAvatar(
             radius: 20.r,
             backgroundColor: AppColors.avatarColor,
-            child: const Icon(Icons.person, color: AppColors.lightgrey),
+            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null, 
+            child: avatarUrl == null
+                ? const Icon(Icons.person, color: AppColors.lightgrey)
+                : null,
           ),
           SizedBox(width: 12.w),
           Expanded(

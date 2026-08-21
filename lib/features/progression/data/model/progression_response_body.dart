@@ -69,7 +69,14 @@ class LearningCourse {
   @JsonKey(name: 'total_lessons')
   final int totalLessons;
 
+<<<<<<< HEAD
   @JsonKey(name: 'completion_percentage', fromJson: _parseDouble)
+=======
+  @JsonKey(
+    name: 'completion_percentage',
+    fromJson: _parseDouble,
+  )
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
   final double completionPercentage;
 
   LearningCourse({
@@ -103,9 +110,12 @@ class ResumeLesson {
   @JsonKey(name: 'video_url')
   final String? videoUrl;
 
+<<<<<<< HEAD
   @JsonKey(name: 'pdf_url')
   final String? pdfUrl;
 
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
   @JsonKey(name: 'last_position_seconds')
   final int lastPositionSeconds;
 
@@ -116,7 +126,10 @@ class ResumeLesson {
     required this.type,
     this.duration,
     this.videoUrl,
+<<<<<<< HEAD
     this.pdfUrl,
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     required this.lastPositionSeconds,
   });
 
@@ -172,9 +185,12 @@ class SectionLesson {
   @JsonKey(name: 'video_url')
   final String? videoUrl;
 
+<<<<<<< HEAD
   @JsonKey(name: 'pdf_url')
   final String? pdfUrl;
 
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
   @JsonKey(name: 'is_free_preview')
   final bool isFreePreview;
 
@@ -195,7 +211,10 @@ class SectionLesson {
     required this.type,
     this.duration,
     this.videoUrl,
+<<<<<<< HEAD
     this.pdfUrl,
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     required this.isFreePreview,
     required this.orderIndex,
     required this.status,
@@ -217,7 +236,14 @@ class FinalExam {
   @JsonKey(name: 'max_attempts')
   final int maxAttempts;
 
+<<<<<<< HEAD
   @JsonKey(name: 'passing_score', fromJson: _parseDouble)
+=======
+  @JsonKey(
+    name: 'passing_score',
+    fromJson: _parseDouble,
+  )
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
   final double passingScore;
 
   FinalExam({
@@ -231,4 +257,8 @@ class FinalExam {
       _$FinalExamFromJson(json);
 
   Map<String, dynamic> toJson() => _$FinalExamToJson(this);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de

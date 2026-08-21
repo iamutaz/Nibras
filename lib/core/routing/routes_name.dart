@@ -26,8 +26,12 @@ class RoutesName {
   static const String enrollquiz='/enrollquiz';
   static const String reportpage='/reportepage';
   static const String payment='/payment';
+<<<<<<< HEAD
   static const String gift='/gift';
   static const String mygifts='/mygifts';
   static const String mycertificates='/mycertificates';
   static const String notification='/notifications';
 }
+=======
+}
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de

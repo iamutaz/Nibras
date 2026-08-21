@@ -166,6 +166,7 @@ class GenerateRoute {
         );
       case RoutesName.accountdetails:
         return MaterialPageRoute(builder: (context) => AccountDetails());
+        
       case RoutesName.securityandpassword:
         final args = settings.arguments as Map<String, dynamic>;
 

@@ -15,7 +15,7 @@ class LeaderboardResponseBody {
       leaderboard: (json['leaderboard'] as List)
           .map((item) => LeaderboardEntry.fromJson(item as Map<String, dynamic>))
           .toList(),
-      myRank: json['my_rank'] as int?, // 🎯 صار nullable
+      myRank: json['my_rank'] as int?, 
     );
   }
 }

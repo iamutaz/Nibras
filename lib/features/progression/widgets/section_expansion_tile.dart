@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+<<<<<<< HEAD
 import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 
 class SectionExpansionTile extends StatelessWidget {
   final CourseSection section;
   final Function(SectionLesson lesson)? onLessonSelected;
+=======
+
+class SectionExpansionTile extends StatelessWidget {
+  final dynamic section;
+  final Function(int lessonId, int? duration)? onLessonSelected;
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 
   const SectionExpansionTile({
     super.key,
@@ -44,8 +51,15 @@ class SectionExpansionTile extends StatelessWidget {
               itemBuilder: (context, index) {
                 final lesson = lessons[index];
 
+<<<<<<< HEAD
                 final bool isCompleted =
                     lesson.status == 'completed' || lesson.isCompleted;
+=======
+                // التحقق هل الدرس منتهي
+                final bool isCompleted =
+                    lesson.status == 'completed' ||
+                    (lesson.isCompleted ?? false);
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(
@@ -60,6 +74,7 @@ class SectionExpansionTile extends StatelessWidget {
                     lesson.type,
                     style: TextStyles.font12lightgreymedium,
                   ),
+<<<<<<< HEAD
                   trailing: _buildTrailingIcon(lesson.status, isCompleted),
                   onTap: () {
                     // إذا الدرس غير متاح بعد (not_started) ما نخلي المستخدم يفتح
@@ -76,6 +91,16 @@ class SectionExpansionTile extends StatelessWidget {
                   },
                 );
               },  
+=======
+                  // إظهار الأيقونة حسب حالة الدرس
+                  trailing: _buildTrailingIcon(lesson.status, isCompleted),
+                  onTap: () {
+                    // يستدعي التابع الأصلي بإرسال الـ id والـ duration
+                    onLessonSelected?.call(lesson.id, lesson.duration);
+                  },
+                );
+              },
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
             ),
           ],
         ),
@@ -87,13 +112,21 @@ class SectionExpansionTile extends StatelessWidget {
     if (isCompleted || status == 'completed') {
       return const Icon(Icons.check_circle, color: Colors.green, size: 20);
     } else if (status == 'current') {
+<<<<<<< HEAD
       return const Icon(
         Icons.play_circle_fill,
         color: Colors.purple,
         size: 20,
       );
+=======
+      return const Icon(Icons.play_circle_fill, color: Colors.purple, size: 20);
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     } else {
       return const Icon(Icons.lock_outline, color: Colors.grey, size: 20);
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de

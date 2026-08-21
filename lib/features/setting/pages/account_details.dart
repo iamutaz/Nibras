@@ -8,9 +8,7 @@ import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/core/widgets/app_text_button.dart';
-import 'package:nibras/core/widgets/app_text_form_feild.dart';
 import 'package:nibras/features/setting/data/repos/account_repo.dart';
-import 'package:nibras/features/signup/signup.dart';
 
 class AccountDetails extends StatefulWidget {
   const AccountDetails({super.key});
@@ -57,7 +55,9 @@ class _AccountDetailsState extends State<AccountDetails> {
       failure: (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(error.apiErrorModel.message ?? 'Failed to upload avatar'),
+            content: Text(
+              error.apiErrorModel.message ?? 'Failed to upload avatar',
+            ),
           ),
         );
       },
@@ -71,74 +71,52 @@ class _AccountDetailsState extends State<AccountDetails> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () => context.pop(),
-          child: Icon(Icons.arrow_back_ios, size: 14, color: Colors.black),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            size: 14,
+            color: Colors.black,
+          ),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text("Account Details", style: TextStyles.font16titleblackbold),
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-          child: Column(
-            children: [
-              Divider(color: AppColors.avatarColor),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0.h),
-                child: GestureDetector(
+      body: Stack(
+        children: [
+          Positioned(
+            top: 160.h,
+            left: 16.w,
+            right: 16.w,
+            child: Column(
+              children: [
+                GestureDetector(
                   onTap: _pickImage,
                   child: CircleAvatar(
                     backgroundColor: AppColors.avatarColor,
-                    radius: 35.r,
+                    radius: 70.r,
                     backgroundImage: _selectedImage != null
                         ? FileImage(_selectedImage!)
                         : const AssetImage('assets/svg/profile_circle_gray.svg')
-                            as ImageProvider,
+                              as ImageProvider,
                     child: _selectedImage == null
                         ? SvgPicture.asset(
                             "assets/svg/profile_vector.svg",
-                            height: 30.h,
-                            width: 30.w,
+                            height: 50.h,
+                            width: 50.w,
                           )
                         : null,
                   ),
                 ),
-              ),
-              FormBody(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "this feild can't be empty";
-                  }
-                  return null;
-                },
-                title: "Full Name",
-                hint: "Aizen Souske",
-                prefixpath: "assets/svg/profile_vector.svg",
-              ),
-              FormBody(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "this feild can't be empty";
-                  }
-                  return null;
-                },
-                title: "Email Address",
-                hint: "Ahmad.Mohamed@Example.com",
-                prefixpath: "assets/svg/profile_vector.svg",
-              ),
-            ],
+                SizedBox(height: 100.h),
+                AppTextButton(
+                  onpressed: _isSaving ? () {} : _saveChanges,
+                  textButton: _isSaving ? "Saving..." : "Save Changes",
+                  textStyle: TextStyles.font16homeblackbold,
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0.w),
-          child: AppTextButton(
-            onpressed: _isSaving ? () {} : _saveChanges,
-            textButton: _isSaving ? "Saving..." : "Save Changes",
-            textStyle: TextStyles.font16homeblackbold,
-          ),
-        ),
+        ],
       ),
     );
   }

@@ -175,7 +175,11 @@ class SettingPage extends StatelessWidget {
                     },
                     textButton: "Log Out",
                     textStyle: TextStyles.font16whitebold,
+<<<<<<< HEAD
                     icon: SvgPicture.asset("assets/svg/logout.svg"),
+=======
+                    // icon: ("assets/svg/logout.svg"),
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
                     raduisbutton: 12.r,
                     buttoncolor: Colors.red,
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/features/search/model/search_response_body.dart';
 import 'course_card_widget.dart';
 
@@ -14,7 +15,17 @@ class CoursesListWidget extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: courses.length,
       itemBuilder: (context, index) {
-        return CourseCardWidget(course: courses[index]);
+        final course = courses[index];
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              RoutesName.details,
+              arguments: course.id,
+            );
+          },
+          child: CourseCardWidget(course: course),
+        );
       },
     );
   }

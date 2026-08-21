@@ -48,7 +48,18 @@ class _DetailsState extends State<Details> {
           onTap: () => context.pop(),
           child: Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
         ),
+<<<<<<< HEAD
 
+=======
+        actions: [
+          GestureDetector(
+             child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+              child: SvgPicture.asset("assets/svg/wishlist.svg"),
+            ),
+          ),
+        ],
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
         title: Text("Course Page", style: TextStyles.font16homeblackbold),
         centerTitle: true,
       ),

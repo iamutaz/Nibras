@@ -7,11 +7,13 @@ class PodiumEntry {
   final String name;
   final String points;
   final int rank;
+  final String? avatarUrl; 
 
   const PodiumEntry({
     required this.name,
     required this.points,
     required this.rank,
+    this.avatarUrl,
   });
 }
 
@@ -45,7 +47,9 @@ class PodiumWidget extends StatelessWidget {
             padding: EdgeInsets.only(top: 24.h, bottom: 10.h),
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(16.r),
+              ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -78,7 +82,12 @@ class PodiumWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 24.r,
               backgroundColor: AppColors.avatarColor,
-              child: const Icon(Icons.person, color: AppColors.lightgrey),
+              backgroundImage: entry.avatarUrl != null
+                  ? NetworkImage(entry.avatarUrl!)
+                  : null, 
+              child: entry.avatarUrl == null
+                  ? const Icon(Icons.person, color: AppColors.lightgrey)
+                  : null, 
             ),
           ),
         ],

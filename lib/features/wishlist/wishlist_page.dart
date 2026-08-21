@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+<<<<<<< HEAD
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/routing/routes_name.dart';
 import 'package:nibras/core/theme/colors/app_colors.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+<<<<<<< HEAD
 import 'package:nibras/core/widgets/app_text_button.dart';
 import 'package:nibras/core/widgets/app_text_form_feild.dart';
 import 'package:nibras/features/gift/data/cubit/claim_gift_cubit.dart';
@@ -13,6 +17,13 @@ import 'package:nibras/features/gift/data/model/claim_gift_request_body.dart';
 import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
 import 'package:nibras/features/wishlist/data/cubit/my_wishlist_state.dart';
 import 'package:nibras/features/wishlist/widgets/wishlist_course_body.dart';
+=======
+import 'package:nibras/features/wishlist/data/cubit/my_wishlist_cubit.dart';
+import 'package:nibras/features/wishlist/data/cubit/my_wishlist_state.dart';
+import 'package:nibras/features/wishlist/widgets/wishlist_course_body.dart';
+// لا تنسَ تعمل import لملف الويدجت تبع الكورس اللي عملناه
+// import 'package:nibras/path/to/course_card_widget.dart';
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -202,11 +213,16 @@ class _WishlistPageState extends State<WishlistPage> {
         backgroundColor: Colors.white,
         leading: InkWell(
           onTap: () => context.pop(),
+<<<<<<< HEAD
           child: const Icon(
             Icons.arrow_back_ios,
             size: 14,
             color: Colors.black,
           ),
+=======
+
+          child: Icon(Icons.arrow_back_ios, size: 14, color: Colors.black),
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
         ),
         title: Text("Wishlist", style: TextStyles.font16titleblackbold),
         bottom: PreferredSize(
@@ -220,6 +236,10 @@ class _WishlistPageState extends State<WishlistPage> {
             getmywishlistloading: () {
               return const Center(child: CircularProgressIndicator());
             },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
             getmywishlistsuccess: (response) {
               final courses = response.data;
 
@@ -262,6 +282,10 @@ class _WishlistPageState extends State<WishlistPage> {
                 },
               );
             },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
             getmywishlistfailure: (error) {
               return Center(
                 child: Padding(
@@ -274,12 +298,17 @@ class _WishlistPageState extends State<WishlistPage> {
                 ),
               );
             },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
             orElse: () {
               return const SizedBox.shrink();
             },
           );
         },
       ),
+<<<<<<< HEAD
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
@@ -300,6 +329,8 @@ class _WishlistPageState extends State<WishlistPage> {
           ),
         ),
       ),
+=======
+>>>>>>> 88de412774bc88364818669c92f2efafe4c444de
     );
   }
 }

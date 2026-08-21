@@ -5,6 +5,7 @@ import 'package:nibras/core/routing/app_route_observer.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
 import 'package:nibras/features/certificate/generate_certificate_page.dart';
 import 'package:nibras/features/certificate/data/cubit/generate_certificate_cubit.dart';
+import 'package:nibras/features/grades/grades-page.dart';
 import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/pages/notes_by_id_lesson.dart';
 import 'package:nibras/features/progression/data/cubit/progression_cubit.dart';
@@ -121,15 +122,19 @@ class _ProgressionPageState extends State<ProgressionPage> with RouteAware {
                 return TabBarView(
                   children: [
                     ProgressionSuccessView(data: data),
-                    const Center(child: Text("Grades Page")),
+                    GradesPage(courseId: widget.courseId),
+
                     BlocProvider(
                       create: (context) => getIt<GetNotesByIdCubit>(),
                       child: NotesByIdLesson(lessonId: widget.courseId),
                     ),
-                    const Center(child: Text("Certificate Page")),
+                    const ReviewsPage(),
+
                     BlocProvider(
                       create: (context) => getIt<GenerateCertificateCubit>(),
-                      child: GenerateCertificatePage(enrollmentId: widget.enrollmentId),
+                      child: GenerateCertificatePage(
+                        enrollmentId: widget.enrollmentId,
+                      ),
                     ),
                   ],
                 );
