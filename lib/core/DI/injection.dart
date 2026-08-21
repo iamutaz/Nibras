@@ -24,12 +24,9 @@ import 'package:nibras/features/login/data/repo/login_repo.dart';
 import 'package:nibras/features/notes/data/cubit/add_note_cubit.dart';
 import 'package:nibras/features/notes/data/cubit/get_notes_by_id_cubit.dart';
 import 'package:nibras/features/notes/data/repo/notes_repo.dart';
-<<<<<<< HEAD
 import 'package:nibras/features/notifications/data/cubit/all_notifications_cubit.dart';
 import 'package:nibras/features/notifications/data/cubit/read_all_notifications_cubit.dart';
 import 'package:nibras/features/notifications/data/repo/notifications_repo.dart';
-=======
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 import 'package:nibras/features/payment/data/cubit/confirm_payment_cubit.dart';
 import 'package:nibras/features/payment/data/cubit/coupon_cubit.dart';
 import 'package:nibras/features/payment/data/cubit/intent_cubit.dart';
@@ -65,7 +62,6 @@ void setupinjection() async {
   // Note: PaymentRepo depends on WebServices
   getIt.registerLazySingleton<PaymentRepo>(() => PaymentRepo(getIt()));
 
-<<<<<<< HEAD
   getIt.registerFactory<CraeteGiftCubit>(() => CraeteGiftCubit(getIt()));
   getIt.registerFactory<ClaimGiftCubit>(() => ClaimGiftCubit(getIt()));
   getIt.registerFactory<ConfirmGiftCubit>(() => ConfirmGiftCubit(getIt()));
@@ -73,8 +69,6 @@ void setupinjection() async {
 
   getIt.registerLazySingleton<GiftRepo>(() => GiftRepo(getIt()));
 
-=======
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
   getIt.registerFactory<ConfirmPaymentCubit>(
     () => ConfirmPaymentCubit(getIt()),
   );
@@ -141,7 +135,6 @@ void setupinjection() async {
   getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo(getIt()));
 
   getIt.registerFactory<ReportsCubit>(() => ReportsCubit(getIt()));
-<<<<<<< HEAD
 
   getIt.registerLazySingleton<CertificateRepo>(() => CertificateRepo(getIt()));
 
@@ -163,6 +156,4 @@ void setupinjection() async {
   getIt.registerFactory<ReadAllNotificationsCubit>(
     () => ReadAllNotificationsCubit(getIt()),
   );
-=======
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 }

@@ -10,7 +10,6 @@ import 'package:nibras/features/details/data/models/enrollment_request_body.dart
 import 'package:nibras/features/details/data/models/enrollment_response_body.dart';
 
 import 'package:nibras/features/enrollments/data/model/enrollments_response_body.dart';
-<<<<<<< HEAD
 import 'package:nibras/features/gift/data/model/all_gift_sents_response_body.dart';
 import 'package:nibras/features/gift/data/model/claim_gift_request_body.dart';
 import 'package:nibras/features/gift/data/model/claim_gift_response_body.dart';
@@ -18,19 +17,14 @@ import 'package:nibras/features/gift/data/model/confirm_gift_request_body.dart';
 import 'package:nibras/features/gift/data/model/confirm_gift_response_body.dart';
 import 'package:nibras/features/gift/data/model/create_gift_request_body.dart';
 import 'package:nibras/features/gift/data/model/create_gift_response_body.dart';
-=======
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 import 'package:nibras/features/login/data/model/login_request_body.dart';
 import 'package:nibras/features/login/data/model/login_response_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_request_body.dart';
 import 'package:nibras/features/notes/data/models/add_note_responst_body.dart';
 import 'package:nibras/features/notes/data/models/get_notes_by_id_request_body.dart';
 import 'package:nibras/features/notes/data/models/get_notes_by_id_response_body.dart';
-<<<<<<< HEAD
 import 'package:nibras/features/notifications/data/model/all_notifications_response_body.dart';
 import 'package:nibras/features/notifications/data/model/read_all_notifications_response_body.dart';
-=======
->>>>>>> 88de412774bc88364818669c92f2efafe4c444de
 import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_request_body.dart';
 import 'package:nibras/features/payment/data/model/confirm_payment/confirm_payment_response_body.dart';
 import 'package:nibras/features/payment/data/model/create_payment_intent/create_payment_intent_request_body.dart';
