@@ -4,11 +4,13 @@ import 'package:video_player/video_player.dart';
 class LessonVideoPlayer extends StatefulWidget {
   final VideoPlayerController controller;
   final VoidCallback onFullscreen;
+  final bool isPreview;
 
   const LessonVideoPlayer({
     super.key,
     required this.controller,
     required this.onFullscreen,
+    this.isPreview = false,
   });
 
   @override
@@ -48,8 +50,9 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
   void _seekForward() {
     final currentPosition = widget.controller.value.position;
     final duration = widget.controller.value.duration;
+    final stepSeconds = widget.isPreview ? 5 : 10;
 
-    var newPosition = currentPosition + const Duration(seconds: 10);
+    var newPosition = currentPosition + Duration(seconds: stepSeconds);
     if (newPosition > duration) {
       newPosition = duration;
     }
@@ -59,8 +62,9 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
   void _seekBackward() {
     final currentPosition = widget.controller.value.position;
+    final stepSeconds = widget.isPreview ? 5 : 10;
 
-    var newPosition = currentPosition - const Duration(seconds: 10);
+    var newPosition = currentPosition - Duration(seconds: stepSeconds);
     if (newPosition < Duration.zero) {
       newPosition = Duration.zero;
     }
@@ -133,8 +137,10 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
                           children: [
                             IconButton(
                               onPressed: _seekBackward,
-                              icon: const Icon(
-                                Icons.replay_10,
+                              icon: Icon(
+                                widget.isPreview
+                                    ? Icons.replay_5
+                                    : Icons.replay_10,
                                 color: Colors.white,
                                 size: 40,
                               ),
@@ -165,8 +171,10 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
                             IconButton(
                               onPressed: _seekForward,
-                              icon: const Icon(
-                                Icons.forward_10,
+                              icon: Icon(
+                                widget.isPreview
+                                    ? Icons.forward_5
+                                    : Icons.forward_10,
                                 color: Colors.white,
                                 size: 40,
                               ),

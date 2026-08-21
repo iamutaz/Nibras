@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nibras/core/DI/injection.dart';
-import 'package:nibras/core/helpers/extension.dart';
 import 'package:nibras/core/networking/api_result.dart';
 import 'package:nibras/core/networking/dio_factory.dart';
 import 'package:nibras/core/networking/web_services.dart';
@@ -31,6 +30,7 @@ class LessonVideoPage extends StatefulWidget {
   final String lessonTitle;
   final int lessonId;
   final int? startPositionSeconds;
+  final bool isPreview;
 
   const LessonVideoPage({
     super.key,
@@ -38,6 +38,7 @@ class LessonVideoPage extends StatefulWidget {
     required this.lessonTitle,
     required this.lessonId,
     this.startPositionSeconds,
+    this.isPreview = false,
   });
 
   @override
@@ -79,7 +80,9 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       await _videoController.initialize();
       _videoController.addListener(_videoListener);
 
-      unawaited(_fetchInVideoQuizzes());
+      if (!widget.isPreview) {
+        unawaited(_fetchInVideoQuizzes());
+      }
       await _seekToStartPosition();
       await _videoController.play();
 
@@ -124,6 +127,12 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
 
   void _videoListener() {
     if (!_videoController.value.isInitialized) {
+      return;
+    }
+
+    if (widget.isPreview) {
+      final value = _videoController.value;
+      _wasPlaying = value.isPlaying;
       return;
     }
 
@@ -174,6 +183,10 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   }
 
   Future<void> _saveProgress() async {
+    if (widget.isPreview) {
+      return;
+    }
+
     try {
       await _progressRepository.saveVideoProgress(
         lessonId: widget.lessonId,
@@ -185,7 +198,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
   }
 
   Future<void> _completeLesson() async {
-    if (_hasSentComplete) {
+    if (widget.isPreview || _hasSentComplete) {
       return;
     }
 
@@ -410,64 +423,66 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
                   ),
                 ),
 
-                actions: [
-                  BlocProvider(
-                    create: (_) => getIt<ReportsCubit>(),
-                    child: Builder(
-                      builder: (context) {
-                        return Stack(
-                          children: [
-                            PopupMenuButton<String>(
-                              icon: const Icon(
-                                Icons.more_vert,
-                                color: Colors.black,
-                              ),
-                              onSelected: (value) {
-                                if (value == 'report') {
-                                  final reportsCubit = context
-                                      .read<ReportsCubit>();
+                actions: widget.isPreview
+                    ? null
+                    : [
+                        BlocProvider(
+                          create: (_) => getIt<ReportsCubit>(),
+                          child: Builder(
+                            builder: (context) {
+                              return Stack(
+                                children: [
+                                  PopupMenuButton<String>(
+                                    icon: const Icon(
+                                      Icons.more_vert,
+                                      color: Colors.black,
+                                    ),
+                                    onSelected: (value) {
+                                      if (value == 'report') {
+                                        final reportsCubit = context
+                                            .read<ReportsCubit>();
 
-                                  CourseReportSheet.show(
-                                    context,
-                                    onSubmit: (reason, details) async {
-                                      await reportsCubit.report(
-                                        ReportRequestBody(
-                                          courseId: widget.lessonId,
-                                          reason: reason,
-                                          description: details,
-                                        ),
-                                      );
+                                        CourseReportSheet.show(
+                                          context,
+                                          onSubmit: (reason, details) async {
+                                            await reportsCubit.report(
+                                              ReportRequestBody(
+                                                courseId: widget.lessonId,
+                                                reason: reason,
+                                                description: details,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
                                     },
-                                  );
-                                }
-                              },
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  value: 'report',
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.report_problem,
-                                        color: Colors.red,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        'Report',
-                                        style: TextStyles.font12redmiduem,
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: 'report',
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.report_problem,
+                                              color: Colors.red,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              'Report',
+                                              style: TextStyles.font12redmiduem,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
 
-                            const ReportsBlocListener(),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                                  const ReportsBlocListener(),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ],
               ),
         body: _buildBody(),
       ),
@@ -488,24 +503,24 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
       );
     }
 
+    final player = LessonVideoPlayer(
+      key: _playerKey,
+      controller: _videoController,
+      onFullscreen: _toggleFullscreen,
+      isPreview: widget.isPreview,
+    );
+
     if (_isFullscreen) {
-      return Center(
-        child: LessonVideoPlayer(
-          key: _playerKey,
-          controller: _videoController,
-          onFullscreen: _toggleFullscreen,
-        ),
-      );
+      return Center(child: player);
+    }
+
+    if (widget.isPreview) {
+      return player;
     }
 
     return Column(
       children: [
-        LessonVideoPlayer(
-          key: _playerKey,
-          controller: _videoController,
-          onFullscreen: _toggleFullscreen,
-        ),
-
+        player,
         Expanded(
           child: BlocProvider(
             create: (context) => getIt<AddNoteCubit>(),

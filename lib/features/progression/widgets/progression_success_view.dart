@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nibras/features/article/lessong_article_page.dart';
 import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 import 'package:nibras/features/progression/widgets/final_exam_widget.dart';
 import 'package:nibras/features/progression/widgets/resume_learning_card.dart';
@@ -7,37 +8,90 @@ import 'package:nibras/features/video/lesson_video_page.dart';
 
 class ProgressionSuccessView extends StatelessWidget {
   final ProgressionResponseBody data;
-  final Function(int lessonId, int? duration)? onLessonSelected;
 
-  const ProgressionSuccessView({
-    super.key,
-    required this.data,
-    this.onLessonSelected,
-  });
+  const ProgressionSuccessView({super.key, required this.data});
 
-  void _navigateToVideo(
-    BuildContext context,
-    String url,
-    String title,
-    int lessonId,
-    int lastPositionSeconds,
-  ) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LessonVideoPage(
-          videoUrl: url,
-          lessonTitle: title,
-          lessonId: lessonId,
-          startPositionSeconds: lastPositionSeconds,
+  void _openLesson(
+    BuildContext context, {
+    required int lessonId,
+    required String title,
+    required String type,
+    String? videoUrl,
+    String? pdfUrl,
+    int lastPositionSeconds = 0,
+  }) {
+    if (type == 'video') {
+      if (videoUrl == null || videoUrl.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Video URL not available")),
+        );
+        return;
+      }
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LessonVideoPage(
+            videoUrl: videoUrl,
+            lessonTitle: title,
+            lessonId: lessonId,
+            startPositionSeconds: lastPositionSeconds,
+          ),
         ),
-      ),
+      );
+      return;
+    }
+
+    if (type == 'pdf') {
+      if (pdfUrl == null || pdfUrl.isEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("PDF URL not available")));
+        return;
+      }
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LessonArticlePage(
+            pdfUrl: pdfUrl,
+            lessonTitle: title,
+            lessonId: lessonId,
+          ),
+        ),
+      );
+      return;
+    }
+  }
+
+  void _openSectionLesson(BuildContext context, SectionLesson lesson) {
+    // بغض النظر عن حالة الدرس (منتهي أو لأ) بيفتح بنفس الطريقة
+    _openLesson(
+      context,
+      lessonId: lesson.id,
+      title: lesson.title,
+      type: lesson.type,
+      videoUrl: lesson.videoUrl,
+      pdfUrl: lesson.pdfUrl,
+      lastPositionSeconds: lesson.lastPositionSeconds,
+    );
+  }
+
+  void _openResumeLesson(BuildContext context, ResumeLesson lesson) {
+    _openLesson(
+      context,
+      lessonId: lesson.lessonId,
+      title: lesson.lessonTitle,
+      type: lesson.type,
+      videoUrl: lesson.videoUrl,
+      pdfUrl: lesson.pdfUrl,
+      lastPositionSeconds: lesson.lastPositionSeconds,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final resumeLesson = data.data.nextLesson ?? data.data.nextLesson;
+    final resumeLesson = data.data.nextLesson ?? data.data.resumeLesson;
     final sections = data.data.sections;
     final finalExam = data.data.finalExam;
 
@@ -49,26 +103,10 @@ class ProgressionSuccessView extends StatelessWidget {
           if (resumeLesson != null) ...[
             ResumeLearningCard(
               resumeLesson: resumeLesson,
-              onResumeTap: () {
-                // التحقق من وجود رابط الفيديو قبل الانتقال
-                if (resumeLesson.videoUrl != null &&
-                    resumeLesson.videoUrl!.isNotEmpty) {
-                  _navigateToVideo(
-                    context,
-                    resumeLesson.videoUrl!,
-                    resumeLesson.lessonTitle,
-                    resumeLesson.lessonId,
-                    resumeLesson.lastPositionSeconds,
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Video URL not available")),
-                  );
-                }
-              },
+              onResumeTap: () => _openResumeLesson(context, resumeLesson),
             ),
           ],
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -77,13 +115,13 @@ class ProgressionSuccessView extends StatelessWidget {
             itemBuilder: (context, index) {
               return SectionExpansionTile(
                 section: sections[index],
-                onLessonSelected: onLessonSelected,
+                onLessonSelected: (lesson) =>
+                    _openSectionLesson(context, lesson),
               );
             },
           ),
           if (finalExam != null) ...[
             const SizedBox(height: 16),
-
             FinalExamWidget(finalExam: finalExam),
           ],
         ],

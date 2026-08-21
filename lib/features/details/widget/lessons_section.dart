@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+import 'package:nibras/features/article/lessong_article_page.dart';
 import 'package:nibras/features/details/data/models/course_details_response_body.dart';
+import 'package:nibras/features/video/lesson_video_page.dart';
 
 class LessonsSection extends StatelessWidget {
   final List<Section> sections;
@@ -77,9 +79,9 @@ class LessonsSection extends StatelessWidget {
                         ),
                         title: Text(
                           lesson.title,
-                          style: TextStyles.font14authblackregular.copyWith(
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyles.font14authblackregular,
                         ),
                         trailing: lesson.isFreePreview
                             ? Text(
@@ -96,7 +98,37 @@ class LessonsSection extends StatelessWidget {
                                 color: Colors.grey,
                               ),
                         onTap: () {
-                          // منطق الانتقال لصفحة تشغيل الفيديو
+                          if (lesson.type == 'video' &&
+                              lesson.videoUrl != null &&
+                              lesson.videoUrl!.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => LessonVideoPage(
+                                  videoUrl: lesson.videoUrl!,
+                                  lessonTitle: lesson.title,
+                                  lessonId: lesson.id,
+                                  isPreview: lesson.isFreePreview,
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+
+                          if (lesson.type == 'article' &&
+                              lesson.pdfUrl != null &&
+                              lesson.pdfUrl!.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => LessonArticlePage(
+                                  pdfUrl: lesson.pdfUrl!,
+                                  lessonTitle: lesson.title,
+                                  lessonId: lesson.id,
+                                ),
+                              ),
+                            );
+                          }
                         },
                       );
                     }).toList(),

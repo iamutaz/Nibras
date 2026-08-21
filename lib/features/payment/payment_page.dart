@@ -79,9 +79,8 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   // ---------------- Checkout flow ----------------
-
   void _startCheckout(BuildContext context) {
-    if (!_isCouponApplied || _isProcessingPayment) return;
+    if (_isProcessingPayment) return;
 
     context.read<IntentCubit>().createIntent(
       CreatePaymentIntentRequest(
@@ -296,15 +295,17 @@ class _PaymentPageState extends State<PaymentPage> {
                                           horizontal: 16.w,
                                         ),
                                         border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
+                                          ),
                                           borderSide: BorderSide(
                                             color: AppColors.borderColor,
                                           ),
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
+                                          ),
                                           borderSide: BorderSide(
                                             color: AppColors.borderColor,
                                           ),
@@ -321,15 +322,15 @@ class _PaymentPageState extends State<PaymentPage> {
                                       );
                                       return ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.mainYellow,
+                                          backgroundColor: AppColors.mainYellow,
                                           padding: EdgeInsets.symmetric(
                                             horizontal: 24.w,
                                             vertical: 12.h,
                                           ),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25.r),
+                                            borderRadius: BorderRadius.circular(
+                                              25.r,
+                                            ),
                                           ),
                                         ),
                                         onPressed: isLoading
@@ -341,8 +342,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                                 height: 16.w,
                                                 child:
                                                     const CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                ),
+                                                      strokeWidth: 2,
+                                                    ),
                                               )
                                             : Text(
                                                 "Apply",
@@ -383,11 +384,12 @@ class _PaymentPageState extends State<PaymentPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0).copyWith(bottom: 2.h),
                   child: AppTextButton(
-                    onpressed: (_isCouponApplied && !_isProcessingPayment)
+                    onpressed: !_isProcessingPayment
                         ? () => _startCheckout(context)
                         : null,
-                    textButton:
-                        _isProcessingPayment ? "Processing..." : "Check",
+                    textButton: _isProcessingPayment
+                        ? "Processing..."
+                        : "Check",
                     icon: _isProcessingPayment
                         ? SizedBox(
                             width: 20.sp,

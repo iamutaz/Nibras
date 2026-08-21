@@ -75,6 +75,7 @@ ResumeLesson _$ResumeLessonFromJson(Map<String, dynamic> json) => ResumeLesson(
   type: json['type'] as String,
   duration: (json['duration'] as num?)?.toInt(),
   videoUrl: json['video_url'] as String?,
+  pdfUrl: json['pdf_url'] as String?,
   lastPositionSeconds: (json['last_position_seconds'] as num).toInt(),
 );
 
@@ -86,6 +87,7 @@ Map<String, dynamic> _$ResumeLessonToJson(ResumeLesson instance) =>
       'type': instance.type,
       'duration': instance.duration,
       'video_url': instance.videoUrl,
+      'pdf_url': instance.pdfUrl,
       'last_position_seconds': instance.lastPositionSeconds,
     };
 
@@ -120,6 +122,7 @@ SectionLesson _$SectionLessonFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       duration: (json['duration'] as num?)?.toInt(),
       videoUrl: json['video_url'] as String?,
+      pdfUrl: json['pdf_url'] as String?,
       isFreePreview: json['is_free_preview'] as bool,
       orderIndex: (json['order_index'] as num).toInt(),
       status: json['status'] as String,
@@ -134,6 +137,7 @@ Map<String, dynamic> _$SectionLessonToJson(SectionLesson instance) =>
       'type': instance.type,
       'duration': instance.duration,
       'video_url': instance.videoUrl,
+      'pdf_url': instance.pdfUrl,
       'is_free_preview': instance.isFreePreview,
       'order_index': instance.orderIndex,
       'status': instance.status,

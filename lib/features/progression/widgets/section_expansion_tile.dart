@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nibras/core/theme/fonts/text_styles.dart';
+import 'package:nibras/features/progression/data/model/progression_response_body.dart';
 
 class SectionExpansionTile extends StatelessWidget {
-  final dynamic section;
-  final Function(int lessonId, int? duration)? onLessonSelected;
+  final CourseSection section;
+  final Function(SectionLesson lesson)? onLessonSelected;
 
   const SectionExpansionTile({
     super.key,
@@ -43,10 +44,8 @@ class SectionExpansionTile extends StatelessWidget {
               itemBuilder: (context, index) {
                 final lesson = lessons[index];
 
-                // التحقق هل الدرس منتهي
                 final bool isCompleted =
-                    lesson.status == 'completed' ||
-                    (lesson.isCompleted ?? false);
+                    lesson.status == 'completed' || lesson.isCompleted;
 
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(
@@ -61,14 +60,22 @@ class SectionExpansionTile extends StatelessWidget {
                     lesson.type,
                     style: TextStyles.font12lightgreymedium,
                   ),
-                  // إظهار الأيقونة حسب حالة الدرس
                   trailing: _buildTrailingIcon(lesson.status, isCompleted),
                   onTap: () {
-                    // يستدعي التابع الأصلي بإرسال الـ id والـ duration
-                    onLessonSelected?.call(lesson.id, lesson.duration);
+                    // إذا الدرس غير متاح بعد (not_started) ما نخلي المستخدم يفتح
+                    if (lesson.status == 'not_started') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('this lesson is not available yet')),
+                      );
+                      return;
+                    }
+
+                    // لأي درس (فيديو أو مقال) وبغض النظر إذا منتهي أو لأ
+                    // منمرر الـ lesson كامل ليقرر الـ parent كيف يفتحه
+                    onLessonSelected?.call(lesson);
                   },
                 );
-              },
+              },  
             ),
           ],
         ),
@@ -80,7 +87,11 @@ class SectionExpansionTile extends StatelessWidget {
     if (isCompleted || status == 'completed') {
       return const Icon(Icons.check_circle, color: Colors.green, size: 20);
     } else if (status == 'current') {
-      return const Icon(Icons.play_circle_fill, color: Colors.purple, size: 20);
+      return const Icon(
+        Icons.play_circle_fill,
+        color: Colors.purple,
+        size: 20,
+      );
     } else {
       return const Icon(Icons.lock_outline, color: Colors.grey, size: 20);
     }

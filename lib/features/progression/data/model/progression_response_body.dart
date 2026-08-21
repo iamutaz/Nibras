@@ -69,10 +69,7 @@ class LearningCourse {
   @JsonKey(name: 'total_lessons')
   final int totalLessons;
 
-  @JsonKey(
-    name: 'completion_percentage',
-    fromJson: _parseDouble,
-  )
+  @JsonKey(name: 'completion_percentage', fromJson: _parseDouble)
   final double completionPercentage;
 
   LearningCourse({
@@ -106,6 +103,9 @@ class ResumeLesson {
   @JsonKey(name: 'video_url')
   final String? videoUrl;
 
+  @JsonKey(name: 'pdf_url')
+  final String? pdfUrl;
+
   @JsonKey(name: 'last_position_seconds')
   final int lastPositionSeconds;
 
@@ -116,6 +116,7 @@ class ResumeLesson {
     required this.type,
     this.duration,
     this.videoUrl,
+    this.pdfUrl,
     required this.lastPositionSeconds,
   });
 
@@ -171,6 +172,9 @@ class SectionLesson {
   @JsonKey(name: 'video_url')
   final String? videoUrl;
 
+  @JsonKey(name: 'pdf_url')
+  final String? pdfUrl;
+
   @JsonKey(name: 'is_free_preview')
   final bool isFreePreview;
 
@@ -191,6 +195,7 @@ class SectionLesson {
     required this.type,
     this.duration,
     this.videoUrl,
+    this.pdfUrl,
     required this.isFreePreview,
     required this.orderIndex,
     required this.status,
@@ -212,10 +217,7 @@ class FinalExam {
   @JsonKey(name: 'max_attempts')
   final int maxAttempts;
 
-  @JsonKey(
-    name: 'passing_score',
-    fromJson: _parseDouble,
-  )
+  @JsonKey(name: 'passing_score', fromJson: _parseDouble)
   final double passingScore;
 
   FinalExam({
